@@ -1,7 +1,7 @@
 # Variables
 APP_NAME = macos-web-desktop
 DEV_COMPOSE = compose.dev.yml
-PROD_COMPOSE = compose.prod.yml
+PROD_COMPOSE = compose.yml
 
 .PHONY: help
 
