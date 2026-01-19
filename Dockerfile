@@ -17,8 +17,18 @@ RUN corepack enable && \
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-COPY --from=deps /app ./
-COPY . .
+COPY --from=deps /app/node_modules ./node_modules
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
+
+COPY src ./src
+COPY public ./public
+COPY messages ./messages
+
+COPY next.config.ts ./next.config.ts
+COPY tsconfig.json ./tsconfig.json
+COPY tailwind.config.ts ./tailwind.config.ts
+COPY postcss.config.mjs ./postcss.config.mjs
 
 RUN corepack enable && corepack prepare yarn@4.11.0 --activate && yarn build
 
@@ -35,6 +45,9 @@ RUN corepack enable && \
     corepack prepare yarn@4.11.0 --activate
 
 EXPOSE 6000
+
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
 
 # Standalone (si activé) sinon garde classique
 COPY --from=builder /app/public ./public
