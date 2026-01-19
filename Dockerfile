@@ -43,7 +43,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN corepack enable && \
     corepack prepare yarn@4.11.0 --activate
 
-EXPOSE 6000
+EXPOSE 8000
 
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
@@ -54,4 +54,4 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-CMD ["yarn", "start", "-p", "6000"]
+CMD ["yarn", "start", "-p", "8000"]
