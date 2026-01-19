@@ -41,6 +41,6 @@ input, textarea {
 html, body {
     background: var(--background);
     color: var(--foreground);
-    font-family: var(--font-system);
+    font-family: var(--font-system), serif;
     user-select: none;
 }
