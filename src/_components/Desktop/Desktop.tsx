@@ -7,6 +7,7 @@ import { LockScreen } from "@/src/_components/LockScreen";
 import { MenuBar } from "@/src/_components/MenuBar";
 import { WindowManager } from "@/src/_components/WindowManager";
 import { useDesktopStore } from "@/src/store/desktop-store";
+import Image from "next/image";
 import { useCallback, useState } from "react";
 
 export function Desktop() {
@@ -26,11 +27,6 @@ export function Desktop() {
     return (
         <main
             className="relative h-screen w-screen overflow-hidden text-white"
-            style={{
-                backgroundImage: "url('/Big-Sur-Color-Day.jpg')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-            }}
             onContextMenu={(e) => {
                 e.preventDefault();
                 const target = e.target as HTMLElement;
@@ -47,6 +43,14 @@ export function Desktop() {
                 if (ctx.open) closeCtx();
             }}
         >
+            <Image
+                src="/Big-Sur-Color-Day.jpg"
+                alt="Wallpaper"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+            />
             <MenuBar />
             <DesktopIcons />
             <WindowManager />
