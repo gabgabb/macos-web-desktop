@@ -1,41 +1,15 @@
 "use client";
 
+import { useLiveClock } from "@/src/hooks/useLiveClock";
 import { useDesktopStore } from "@/src/store/desktop-store";
-import { useEffect, useMemo, useState } from "react";
+import { LockIcon, Volume2Icon, WifiIcon } from "lucide-react";
+import { useMemo } from "react";
 
 export function MenuBar() {
-    const [now, setNow] = useState(() => new Date());
-
-    useEffect(() => {
-        const id = window.setInterval(() => {
-            setNow(new Date());
-        }, 1000);
-
-        return () => window.clearInterval(id);
-    }, []);
-
-    const time = useMemo(() => {
-        const weekday = new Intl.DateTimeFormat("en-US", {
-            weekday: "short",
-        }).format(now);
-        const month = new Intl.DateTimeFormat("en-US", {
-            month: "short",
-        }).format(now);
-        const day = new Intl.DateTimeFormat("en-US", { day: "2-digit" }).format(
-            now,
-        );
-
-        const hourMin = new Intl.DateTimeFormat("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-        }).format(now);
-
-        return `${weekday} ${month} ${day} ${hourMin}`;
-    }, [now]);
-
     const windows = useDesktopStore((s) => s.windows);
     const activeWindowId = useDesktopStore((s) => s.activeWindowId);
+
+    const { menuBarTime } = useLiveClock();
 
     const activeTitle = useMemo(() => {
         if (!activeWindowId) return null;
@@ -45,13 +19,18 @@ export function MenuBar() {
         return win.title;
     }, [windows, activeWindowId]);
 
+    async function handleLock() {
+        await fetch("/api/lock", { method: "POST" });
+        window.location.href = "/lock";
+    }
+
     return (
         <div
             onContextMenu={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
             }}
-            className="menu-top absolute top-0 right-0 left-0 z-[100] flex h-10 items-center justify-between border-b border-white/10 bg-white/10 px-4 pl-6 text-white backdrop-blur-md"
+            className="menu-top absolute top-0 right-0 left-0 z-100 flex h-10 items-center justify-between border-b border-white/10 bg-white/10 px-4 pl-6 text-white backdrop-blur-md"
         >
             <div className="left-10 flex items-center gap-5">
                 <svg
@@ -69,8 +48,24 @@ export function MenuBar() {
                     {activeTitle ?? "Desktop"}
                 </span>
             </div>
-
-            <div className="text-sm opacity-90">{time}</div>
+            <div className="flex items-center gap-4">
+                <WifiIcon
+                    className="text-white/90 hover:cursor-pointer"
+                    aria-hidden="true"
+                />
+                <Volume2Icon
+                    className="text-white/90 hover:cursor-pointer"
+                    aria-hidden="true"
+                />
+                <LockIcon
+                    className="text-white/90 hover:cursor-pointer"
+                    aria-hidden="true"
+                    onClick={handleLock}
+                />
+                <div className="text-sm opacity-90" suppressHydrationWarning>
+                    {menuBarTime}
+                </div>
+            </div>
         </div>
     );
 }

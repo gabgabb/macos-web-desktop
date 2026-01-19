@@ -28,7 +28,6 @@ type DesktopState = DesktopSnapshot & {
     toggleFullscreen: (windowId: string) => void;
 
     unlock: () => void;
-    skipLock: () => void;
 
     reset: () => void;
 };
@@ -210,11 +209,6 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
     },
 
     unlock: () => {
-        set({ isLocked: false });
-        persist(get);
-    },
-
-    skipLock: () => {
         set({ isLocked: false });
         persist(get);
     },

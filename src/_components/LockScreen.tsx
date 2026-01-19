@@ -1,40 +1,215 @@
 "use client";
 
-import { useDesktopStore } from "@/src/store/desktop-store";
+import { useLiveClock } from "@/src/hooks/useLiveClock";
+import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
+import { useRef, useState } from "react";
+
+const REQUIRED_LEN = 6;
 
 export function LockScreen() {
-    const unlock = useDesktopStore((s) => s.unlock);
-    const skipLock = useDesktopStore((s) => s.skipLock);
+    const [stage, setStage] = useState<0 | 1>(0);
+    const [password, setPassword] = useState<string>("");
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [shake, setShake] = useState<boolean>(false);
 
-    const time = new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-    });
+    const lastTriedRef = useRef<string>("");
+
+    const { hhmm, dateLong } = useLiveClock();
+
+    function triggerShake(message?: string) {
+        setShake(true);
+        if (message) setError(message);
+
+        window.setTimeout(() => {
+            setShake(false);
+        }, 500);
+    }
+
+    async function tryUnlock(pwd: string) {
+        if (loading) return;
+        if (pwd.length !== REQUIRED_LEN) return;
+
+        if (lastTriedRef.current === pwd) return;
+        lastTriedRef.current = pwd;
+
+        setLoading(true);
+        setError(null);
+
+        const res = await fetch("/api/unlock", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password: pwd }),
+        });
+
+        if (!res.ok) {
+            setLoading(false);
+            triggerShake("Wrong password");
+
+            setPassword("");
+
+            lastTriedRef.current = "";
+            return;
+        }
+
+        window.location.href = "/";
+    }
 
     return (
-        <div className="absolute inset-0 z-[10000] flex items-center justify-center">
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-xl" />
+        <div className="lock-screen absolute inset-0 z-[10000] text-white">
+            <div className="absolute inset-0 bg-black/20" />
 
-            <div className="relative w-[360px] rounded-3xl border border-white/10 bg-white/10 p-6 text-center text-white shadow-2xl">
-                <div className="text-5xl font-semibold">{time}</div>
-                <div className="mt-2 text-sm opacity-80">Locked (optional)</div>
+            <Image
+                src="/Big-Sur-Color-Day.jpg"
+                alt="Wallpaper"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+            />
 
-                <div className="mt-6 flex flex-col gap-2">
-                    <button
-                        onClick={unlock}
-                        className="rounded-xl bg-white/20 px-4 py-2 transition hover:bg-white/30"
+            <AnimatePresence mode="wait">
+                {stage === 0 && (
+                    <motion.div
+                        key="stage-0"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.18 }}
+                        className="absolute inset-0 flex flex-col items-center justify-start pt-24 text-gray-200"
+                        onClick={() => setStage(1)}
                     >
-                        Unlock
-                    </button>
+                        <div
+                            className="mt-2 text-xl opacity-90 drop-shadow"
+                            suppressHydrationWarning
+                        >
+                            {dateLong}
+                        </div>
+                        <div
+                            className="text-8xl font-semibold tracking-tight drop-shadow-md"
+                            suppressHydrationWarning
+                        >
+                            {hhmm}
+                        </div>
+                        <div className="mt-10 text-xs opacity-70">
+                            Click anywhere to unlock
+                        </div>
+                    </motion.div>
+                )}
 
-                    <button
-                        onClick={skipLock}
-                        className="rounded-xl bg-transparent px-4 py-2 text-sm opacity-90 transition hover:bg-white/10"
+                {stage === 1 && (
+                    <motion.div
+                        key="stage-1"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.18 }}
+                        className="absolute inset-0"
+                        onMouseDown={() => {
+                            setPassword("");
+                            setError(null);
+                            setStage(0);
+                            lastTriedRef.current = "";
+                        }}
                     >
-                        Continue without unlocking
-                    </button>
-                </div>
-            </div>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <motion.div
+                                onMouseDown={(e) => e.stopPropagation()}
+                                initial={{ y: 24, opacity: 0, scale: 0.98 }}
+                                animate={{
+                                    y: 0,
+                                    opacity: 1,
+                                    scale: 1,
+                                    x: shake
+                                        ? [0, -12, 12, -10, 10, -6, 6, 0]
+                                        : 0,
+                                }}
+                                exit={{ y: 24, opacity: 0, scale: 0.98 }}
+                                transition={{
+                                    y: { duration: 0.22 },
+                                    opacity: { duration: 0.22 },
+                                    scale: { duration: 0.22 },
+                                    x: { duration: 0.45 },
+                                }}
+                                className="flex flex-col items-center gap-4"
+                            >
+                                <Image
+                                    src="/Cameleon.png"
+                                    alt="User profile"
+                                    width={650}
+                                    height={256}
+                                    priority
+                                    className="size-60 -translate-y-10 rounded-full object-cover"
+                                />
+
+                                <div className="text-xl font-bold drop-shadow">
+                                    User
+                                </div>
+
+                                <div className="w-80">
+                                    <input
+                                        autoFocus
+                                        disabled={loading}
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => {
+                                            const next = e.target.value.slice(
+                                                0,
+                                                REQUIRED_LEN,
+                                            );
+
+                                            setPassword(next);
+                                            setError(null);
+
+                                            if (next.length === REQUIRED_LEN) {
+                                                tryUnlock(next);
+                                            } else {
+                                                lastTriedRef.current = "";
+                                            }
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter") {
+                                                if (
+                                                    password.length !==
+                                                    REQUIRED_LEN
+                                                ) {
+                                                    triggerShake(
+                                                        `Password must be ${REQUIRED_LEN} characters`,
+                                                    );
+                                                    return;
+                                                }
+                                                tryUnlock(password);
+                                            }
+
+                                            if (e.key === "Escape") {
+                                                setPassword("");
+                                                setError(null);
+                                                setStage(0);
+                                                lastTriedRef.current = "";
+                                            }
+                                        }}
+                                        placeholder="Password"
+                                        className="w-full rounded-4xl border border-white/10 bg-white/15 px-4 py-3 outline-none placeholder:text-white/80 focus:ring-2 focus:ring-white/30 disabled:opacity-60"
+                                    />
+
+                                    {error && (
+                                        <div className="mt-2 text-center text-sm text-red-200/90 drop-shadow">
+                                            {error}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {loading && (
+                                    <div className="text-xs opacity-80">
+                                        Unlocking...
+                                    </div>
+                                )}
+                            </motion.div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

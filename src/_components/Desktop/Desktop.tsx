@@ -3,16 +3,12 @@
 import { DesktopContextMenu } from "@/src/_components/Desktop/DesktopContextMenu";
 import { DesktopIcons } from "@/src/_components/Desktop/DesktopIcons";
 import { Dock } from "@/src/_components/Dock";
-import { LockScreen } from "@/src/_components/LockScreen";
 import { MenuBar } from "@/src/_components/MenuBar";
 import { WindowManager } from "@/src/_components/WindowManager";
-import { useDesktopStore } from "@/src/store/desktop-store";
 import Image from "next/image";
 import { useCallback, useState } from "react";
 
 export function Desktop() {
-    const isLocked = useDesktopStore((s) => s.isLocked);
-
     const [ctx, setCtx] = useState<{ open: boolean; x: number; y: number }>({
         open: false,
         x: 0,
@@ -65,8 +61,6 @@ export function Desktop() {
                     if (id === "refresh") window.location.reload();
                 }}
             />
-
-            {isLocked && <LockScreen />}
         </main>
     );
 }
