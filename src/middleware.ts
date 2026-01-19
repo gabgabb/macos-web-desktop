@@ -1,14 +1,20 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+const PUBLIC_FILE = /\.(.*)$/;
+
 export function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
+    if (PUBLIC_FILE.test(pathname)) {
+        return NextResponse.next();
+    }
+
+    // ✅ autoriser /lock, /api, assets Next
     if (
         pathname.startsWith("/lock") ||
         pathname.startsWith("/api") ||
-        pathname.startsWith("/_next") ||
-        pathname.startsWith("/favicon")
+        pathname.startsWith("/_next")
     ) {
         return NextResponse.next();
     }
@@ -25,5 +31,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/((?!_next/static|_next/image).*)"],
+    matcher: ["/:path*"],
 };
