@@ -1,0 +1,21 @@
+FROM node:22-bullseye-slim
+
+WORKDIR /app
+
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Activer Yarn 4 via Corepack
+RUN corepack enable && corepack prepare yarn@4.11.0 --activate
+
+# Copier d'abord les fichiers nécessaires à l'install
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
+
+# Installer les dépendances
+RUN yarn install
+
+# Copier le reste du projet
+COPY . .
+
+EXPOSE 3000
+CMD ["yarn", "dev"]
