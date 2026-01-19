@@ -7,9 +7,9 @@ WORKDIR /app
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
 
-RUN corepack enable && corepack prepare yarn@4.11.0 --activate
-RUN yarn install --immutable
-RUN yarn -v
+RUN corepack enable && \
+    corepack prepare yarn@4.11.0 --activate && \
+    yarn install --immutable
 
 # -------------------
 # build
@@ -27,6 +27,7 @@ RUN corepack enable && corepack prepare yarn@4.11.0 --activate && yarn build
 # -------------------
 FROM node:22-alpine AS runner
 WORKDIR /app
+
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
