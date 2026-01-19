@@ -4,14 +4,12 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
 
-RUN corepack enable && corepack prepare yarn@4.11.0 --activate
-
-RUN yarn -v
-
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
 
+RUN corepack enable && corepack prepare yarn@4.11.0 --activate
 RUN yarn install --immutable
+RUN yarn -v
 
 # -------------------
 # build
@@ -19,12 +17,10 @@ RUN yarn install --immutable
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-RUN corepack enable && corepack prepare yarn@4.11.0 --activate
-
 COPY --from=deps /app ./
 COPY . .
 
-RUN yarn build
+RUN corepack enable && corepack prepare yarn@4.11.0 --activate && yarn build
 
 # -------------------
 # runner (prod)
@@ -32,6 +28,10 @@ RUN yarn build
 FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN corepack enable && \
+    corepack prepare yarn@4.11.0 --activate \
 
 EXPOSE 6000
 
