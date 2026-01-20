@@ -3,11 +3,13 @@
 import { useLiveClock } from "@/src/hooks/useLiveClock";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { LockIcon, Volume2Icon, WifiIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
 export function MenuBar() {
     const windows = useDesktopStore((s) => s.windows);
     const activeWindowId = useDesktopStore((s) => s.activeWindowId);
+    const router = useRouter();
 
     const { menuBarTime } = useLiveClock();
 
@@ -21,7 +23,7 @@ export function MenuBar() {
 
     async function handleLock() {
         await fetch("/api/lock", { method: "POST" });
-        window.location.href = "/lock";
+        router.replace("/lock");
     }
 
     return (

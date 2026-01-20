@@ -10,7 +10,6 @@ export function middleware(req: NextRequest) {
         return NextResponse.next();
     }
 
-    // ✅ autoriser /lock, /api, assets Next
     if (
         pathname.startsWith("/lock") ||
         pathname.startsWith("/api") ||

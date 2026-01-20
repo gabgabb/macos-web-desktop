@@ -5,7 +5,6 @@ import { DesktopIcons } from "@/src/_components/Desktop/DesktopIcons";
 import { Dock } from "@/src/_components/Dock";
 import { MenuBar } from "@/src/_components/MenuBar";
 import { WindowManager } from "@/src/_components/WindowManager";
-import Image from "next/image";
 import { useCallback, useState } from "react";
 
 export function Desktop() {
@@ -39,14 +38,6 @@ export function Desktop() {
                 if (ctx.open) closeCtx();
             }}
         >
-            <Image
-                src="/Big-Sur-Color-Day.jpg"
-                alt="Wallpaper"
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover"
-            />
             <MenuBar />
             <DesktopIcons />
             <WindowManager />

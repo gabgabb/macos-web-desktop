@@ -1,3 +1,4 @@
+import { Wallpaper } from "@/src/_components/Wallpaper";
 import type { Metadata } from "next";
 import React from "react";
 import "./globals.css";
@@ -14,7 +15,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`antialiased`}>{children}</body>
+            <body className={`antialiased`}>
+                <Wallpaper />
+                {children}
+            </body>
         </html>
     );
 }

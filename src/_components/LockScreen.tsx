@@ -3,6 +3,7 @@
 import { useLiveClock } from "@/src/hooks/useLiveClock";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 const REQUIRED_LEN = 6;
@@ -17,6 +18,8 @@ export function LockScreen() {
     const lastTriedRef = useRef<string>("");
 
     const { hhmm, dateLong } = useLiveClock();
+
+    const router = useRouter();
 
     function triggerShake(message?: string) {
         setShake(true);
@@ -53,22 +56,18 @@ export function LockScreen() {
             return;
         }
 
-        window.location.href = "/";
+        router.replace("/");
     }
 
     return (
-        <div className="lock-screen absolute inset-0 z-[10000] text-white">
+        <div
+            className="lock-screen absolute inset-0 z-10000 text-white"
+            onContextMenu={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }}
+        >
             <div className="absolute inset-0 bg-black/20" />
-
-            <Image
-                src="/Big-Sur-Color-Day.jpg"
-                alt="Wallpaper"
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover"
-            />
-
             <AnimatePresence mode="wait">
                 {stage === 0 && (
                     <motion.div
