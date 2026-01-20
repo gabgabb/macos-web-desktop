@@ -5,6 +5,8 @@ import {
     loadDesktopIconOrder,
     saveDesktopIconOrder,
 } from "@/src/core/desktop-icons-persist";
+import { AppId, DockApp } from "@/src/core/types";
+import { DOCK_APPS } from "@/src/core/ui-constants";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import {
     DndContext,
@@ -21,24 +23,10 @@ import {
 } from "@dnd-kit/sortable";
 import { useMemo, useRef, useState } from "react";
 
-type DesktopItem = {
-    id: string;
-    appId: "finder" | "notes" | "about";
-    icon: string;
-    label: string;
-};
-
 export function DesktopIcons() {
     const openApp = useDesktopStore((s) => s.openApp);
 
-    const baseItems: DesktopItem[] = useMemo(
-        () => [
-            { id: "finder", appId: "finder", icon: "🗂️", label: "Finder" },
-            { id: "notes", appId: "notes", icon: "📝", label: "Notes" },
-            { id: "about", appId: "about", icon: "ℹ️", label: "About" },
-        ],
-        [],
-    );
+    const baseItems: DockApp[] = useMemo(() => DOCK_APPS, []);
 
     const [order, setOrder] = useState<string[]>(() => {
         if (typeof window === "undefined") {
@@ -49,7 +37,7 @@ export function DesktopIcons() {
         if (!saved) return baseItems.map((i) => i.id);
 
         const known = new Set(baseItems.map((i) => i.id));
-        const cleaned = saved.filter((id) => known.has(id));
+        const cleaned = saved.filter((id) => known.has(id as AppId));
 
         for (const it of baseItems) {
             if (!cleaned.includes(it.id)) cleaned.push(it.id);
@@ -74,7 +62,9 @@ export function DesktopIcons() {
 
     const items = useMemo(() => {
         const map = new Map(baseItems.map((i) => [i.id, i]));
-        return order.map((id) => map.get(id)).filter(Boolean) as DesktopItem[];
+        return order
+            .map((id) => map.get(id as AppId))
+            .filter(Boolean) as DockApp[];
     }, [baseItems, order]);
 
     const marqueeRect = drag
@@ -111,7 +101,7 @@ export function DesktopIcons() {
     return (
         <div
             ref={layerRef}
-            className="absolute inset-0 z-[5] px-6 pt-14 pb-24 select-none"
+            className="absolute inset-0 z-5 px-6 pt-14 pb-24 select-none"
             onMouseDown={(e) => {
                 if (!layerRef.current) return;
                 if (e.button === 2) return;
@@ -194,7 +184,7 @@ export function DesktopIcons() {
                 onDragEnd={onDragEnd}
             >
                 <SortableContext items={order} strategy={rectSortingStrategy}>
-                    <div className="desktop-icons grid w-fit">
+                    <div className="desktop-icons grid w-fit gap-2">
                         {items.map((it) => (
                             <div
                                 key={it.id}
@@ -205,7 +195,7 @@ export function DesktopIcons() {
                                 <DesktopIconSortable
                                     id={it.id}
                                     icon={it.icon}
-                                    label={it.label}
+                                    label={it.title}
                                     selected={selected.has(it.id)}
                                     onClick={(id) => {
                                         setSelected((prev) => {
@@ -215,7 +205,7 @@ export function DesktopIcons() {
                                             return next;
                                         });
                                     }}
-                                    onDoubleClick={() => openApp(it.appId)}
+                                    onDoubleClick={() => openApp(it.id)}
                                 />
                             </div>
                         ))}

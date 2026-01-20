@@ -2,7 +2,12 @@
 
 import { useLiveClock } from "@/src/hooks/useLiveClock";
 import { useDesktopStore } from "@/src/store/desktop-store";
-import { LockIcon, Volume2Icon, WifiIcon } from "lucide-react";
+import {
+    LockIcon,
+    SlidersHorizontal,
+    Volume2Icon,
+    WifiIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
@@ -50,7 +55,7 @@ export function MenuBar() {
                     {activeTitle ?? "Desktop"}
                 </span>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5">
                 <WifiIcon
                     className="text-white/90 hover:cursor-pointer"
                     aria-hidden="true"
@@ -63,6 +68,10 @@ export function MenuBar() {
                     className="text-white/90 hover:cursor-pointer"
                     aria-hidden="true"
                     onClick={handleLock}
+                />
+                <SlidersHorizontal
+                    className="text-white/90 hover:cursor-pointer"
+                    aria-hidden="true"
                 />
                 <div className="text-sm opacity-90" suppressHydrationWarning>
                     {menuBarTime}

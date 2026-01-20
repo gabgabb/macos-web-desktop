@@ -17,19 +17,6 @@ button, [role="button"] {
     -webkit-tap-highlight-color: transparent;
 }
 
-.mac-grabbable {
-    cursor: grab;
-}
-
-.mac-grabbing {
-    cursor: grabbing;
-}
-
-input, textarea {
-    cursor: text;
-    user-select: text;
-}
-
 ::-ms-reveal {
   filter: invert(100%);
 }

@@ -1,4 +1,4 @@
-export type AppId = "finder" | "notes" | "about";
+export type AppId = "finder" | "notes" | "about" | "terminal" | "safari";
 
 export type DockApp = {
     id: AppId;
@@ -28,6 +28,11 @@ export type DesktopSnapshot = {
     windows: WindowInstance[];
     activeWindowId: string | null;
     topZ: number;
-
+    notes: {
+        content: string;
+    };
+    terminal: {
+        content: string;
+    };
     isLocked: boolean;
 };

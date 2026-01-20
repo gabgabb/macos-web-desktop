@@ -3,6 +3,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import clsx from "clsx";
+import Image from "next/image";
 import React from "react";
 
 export function DesktopIconSortable({
@@ -56,7 +57,7 @@ export function DesktopIconSortable({
             {...attributes}
             {...listeners}
         >
-            <div className="text-3xl">{icon}</div>
+            <Image src={icon} alt={label} width={40} height={40} priority />
             <div className="text-center text-xs leading-tight text-white/90">
                 {label}
             </div>

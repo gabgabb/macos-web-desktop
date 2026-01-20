@@ -52,8 +52,9 @@ export function DesktopContextMenu({
     return (
         <div
             ref={ref}
-            className="fixed z-[20000] min-w-[210px] rounded-xl border border-white/10 bg-black/55 py-2 text-white/90 shadow-2xl backdrop-blur-xl"
+            className="desktop-context-menu fixed z-20000 min-w-52.5 rounded-xl border border-white/10 bg-black/55 py-2 text-white/90 shadow-2xl backdrop-blur-xl"
             style={{ left: x, top: y }}
+            onMouseDown={(e) => e.stopPropagation()}
         >
             {items.map((it) => (
                 <button

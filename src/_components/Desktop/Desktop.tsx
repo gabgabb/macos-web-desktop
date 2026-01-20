@@ -5,6 +5,7 @@ import { DesktopIcons } from "@/src/_components/Desktop/DesktopIcons";
 import { Dock } from "@/src/_components/Dock";
 import { MenuBar } from "@/src/_components/MenuBar";
 import { WindowManager } from "@/src/_components/WindowManager";
+import { useDesktopStore } from "@/src/store/desktop-store";
 import { useCallback, useState } from "react";
 
 export function Desktop() {
@@ -13,11 +14,11 @@ export function Desktop() {
         x: 0,
         y: 0,
     });
+    const reset = useDesktopStore((s) => s.reset);
 
-    const closeCtx = useCallback(
-        () => setCtx((s) => ({ ...s, open: false })),
-        [],
-    );
+    const closeCtx = useCallback(() => {
+        setCtx((s) => ({ ...s, open: false }));
+    }, []);
 
     return (
         <main
@@ -49,7 +50,7 @@ export function Desktop() {
                 y={ctx.y}
                 onClose={closeCtx}
                 onAction={(id) => {
-                    if (id === "refresh") window.location.reload();
+                    if (id === "refresh") reset();
                 }}
             />
         </main>

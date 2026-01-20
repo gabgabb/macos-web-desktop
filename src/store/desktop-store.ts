@@ -9,6 +9,8 @@ const DEFAULT_STATE: DesktopSnapshot = {
     activeWindowId: null,
     topZ: 10,
     isLocked: true,
+    notes: { content: "" },
+    terminal: { content: "" },
 };
 
 type DesktopState = DesktopSnapshot & {
@@ -16,6 +18,9 @@ type DesktopState = DesktopSnapshot & {
     hydrate: () => void;
 
     openApp: (appId: AppId) => void;
+    closeApp: (appId: AppId) => void;
+    isAppOpen: (appId: AppId) => boolean;
+
     closeWindow: (windowId: string) => void;
 
     focusWindow: (windowId: string) => void;
@@ -29,17 +34,22 @@ type DesktopState = DesktopSnapshot & {
 
     unlock: () => void;
 
+    setNotes: (content: string) => void;
+    setTerminal: (content: string) => void;
+
     reset: () => void;
 };
 
 function persist(get: () => DesktopState) {
-    const { windows, activeWindowId, topZ, isLocked } = get();
-    saveSnapshot({ windows, activeWindowId, topZ, isLocked });
+    const { windows, activeWindowId, topZ, isLocked, notes, terminal } = get();
+    saveSnapshot({ windows, activeWindowId, topZ, isLocked, notes, terminal });
 }
 
 export const useDesktopStore = create<DesktopState>((set, get) => ({
     ...DEFAULT_STATE,
     hydrated: false,
+    notes: DEFAULT_STATE.notes,
+    terminal: DEFAULT_STATE.terminal,
 
     hydrate: () => {
         const snap = loadSnapshot();
@@ -47,7 +57,14 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             set({ hydrated: true });
             return;
         }
-        set({ ...snap, hydrated: true });
+
+        set({
+            ...DEFAULT_STATE,
+            ...snap,
+            notes: snap.notes ?? DEFAULT_STATE.notes,
+            terminal: snap.terminal ?? DEFAULT_STATE.terminal,
+            hydrated: true,
+        });
     },
 
     openApp: (appId) => {
@@ -72,6 +89,8 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             finder: "Finder",
             notes: "Notes",
             about: "About",
+            terminal: "Terminal",
+            safari: "Safari",
         };
 
         const newZ = topZ + 1;
@@ -83,8 +102,24 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
 
             x: 90 + windows.length * 18,
             y: 80 + windows.length * 18,
-            width: appId === "finder" ? 640 : 520,
-            height: appId === "notes" ? 380 : 360,
+
+            width:
+                appId === "safari"
+                    ? 920
+                    : appId === "terminal"
+                      ? 720
+                      : appId === "finder"
+                        ? 640
+                        : 520,
+
+            height:
+                appId === "safari"
+                    ? 620
+                    : appId === "terminal"
+                      ? 420
+                      : appId === "notes"
+                        ? 380
+                        : 360,
 
             isMinimized: false,
             zIndex: newZ,
@@ -100,6 +135,23 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
 
         persist(get);
     },
+
+    closeApp: (appId) => {
+        set((state) => ({
+            windows: state.windows.filter((w) => w.appId !== appId),
+            activeWindowId:
+                state.activeWindowId &&
+                state.windows.some(
+                    (w) =>
+                        w.windowId === state.activeWindowId &&
+                        w.appId !== appId,
+                )
+                    ? state.activeWindowId
+                    : null,
+        }));
+    },
+
+    isAppOpen: (appId) => get().windows.some((w) => w.appId === appId),
 
     closeWindow: (windowId) => {
         set((state) => ({
@@ -184,7 +236,6 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
                 topZ: newZ,
             }));
         } else {
-            // exit fullscreen
             set((state) => ({
                 windows: state.windows.map((w) => {
                     if (w.windowId !== windowId) return w;
@@ -204,6 +255,25 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
                 topZ: newZ,
             }));
         }
+
+        persist(get);
+    },
+
+    setNotes: (content) => {
+        set((state) => ({
+            notes: {
+                ...state.notes,
+                content,
+            },
+        }));
+
+        persist(get);
+    },
+
+    setTerminal: (content) => {
+        set(() => ({
+            terminal: { content },
+        }));
 
         persist(get);
     },

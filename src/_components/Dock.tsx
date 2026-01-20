@@ -1,92 +1,145 @@
 "use client";
 
-import type { DockApp } from "@/src/core/types";
+import { DockApp } from "@/src/core/types";
+import { DOCK_APPS } from "@/src/core/ui-constants";
 import { useDesktopStore } from "@/src/store/desktop-store";
-import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState } from "react";
-
-const DOCK_APPS: DockApp[] = [
-    { id: "finder", title: "Finder", icon: "🗂️" },
-    { id: "notes", title: "Notes", icon: "📝" },
-    { id: "about", title: "About", icon: "ℹ️" },
-];
+import { AnimatePresence, motion, useMotionValue } from "framer-motion";
+import Image from "next/image";
+import { useMemo, useRef, useState } from "react";
 
 export function Dock() {
     const openApp = useDesktopStore((s) => s.openApp);
+    const closeApp = useDesktopStore((s) => s.closeApp);
+    const isAppOpen = useDesktopStore((s) => s.isAppOpen);
+
     const windows = useDesktopStore((s) => s.windows);
 
     const [bouncing, setBouncing] = useState<string | null>(null);
+    const [hoveredId, setHoveredId] = useState<string | null>(null);
 
     const openAppIds = useMemo(
         () => new Set(windows.map((w) => w.appId)),
         [windows],
     );
 
+    const mouseX = useMotionValue(Infinity);
+    const dockRef = useRef<HTMLDivElement | null>(null);
+
     return (
-        <div className="dock absolute bottom-5 left-1/2 z-[9998] -translate-x-1/2 rounded-3xl border border-white/10 bg-white/10 px-4 py-2 shadow-lg backdrop-blur-md">
+        <motion.div
+            ref={dockRef}
+            className="dock absolute bottom-5 left-1/2 z-9998 -translate-x-1/2 rounded-3xl border border-white/10 bg-white/10 px-4 py-2 shadow-lg backdrop-blur-md"
+            onMouseMove={(e) => {
+                mouseX.set(e.clientX);
+            }}
+            onMouseLeave={() => {
+                mouseX.set(Infinity);
+            }}
+            initial={{ opacity: 0, y: 10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.25 }}
+        >
             <div className="flex items-end gap-3">
                 {DOCK_APPS.map((app) => {
                     const isOpen = openAppIds.has(app.id);
-
                     return (
-                        <button
+                        <DockIconButton
                             key={app.id}
+                            app={app}
+                            isOpen={isOpen}
+                            bouncing={bouncing === app.id}
+                            hovered={hoveredId === app.id}
+                            onHover={(isHover) =>
+                                setHoveredId(isHover ? app.id : null)
+                            }
                             onClick={() => {
+                                if (isAppOpen(app.id)) {
+                                    closeApp(app.id);
+                                    return;
+                                }
+
                                 openApp(app.id);
                                 setBouncing(app.id);
-                                window.setTimeout(() => {
-                                    setBouncing((v) =>
-                                        v === app.id ? null : v,
-                                    );
-                                }, 450);
+                                window.setTimeout(() => setBouncing(null), 450);
                             }}
-                            className="flex w-16 flex-col items-center justify-end select-none"
-                            title={app.title}
-                        >
-                            <div className="flex h-14 w-14 items-center justify-center rounded-2xl transition">
-                                <motion.div
-                                    className="text-4xl transition-all hover:mb-2 hover:scale-120"
-                                    animate={
-                                        bouncing === app.id
-                                            ? { y: [0, -10, 0, -6, 0] }
-                                            : { y: 0 }
-                                    }
-                                    transition={{ duration: 0.45 }}
-                                >
-                                    {app.icon}
-                                </motion.div>
-                            </div>
-
-                            <div className="mt-1 flex h-1 items-center justify-center">
-                                <AnimatePresence>
-                                    {isOpen && (
-                                        <motion.div
-                                            key="dot"
-                                            initial={{
-                                                opacity: 0,
-                                                scale: 0.6,
-                                                y: -2,
-                                            }}
-                                            animate={{
-                                                opacity: 1,
-                                                scale: 1,
-                                                y: 0,
-                                            }}
-                                            exit={{
-                                                opacity: 0,
-                                                scale: 0.6,
-                                                y: -2,
-                                            }}
-                                            transition={{ duration: 0.15 }}
-                                            className="h-1.5 w-1.5 rounded-full bg-white/80"
-                                        />
-                                    )}
-                                </AnimatePresence>
-                            </div>
-                        </button>
+                        />
                     );
                 })}
             </div>
-        </div>
+        </motion.div>
+    );
+}
+
+function DockIconButton({
+    app,
+    isOpen,
+    bouncing,
+    onHover,
+    hovered,
+    onClick,
+}: {
+    app: DockApp;
+    isOpen: boolean;
+    bouncing: boolean;
+    hovered: boolean;
+    onHover: (v: boolean) => void;
+    onClick: () => void;
+}) {
+    return (
+        <button
+            onMouseEnter={() => onHover(true)}
+            onMouseLeave={() => onHover(false)}
+            onClick={onClick}
+            className="flex w-19 flex-col items-center justify-end select-none"
+            title={app.title}
+        >
+            <div className="relative flex h-14 w-14 items-center justify-center">
+                <motion.div
+                    className="will-change-transform"
+                    animate={{
+                        scale: hovered ? 1.18 : 1,
+                        y: hovered ? -6 : 0,
+                    }}
+                    transition={{
+                        type: "spring",
+                        stiffness: 420,
+                        damping: 26,
+                        mass: 0.5,
+                    }}
+                >
+                    <motion.div
+                        animate={
+                            bouncing ? { y: [0, -12, 0, -7, 0] } : { y: 0 }
+                        }
+                        transition={{ duration: 0.45 }}
+                    >
+                        <Image
+                            src={app.icon}
+                            alt={app.title}
+                            width={56}
+                            height={56}
+                            priority
+                            className="pointer-events-none drop-shadow-md select-none"
+                        />
+                    </motion.div>
+                </motion.div>
+            </div>
+
+            {/* dot */}
+            <div className="mt-1 flex h-2 items-center justify-center">
+                <AnimatePresence>
+                    {isOpen && (
+                        <motion.div
+                            key="dot"
+                            initial={{ opacity: 0, scale: 0.6, y: -2 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.6, y: -2 }}
+                            transition={{ duration: 0.15 }}
+                            className="h-1.5 w-1.5 rounded-full bg-white/80"
+                        />
+                    )}
+                </AnimatePresence>
+            </div>
+        </button>
     );
 }

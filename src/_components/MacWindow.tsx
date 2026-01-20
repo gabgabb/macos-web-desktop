@@ -1,6 +1,7 @@
 "use client";
 
 import { WindowInstance } from "@/src/core/types";
+import { DOCK_RESERVED, MENU_BAR_HEIGHT } from "@/src/core/ui-constants";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { motion } from "framer-motion";
 import React from "react";
@@ -9,9 +10,11 @@ import { Rnd } from "react-rnd";
 export function MacWindow({
     win,
     children,
+    asPadding = true,
 }: {
     win: WindowInstance;
     children: React.ReactNode;
+    asPadding?: boolean;
 }) {
     const closeWindow = useDesktopStore((s) => s.closeWindow);
     const focusWindow = useDesktopStore((s) => s.focusWindow);
@@ -20,10 +23,21 @@ export function MacWindow({
     const minimizeWindow = useDesktopStore((s) => s.minimizeWindow);
     const toggleFullscreen = useDesktopStore((s) => s.toggleFullscreen);
 
+    const isFullscreen = win.isFullscreen;
+
     return (
         <Rnd
-            size={{ width: win.width, height: win.height }}
-            position={{ x: win.x, y: win.y }}
+            size={
+                isFullscreen
+                    ? {
+                          width: window.innerWidth,
+                          height:
+                              window.innerHeight -
+                              MENU_BAR_HEIGHT -
+                              DOCK_RESERVED,
+                      }
+                    : { width: win.width, height: win.height }
+            }
             onDragStart={() => focusWindow(win.windowId)}
             onResizeStart={() => focusWindow(win.windowId)}
             onMouseDown={() => focusWindow(win.windowId)}
@@ -43,9 +57,16 @@ export function MacWindow({
                     height: ref.offsetHeight,
                 });
             }}
+            position={
+                isFullscreen
+                    ? { x: 0, y: MENU_BAR_HEIGHT }
+                    : { x: win.x, y: win.y }
+            }
+            enableResizing={!isFullscreen}
+            disableDragging={isFullscreen}
             minWidth={360}
             minHeight={240}
-            bounds="window"
+            bounds="parent"
             dragHandleClassName="mac-window-header"
             style={{ zIndex: win.zIndex }}
         >
@@ -56,8 +77,9 @@ export function MacWindow({
                 transition={{ duration: 0.15 }}
                 className="mac-window h-full w-full overflow-hidden rounded-2xl border border-white/10 bg-white/10 shadow-2xl backdrop-blur-md"
             >
-                {/* Header */}
-                <div className="mac-window-header flex h-10 items-center justify-between border-b border-white/10 px-3 select-none">
+                <div
+                    className={`mac-window-header flex h-10 items-center justify-between border-b border-white/10 bg-sky-700/30 px-3 select-none ${isFullscreen ? "" : "hover:cursor-grab active:cursor-grabbing"}`}
+                >
                     <div className="flex items-center gap-2">
                         <button
                             onClick={(e) => {
@@ -85,12 +107,15 @@ export function MacWindow({
                         />
                     </div>
 
-                    <div className="text-sm opacity-90">{win.title}</div>
+                    <div className="text-m font-semibold">{win.title}</div>
                     <div className="w-10" />
                 </div>
 
-                {/* Content */}
-                <div className="h-[calc(100%-40px)] p-4">{children}</div>
+                <div
+                    className={`h-[calc(100%-40px)] ${asPadding ? "p-3" : ""}`}
+                >
+                    {children}
+                </div>
             </motion.div>
         </Rnd>
     );
