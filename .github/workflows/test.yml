@@ -37,7 +37,7 @@ jobs:
 
       - name: Wait for app
         run: |
-          echo "Waiting for http://localhost:3000 ..."
+          echo "Waiting for http://localhost:8000 ..."
           until curl -s http://localhost:8000 > /dev/null; do
             sleep 2
           done
@@ -45,8 +45,8 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Run E2E tests (headless)
-        run: make test-head
+      - name: Run E2E tests
+        run: make test-line
 
       - name: Publish Test Report
         uses: ctrf-io/github-test-reporter@v1
