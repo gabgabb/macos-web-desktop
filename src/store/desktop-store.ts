@@ -116,6 +116,9 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             settings: "Settings",
             terminal: "Terminal",
             safari: "Safari",
+            calculator: "Calculator",
+            calendar: "Calendar",
+            slack: "Slack",
         };
 
         const newZ = topZ + 1;
@@ -135,7 +138,13 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
                       ? 720
                       : appId === "finder"
                         ? 640
-                        : 520,
+                        : appId === "calculator"
+                          ? 280
+                          : appId === "calendar"
+                            ? 520
+                            : appId === "slack"
+                              ? 900
+                              : 520,
 
             height:
                 appId === "safari" || appId === "settings"
@@ -144,7 +153,13 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
                       ? 420
                       : appId === "notes"
                         ? 380
-                        : 360,
+                        : appId === "calculator"
+                          ? 420
+                          : appId === "calendar"
+                            ? 480
+                            : appId === "slack"
+                              ? 600
+                              : 360,
 
             isMinimized: false,
             zIndex: newZ,

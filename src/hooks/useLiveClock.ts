@@ -51,10 +51,24 @@ export function useLiveClock(options?: { tickMs?: number; locale?: string }) {
         return `${weekday} ${month} ${day} ${hourMin}`;
     }, [now, locale]);
 
+    const MMM = useMemo(() => {
+        return new Intl.DateTimeFormat(locale, {
+            month: "short",
+        }).format(now);
+    }, [now, locale]);
+
+    const dayDigit = useMemo(() => {
+        return new Intl.DateTimeFormat(locale, {
+            day: "2-digit",
+        }).format(now);
+    }, [now, locale]);
+
     return {
         now,
         hhmm,
         dateLong,
         menuBarTime,
+        MMM,
+        dayDigit,
     };
 }

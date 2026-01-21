@@ -4,7 +4,10 @@ import { FinderApp } from "@/src/_components/apps/FinderApp";
 import { NotesApp } from "@/src/_components/apps/NotesApp";
 import { SettingsApp } from "@/src/_components/apps/SettingsApp";
 
+import { CalculatorApp } from "@/src/_components/apps/CalculatorApp";
+import { CalendarApp } from "@/src/_components/apps/CalendarApp";
 import { SafariApp } from "@/src/_components/apps/SafariApp";
+import { SlackApp } from "@/src/_components/apps/SlackApp";
 import { TerminalApp } from "@/src/_components/apps/TerminalApp";
 import { MacWindow } from "@/src/_components/MacWindow";
 import { useDesktopStore } from "@/src/store/desktop-store";
@@ -27,7 +30,10 @@ export function WindowManager() {
                         key={w.windowId}
                         win={w}
                         asPadding={
-                            w.appId !== "safari" && w.appId !== "settings"
+                            w.appId !== "safari" &&
+                            w.appId !== "settings" &&
+                            w.appId !== "calculator" &&
+                            w.appId !== "slack"
                         }
                     >
                         {w.appId === "notes" && <NotesApp />}
@@ -35,6 +41,9 @@ export function WindowManager() {
                         {w.appId === "settings" && <SettingsApp />}
                         {w.appId === "terminal" && <TerminalApp />}
                         {w.appId === "safari" && <SafariApp />}
+                        {w.appId === "calculator" && <CalculatorApp />}
+                        {w.appId === "calendar" && <CalendarApp />}
+                        {w.appId === "slack" && <SlackApp />}
                     </MacWindow>
                 ))}
             </AnimatePresence>

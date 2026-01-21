@@ -1,9 +1,19 @@
-export type AppId = "finder" | "notes" | "settings" | "terminal" | "safari";
+import { ReactNode } from "react";
+
+export type AppId =
+    | "finder"
+    | "notes"
+    | "settings"
+    | "terminal"
+    | "safari"
+    | "calculator"
+    | "calendar"
+    | "slack";
 
 export type DockApp = {
     id: AppId;
     title: string;
-    icon: string;
+    icon: string | ReactNode;
 };
 
 export type WindowInstance = {

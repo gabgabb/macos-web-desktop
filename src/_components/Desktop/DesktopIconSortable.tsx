@@ -4,7 +4,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import clsx from "clsx";
 import Image from "next/image";
-import React from "react";
+import React, { ReactNode } from "react";
 
 export function DesktopIconSortable({
     id,
@@ -15,7 +15,7 @@ export function DesktopIconSortable({
     onDoubleClick,
 }: {
     id: string;
-    icon: string;
+    icon: string | ReactNode;
     label: string;
     selected: boolean;
     onClick: (id: string) => void;
@@ -57,7 +57,11 @@ export function DesktopIconSortable({
             {...attributes}
             {...listeners}
         >
-            <Image src={icon} alt={label} width={40} height={40} priority />
+            {typeof icon === "string" ? (
+                <Image src={icon} alt={label} width={40} height={40} priority />
+            ) : (
+                icon
+            )}
             <div className="text-center text-xs leading-tight text-white/90">
                 {label}
             </div>

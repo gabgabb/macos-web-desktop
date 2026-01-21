@@ -125,14 +125,18 @@ function DockIconButton({
                         }
                         transition={{ duration: 0.45 }}
                     >
-                        <Image
-                            src={app.icon}
-                            alt={app.title}
-                            width={56}
-                            height={56}
-                            priority
-                            className="pointer-events-none drop-shadow-md select-none"
-                        />
+                        {typeof app.icon === "string" ? (
+                            <Image
+                                src={app.icon}
+                                alt={app.title}
+                                width={56}
+                                height={56}
+                                priority
+                                className="pointer-events-none drop-shadow-md select-none"
+                            />
+                        ) : (
+                            app.icon
+                        )}
                     </motion.div>
                 </motion.div>
             </div>

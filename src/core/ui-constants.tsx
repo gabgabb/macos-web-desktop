@@ -1,4 +1,5 @@
 import type { DockApp } from "@/src/core/types";
+import { CalendarIcon } from "@/src/_components/CalendarIcon";
 
 export const MENU_BAR_HEIGHT = 40;
 export const DOCK_HEIGHT = 88;
@@ -11,4 +12,7 @@ export const DOCK_APPS: DockApp[] = [
     { id: "settings", title: "Settings", icon: "/icones/settings.webp" },
     { id: "terminal", title: "Terminal", icon: "/icones/terminal.webp" },
     { id: "safari", title: "Safari", icon: "/icones/safari.webp" },
+    { id: "calculator", title: "Calculator", icon: "/icones/calculator.webp" },
+    { id: "calendar", title: "Calendar", icon: <CalendarIcon /> },
+    { id: "slack", title: "Slack", icon: "/icones/slack.webp" },
 ];
