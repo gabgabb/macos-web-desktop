@@ -30,24 +30,6 @@ export function LockScreen() {
         }, 500);
     }
 
-    async function fetchWithTimeout(
-        input: RequestInfo,
-        init: RequestInit,
-        timeout = 3000,
-    ) {
-        const controller = new AbortController();
-        const id = setTimeout(() => controller.abort(), timeout);
-
-        try {
-            return await fetch(input, {
-                ...init,
-                signal: controller.signal,
-            });
-        } finally {
-            clearTimeout(id);
-        }
-    }
-
     async function tryUnlock(pwd: string) {
         if (loading) return;
         if (pwd.length !== REQUIRED_LEN) return;
@@ -58,23 +40,11 @@ export function LockScreen() {
         setLoading(true);
         setError(null);
 
-        let res: Response;
-
-        try {
-            res = await fetchWithTimeout(
-                "/api/unlock",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ password: pwd }),
-                },
-                3000,
-            );
-        } catch (e) {
-            setLoading(false);
-            triggerShake("Unlock failed (network)");
-            return;
-        }
+        const res = await fetch("/api/unlock", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password: pwd }),
+        });
 
         if (!res.ok) {
             setLoading(false);

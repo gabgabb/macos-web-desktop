@@ -129,6 +129,8 @@ export function TerminalApp() {
             case "lock": {
                 lock();
                 router.replace("/lock");
+                fetch("/api/lock", { method: "POST" }).catch(() => {});
+
                 return;
             }
 

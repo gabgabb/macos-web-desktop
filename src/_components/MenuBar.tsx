@@ -30,6 +30,7 @@ export function MenuBar() {
     function handleLock() {
         lock();
         router.replace("/lock");
+        fetch("/api/lock", { method: "POST" }).catch(() => {});
     }
 
     return (
