@@ -10,7 +10,6 @@ export async function bootDesktop(page: Page) {
     await expect(input).toBeEnabled();
 
     await input.fill("aurora");
-    await input.press("Enter");
 
     await expect(page.getByTestId("dock")).toBeVisible();
 

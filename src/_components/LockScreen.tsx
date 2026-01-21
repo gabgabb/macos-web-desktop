@@ -149,6 +149,7 @@ export function LockScreen() {
 
                                 <div className="w-80">
                                     <input
+                                        data-testid="lock-input"
                                         autoFocus
                                         disabled={loading}
                                         type="password"
