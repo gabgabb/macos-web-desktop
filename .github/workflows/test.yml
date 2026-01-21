@@ -12,24 +12,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build app image
-        run: docker build -t macos-web-desktop .
-
-      - name: Run app
-        run: docker run -d -p 3000:3000 macos-web-desktop
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
+          cache: yarn
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
+
+      - name: Start app (prod container)
+        run: make prod
+
+      - name: Wait for app to be ready
+        run: npx wait-on http://localhost:3000
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Run E2E tests
+      - name: Run E2E tests (headless)
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:3000
-        run: yarn test-line
+        run: make test-head
+
+      - name: Stop containers
+        if: always()
+        run: make prod-stop
