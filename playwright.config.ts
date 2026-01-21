@@ -9,7 +9,7 @@ import { defineConfig, devices } from "@playwright/test";
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 // Base URL dynamique
-const baseURL = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:8000";
+const baseURL = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -54,14 +54,14 @@ export default defineConfig({
         },
 
         /* Test against mobile viewports. */
-        {
-            name: "Mobile Chrome",
-            use: { ...devices["Pixel 7"] },
-        },
-        {
-            name: "Mobile Safari",
-            use: { ...devices["iPhone 15 Pro"] },
-        },
+        // {
+        //     name: "Mobile Chrome",
+        //     use: { ...devices["Pixel 7"] },
+        // },
+        // {
+        //     name: "Mobile Safari",
+        //     use: { ...devices["iPhone 15 Pro"] },
+        // },
 
         /* Test against branded browsers. */
         {

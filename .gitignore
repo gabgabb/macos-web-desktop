@@ -11,6 +11,9 @@
 !.yarn/versions
 .idea
 
+test-results
+ctrf
+
 # testing
 /coverage
 

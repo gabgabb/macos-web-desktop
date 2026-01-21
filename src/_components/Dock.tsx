@@ -86,6 +86,7 @@ function DockIconButton({
     onHover,
     hovered,
     onClick,
+    datatestid = app.id,
 }: {
     app: DockApp;
     isOpen: boolean;
@@ -93,9 +94,11 @@ function DockIconButton({
     hovered: boolean;
     onHover: (v: boolean) => void;
     onClick: () => void;
+    datatestid?: string;
 }) {
     return (
         <button
+            data-testid={datatestid}
             onMouseEnter={() => onHover(true)}
             onMouseLeave={() => onHover(false)}
             onClick={onClick}
@@ -134,7 +137,10 @@ function DockIconButton({
                 </motion.div>
             </div>
 
-            <div className="mt-1 flex h-2 items-center justify-center">
+            <div
+                data-testid="isActive"
+                className="mt-1 flex h-2 items-center justify-center"
+            >
                 <AnimatePresence>
                     {isOpen && (
                         <motion.div

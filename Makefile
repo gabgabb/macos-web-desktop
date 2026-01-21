@@ -36,6 +36,12 @@ dev-logs: ## Show dev logs
 dev-shell: ## Open a shell inside dev container
 	docker compose -f $(DEV_COMPOSE) exec web sh
 
+test-head: ## Run tests in headless mode
+	yarn run test-head
+
+test: ## Run tests in UI mode
+	yarn run test-line
+
 # -------------------------
 # PROD
 # -------------------------

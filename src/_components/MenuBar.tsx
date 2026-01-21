@@ -65,6 +65,7 @@ export function MenuBar() {
                     aria-hidden="true"
                 />
                 <LockIcon
+                    data-testid="lock-icon"
                     className="text-white/90 hover:cursor-pointer"
                     aria-hidden="true"
                     onClick={handleLock}

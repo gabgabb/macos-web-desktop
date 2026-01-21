@@ -27,6 +27,7 @@ export function MacWindow({
 
     return (
         <Rnd
+            data-testid={`window-${win.appId}`}
             size={
                 isFullscreen
                     ? {

@@ -23,6 +23,7 @@ export function Desktop() {
 
     return (
         <main
+            data-testid="desktop"
             className="relative h-screen w-screen overflow-hidden text-white"
             onContextMenu={(e) => {
                 e.preventDefault();

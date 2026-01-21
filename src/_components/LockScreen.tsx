@@ -61,6 +61,7 @@ export function LockScreen() {
 
     return (
         <div
+            data-testid="lock-screen"
             className="lock-screen absolute inset-0 z-10000 text-white"
             onContextMenu={(e) => {
                 e.preventDefault();

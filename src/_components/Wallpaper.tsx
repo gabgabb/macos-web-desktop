@@ -8,6 +8,7 @@ export function Wallpaper({ url }: { url: string }) {
 
     return (
         <div
+            data-testid="wallpaper"
             className="absolute inset-0"
             style={{
                 backgroundImage: `url(${url})`,
@@ -16,6 +17,7 @@ export function Wallpaper({ url }: { url: string }) {
             }}
         >
             <Image
+                data-testid={url}
                 src={url}
                 alt="Wallpaper"
                 fill
