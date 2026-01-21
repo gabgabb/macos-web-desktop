@@ -17,6 +17,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Env file
+        run: cp .env.dist .env
+
       - name: Enable Corepack
         run: corepack enable
 
