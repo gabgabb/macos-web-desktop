@@ -23,8 +23,6 @@ export default function LockPage() {
         }
     }, [hydrated, isLocked, router]);
 
-    if (!hydrated || !isLocked) return null;
-
     return (
         <>
             <LockScreen />

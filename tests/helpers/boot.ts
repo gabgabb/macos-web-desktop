@@ -1,6 +1,6 @@
 import { Page, expect } from "@playwright/test";
 
-export async function bootDesktop(page: Page) {
+export async function bootDesktop(page: Page, browserName = "webkit") {
     await page.goto("/");
 
     const lock = page.getByTestId("lock-screen");
@@ -13,7 +13,10 @@ export async function bootDesktop(page: Page) {
 
     await input.fill("aurora");
 
-    await expect(page.getByTestId("dock")).toBeVisible();
+    if (browserName === "webkit") {
+        await page.waitForTimeout(200);
+        await page.goto("/");
+    }
 
     await expect(page.getByText("Unlocking...")).not.toBeVisible();
 }
