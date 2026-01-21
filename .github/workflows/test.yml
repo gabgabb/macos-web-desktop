@@ -25,6 +25,9 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
+      - name: Prepare Yarn (lock version)
+        run: corepack prepare yarn@4.11.0 --activate
+
       - name: Install dependencies
         run: yarn install --immutable
 
