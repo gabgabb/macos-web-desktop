@@ -6,6 +6,8 @@ export async function bootDesktop(page: Page) {
     const lock = page.getByTestId("lock-screen");
     await expect(lock).toBeVisible();
 
+    await lock.click();
+
     const input = page.getByTestId("lock-input");
     await expect(input).toBeVisible();
 
