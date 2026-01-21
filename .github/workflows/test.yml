@@ -21,6 +21,7 @@ jobs:
         run: |
           cp .env.dist .env
           echo "NEXT_PUBLIC_LOCK_PASSWORD=aurora" >> .env
+          echo "PLAYWRIGHT_BASE_URL=http://localhost:8000" >> .env
 
       - name: Enable Corepack
         run: corepack enable
@@ -37,7 +38,7 @@ jobs:
       - name: Wait for app
         run: |
           echo "Waiting for http://localhost:3000 ..."
-          until curl -s http://localhost:3000 > /dev/null; do
+          until curl -s http://localhost:8000 > /dev/null; do
             sleep 2
           done
 
@@ -45,8 +46,6 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run E2E tests (headless)
-        env:
-          PLAYWRIGHT_BASE_URL: http://localhost:3000
         run: make test-head
 
       - name: Publish Test Report
