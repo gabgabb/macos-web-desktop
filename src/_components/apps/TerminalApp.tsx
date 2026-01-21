@@ -76,7 +76,7 @@ export function TerminalApp() {
                 push("out", "  echo <text>           Print text");
                 push(
                     "out",
-                    "  open <app>            Open an app: finder | notes | about | terminal",
+                    "  open <app>            Open an app: finder | notes | settings | terminal",
                 );
                 push("out", "  lock                 Lock the session");
                 push("out", "  unlock <password>     Unlock (server check)");

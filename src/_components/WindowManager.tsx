@@ -1,8 +1,8 @@
 "use client";
 
-import { AboutApp } from "@/src/_components/apps/AboutApp";
 import { FinderApp } from "@/src/_components/apps/FinderApp";
 import { NotesApp } from "@/src/_components/apps/NotesApp";
+import { SettingsApp } from "@/src/_components/apps/SettingsApp";
 
 import { SafariApp } from "@/src/_components/apps/SafariApp";
 import { TerminalApp } from "@/src/_components/apps/TerminalApp";
@@ -26,11 +26,13 @@ export function WindowManager() {
                     <MacWindow
                         key={w.windowId}
                         win={w}
-                        asPadding={w.appId !== "safari"}
+                        asPadding={
+                            w.appId !== "safari" && w.appId !== "settings"
+                        }
                     >
                         {w.appId === "notes" && <NotesApp />}
                         {w.appId === "finder" && <FinderApp />}
-                        {w.appId === "about" && <AboutApp />}
+                        {w.appId === "settings" && <SettingsApp />}
                         {w.appId === "terminal" && <TerminalApp />}
                         {w.appId === "safari" && <SafariApp />}
                     </MacWindow>

@@ -1,4 +1,4 @@
-export type AppId = "finder" | "notes" | "about" | "terminal" | "safari";
+export type AppId = "finder" | "notes" | "settings" | "terminal" | "safari";
 
 export type DockApp = {
     id: AppId;
@@ -35,4 +35,8 @@ export type DesktopSnapshot = {
         content: string;
     };
     isLocked: boolean;
+    settings: {
+        theme: "light" | "dark" | "auto";
+        wallpaper: string;
+    };
 };

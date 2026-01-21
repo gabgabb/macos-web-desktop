@@ -3,20 +3,20 @@
 import Image from "next/image";
 import { useState } from "react";
 
-export function Wallpaper() {
+export function Wallpaper({ url }: { url: string }) {
     const [loaded, setLoaded] = useState(false);
 
     return (
         <div
             className="absolute inset-0"
             style={{
-                backgroundImage: "url('/Big-Sur-Color-Day.jpg')",
+                backgroundImage: `url(${url})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
             }}
         >
             <Image
-                src="/Big-Sur-Color-Day.jpg"
+                src={url}
                 alt="Wallpaper"
                 fill
                 priority

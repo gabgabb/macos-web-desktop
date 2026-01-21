@@ -11,6 +11,10 @@ const DEFAULT_STATE: DesktopSnapshot = {
     isLocked: true,
     notes: { content: "" },
     terminal: { content: "" },
+    settings: {
+        theme: "auto",
+        wallpaper: "/Wallpaper/Big-Sur-Color-Day.jpg",
+    },
 };
 
 type DesktopState = DesktopSnapshot & {
@@ -37,12 +41,31 @@ type DesktopState = DesktopSnapshot & {
     setNotes: (content: string) => void;
     setTerminal: (content: string) => void;
 
+    setWallpaper: (url: string) => void;
+    setTheme: (theme: "auto" | "dark" | "light") => void;
+
     reset: () => void;
 };
 
 function persist(get: () => DesktopState) {
-    const { windows, activeWindowId, topZ, isLocked, notes, terminal } = get();
-    saveSnapshot({ windows, activeWindowId, topZ, isLocked, notes, terminal });
+    const {
+        windows,
+        activeWindowId,
+        topZ,
+        isLocked,
+        notes,
+        terminal,
+        settings,
+    } = get();
+    saveSnapshot({
+        windows,
+        activeWindowId,
+        topZ,
+        isLocked,
+        notes,
+        terminal,
+        settings,
+    });
 }
 
 export const useDesktopStore = create<DesktopState>((set, get) => ({
@@ -50,6 +73,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
     hydrated: false,
     notes: DEFAULT_STATE.notes,
     terminal: DEFAULT_STATE.terminal,
+    settings: DEFAULT_STATE.settings,
 
     hydrate: () => {
         const snap = loadSnapshot();
@@ -88,7 +112,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         const titleMap: Record<AppId, string> = {
             finder: "Finder",
             notes: "Notes",
-            about: "About",
+            settings: "Settings",
             terminal: "Terminal",
             safari: "Safari",
         };
@@ -104,7 +128,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             y: 80 + windows.length * 18,
 
             width:
-                appId === "safari"
+                appId === "safari" || appId === "settings"
                     ? 920
                     : appId === "terminal"
                       ? 720
@@ -113,7 +137,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
                         : 520,
 
             height:
-                appId === "safari"
+                appId === "safari" || appId === "settings"
                     ? 620
                     : appId === "terminal"
                       ? 420
@@ -275,6 +299,20 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             terminal: { content },
         }));
 
+        persist(get);
+    },
+
+    setWallpaper: (wallpaper: string) => {
+        set((state) => ({
+            settings: { ...state.settings, wallpaper },
+        }));
+        persist(get);
+    },
+
+    setTheme: (theme: "light" | "dark" | "auto") => {
+        set((state) => ({
+            settings: { ...state.settings, theme },
+        }));
         persist(get);
     },
 
