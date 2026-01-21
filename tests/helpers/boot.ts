@@ -7,7 +7,7 @@ export async function bootDesktop(page: Page) {
     await expect(lock).toBeVisible();
 
     const input = page.getByTestId("lock-input");
-    await expect(input).toBeEnabled();
+    await expect(input).toBeVisible();
 
     await input.fill("aurora");
 
