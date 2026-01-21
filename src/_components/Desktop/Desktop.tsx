@@ -15,6 +15,7 @@ export function Desktop() {
         y: 0,
     });
     const reset = useDesktopStore((s) => s.reset);
+    const openApp = useDesktopStore((s) => s.openApp);
 
     const closeCtx = useCallback(() => {
         setCtx((s) => ({ ...s, open: false }));
@@ -51,6 +52,7 @@ export function Desktop() {
                 onClose={closeCtx}
                 onAction={(id) => {
                     if (id === "refresh") reset();
+                    if (id === "wallpaper") openApp("settings");
                 }}
             />
         </main>
