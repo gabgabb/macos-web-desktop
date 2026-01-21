@@ -14,8 +14,8 @@ test("desktop is locked on first load", async ({ page }) => {
     await expect(lock).toBeVisible();
 });
 
-test("unlock removes lockscreen", async ({ page, browserName }) => {
-    await bootDesktop(page, browserName);
+test("unlock removes lockscreen", async ({ page }) => {
+    await bootDesktop(page);
 
     await expect(page.getByTestId("lock-screen")).not.toBeVisible();
     await expect(page.getByTestId("desktop")).toBeVisible();

@@ -7,8 +7,8 @@ test.beforeEach(async ({ page }) => {
     });
 });
 
-test("open and minimize notes window", async ({ page, browserName }) => {
-    await bootDesktop(page, browserName);
+test("open and minimize notes window", async ({ page }) => {
+    await bootDesktop(page);
 
     const dock = page.getByTestId("dock");
     await expect(dock).toBeVisible();
@@ -48,8 +48,8 @@ test("open and minimize notes window", async ({ page, browserName }) => {
     await expect(safariWindow).not.toBeVisible();
 });
 
-test("dock shows active app indicator", async ({ page, browserName }) => {
-    await bootDesktop(page, browserName);
+test("dock shows active app indicator", async ({ page }) => {
+    await bootDesktop(page);
 
     const notes = page.getByTestId("dock-notes");
     await expect(notes).toBeVisible();
@@ -63,8 +63,8 @@ test("dock shows active app indicator", async ({ page, browserName }) => {
     await expect(activeIndicator).not.toBeVisible();
 });
 
-test("drag notes window", async ({ page, browserName }) => {
-    await bootDesktop(page, browserName);
+test("drag notes window", async ({ page }) => {
+    await bootDesktop(page);
 
     const notes = page.getByTestId("dock-notes");
     await expect(notes).toBeVisible();
