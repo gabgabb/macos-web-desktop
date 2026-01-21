@@ -18,8 +18,16 @@ jobs:
           node-version: 20
           cache: yarn
 
+      - name: Create missing .env files
+        run: |
+          cp .env.dist .env
+          echo "NEXT_PUBLIC_LOCK_PASSWORD=aurora" >> .env
+
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Start app (prod container)
         run: make prod
@@ -34,6 +42,28 @@ jobs:
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:3000
         run: make test-head
+
+      - name: Publish Test Report
+        uses: ctrf-io/github-test-reporter@v1
+        with:
+          report-path: 'ctrf/ctrf-report.json'
+          summary-delta-report: true
+          insights-report: true
+          flaky-rate-report: true
+          fail-rate-report: true
+          slowest-report: true
+          upload-artifact: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: always()
+
+      - name: Upload Playwright screenshots & traces
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-artifacts
+          path: |
+            test-results/**
 
       - name: Stop containers
         if: always()
