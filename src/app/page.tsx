@@ -23,6 +23,8 @@ export default function Home() {
         }
     }, [hydrated, isLocked, router]);
 
+    if (!hydrated) return <div className="h-screen w-screen bg-black" />;
+
     return (
         <>
             <Desktop />
