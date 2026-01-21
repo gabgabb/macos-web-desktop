@@ -1,9 +1,9 @@
 "use client";
 
 import { useLiveClock } from "@/src/hooks/useLiveClock";
+import { useDesktopStore } from "@/src/store/desktop-store";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 const REQUIRED_LEN = 6;
@@ -19,7 +19,7 @@ export function LockScreen() {
 
     const { hhmm, dateLong } = useLiveClock();
 
-    const router = useRouter();
+    const unlock = useDesktopStore((s) => s.unlock);
 
     function triggerShake(message?: string) {
         setShake(true);
@@ -56,7 +56,7 @@ export function LockScreen() {
             return;
         }
 
-        router.replace("/");
+        unlock();
     }
 
     return (

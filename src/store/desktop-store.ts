@@ -36,6 +36,7 @@ type DesktopState = DesktopSnapshot & {
     minimizeWindow: (windowId: string) => void;
     toggleFullscreen: (windowId: string) => void;
 
+    lock: () => void;
     unlock: () => void;
 
     setNotes: (content: string) => void;
@@ -313,6 +314,11 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         set((state) => ({
             settings: { ...state.settings, theme },
         }));
+        persist(get);
+    },
+
+    lock: () => {
+        set({ isLocked: true });
         persist(get);
     },
 

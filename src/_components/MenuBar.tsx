@@ -15,6 +15,7 @@ export function MenuBar() {
     const windows = useDesktopStore((s) => s.windows);
     const activeWindowId = useDesktopStore((s) => s.activeWindowId);
     const router = useRouter();
+    const lock = useDesktopStore((s) => s.lock);
 
     const { menuBarTime } = useLiveClock();
 
@@ -26,8 +27,8 @@ export function MenuBar() {
         return win.title;
     }, [windows, activeWindowId]);
 
-    async function handleLock() {
-        await fetch("/api/lock", { method: "POST" });
+    function handleLock() {
+        lock();
         router.replace("/lock");
     }
 

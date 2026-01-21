@@ -18,6 +18,7 @@ export function TerminalApp() {
     const openApp = useDesktopStore((s) => s.openApp);
     const contentTerminal = useDesktopStore((s) => s.terminal.content);
     const setTerminal = useDesktopStore((s) => s.setTerminal);
+    const lock = useDesktopStore((s) => s.lock);
 
     const router = useRouter();
 
@@ -126,7 +127,7 @@ export function TerminalApp() {
             }
 
             case "lock": {
-                await fetch("/api/lock", { method: "POST" });
+                lock();
                 router.replace("/lock");
                 return;
             }
