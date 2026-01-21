@@ -1,3 +1,4 @@
+import { useDesktopStore } from "@/src/store/desktop-store";
 import { Page, expect } from "@playwright/test";
 
 export async function bootDesktop(page: Page, browserName = "webkit") {
@@ -15,6 +16,7 @@ export async function bootDesktop(page: Page, browserName = "webkit") {
 
     if (browserName === "webkit") {
         await page.waitForTimeout(200);
+        expect(useDesktopStore.getState().isLocked).toBe(false);
         await page.goto("/");
     }
 
