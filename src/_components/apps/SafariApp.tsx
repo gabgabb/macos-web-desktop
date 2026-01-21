@@ -59,7 +59,7 @@ export function SafariApp() {
 
             <div className="relative flex-1 overflow-hidden">
                 <Image
-                    src="/background-safarii.jpg"
+                    src="/Wallpaper/background-safarii.jpg"
                     alt="Safari content background"
                     fill
                     priority

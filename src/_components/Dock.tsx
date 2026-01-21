@@ -53,6 +53,15 @@ export function Dock() {
                                 setHoveredId(isHover ? app.id : null)
                             }
                             onClick={() => {
+                                const minimized = windows.find(
+                                    (w) => w.appId === app.id && w.isMinimized,
+                                );
+
+                                if (minimized) {
+                                    openApp(app.id);
+                                    return;
+                                }
+
                                 if (isAppOpen(app.id)) {
                                     closeApp(app.id);
                                     return;
@@ -125,7 +134,6 @@ function DockIconButton({
                 </motion.div>
             </div>
 
-            {/* dot */}
             <div className="mt-1 flex h-2 items-center justify-center">
                 <AnimatePresence>
                     {isOpen && (
