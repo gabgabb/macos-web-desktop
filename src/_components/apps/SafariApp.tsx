@@ -4,31 +4,14 @@ import { MoveLeft, MoveRight, RotateCw } from "lucide-react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
-const PAGES: Record<string, { title: string; body: string }> = {
-    "about:blank": {
-        title: "New Tab",
-        body: "Welcome to Safari (fake). Type a URL like:\n\n- aurora://home\n- aurora://docs\n- aurora://login",
-    },
-    "aurora://home": {
-        title: "AURORA Intranet",
-        body: "✅ Connected to internal network.\n\nNews:\n- Project AURORA status: ACTIVE\n- Security level: 3\n\nHint: try aurora://docs",
-    },
-    "aurora://docs": {
-        title: "Documents",
-        body: "📁 Internal documents\n\n- Protocol_01.pdf (restricted)\n- AURORA-Key.txt (encrypted)\n- ethics_report.md\n\nHint: try aurora://login",
-    },
-    "aurora://login": {
-        title: "Login",
-        body: "🔒 Please enter the access code.\n\n(Hint: maybe the Terminal can help?)",
-    },
-};
+const PAGES: Record<string, { title: string; body: string }> = {};
 
 export function SafariApp() {
     const [url, setUrl] = useState("");
     const page = useMemo(() => PAGES[url] ?? null, [url]);
 
     return (
-        <div className="z-15 flex h-full flex-col bg-white/10 text-white">
+        <div className="z-15 flex h-full flex-col overflow-y-auto overscroll-contain bg-white/10 text-white">
             <div className="flex items-center gap-2 border-b border-white/10 bg-white/10 px-3 py-2">
                 <button className="rounded-lg px-2 py-1 hover:bg-white/10">
                     <MoveLeft className="h-4 w-4" />
@@ -59,7 +42,7 @@ export function SafariApp() {
 
             <div className="relative flex-1 overflow-hidden">
                 <Image
-                    src="/Wallpaper/background-safarii.jpg"
+                    src="/Wallpaper/background-safarii.webp"
                     alt="Safari content background"
                     fill
                     priority
@@ -69,14 +52,37 @@ export function SafariApp() {
 
                 <div className="absolute inset-0 bg-black/30" />
 
-                <div className="relative z-1 h-full overflow-auto p-4">
-                    <div className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-md">
-                        <h2 className="text-lg font-semibold">
-                            AURORA Intranet
-                        </h2>
-                        <p className="mt-2 text-sm text-white/80">
-                            Hello 👋 this is a fake website.
-                        </p>
+                <div className="z-1 mx-0 flex h-full items-center justify-center overflow-auto px-6">
+                    <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-md">
+                        <h2 className="text-lg font-semibold">Favorites</h2>
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+                            <button className="mt-3 flex flex-col items-center justify-center gap-1">
+                                <Image
+                                    src={"/icones/chatgpt.webp"}
+                                    alt={"ChatGPT"}
+                                    width={64}
+                                    height={64}
+                                    priority
+                                    className="w-16 justify-center rounded-xl"
+                                />
+                                <span className="text-center text-xs font-light">
+                                    ChatGPT
+                                </span>
+                            </button>
+                            <button className="mt-3 flex flex-col items-center justify-center gap-1">
+                                <Image
+                                    src={"/icones/google.webp"}
+                                    alt={"Google"}
+                                    width={64}
+                                    height={64}
+                                    priority
+                                    className="w-16 justify-center rounded-xl"
+                                />
+                                <span className="text-center text-xs font-light">
+                                    Google
+                                </span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

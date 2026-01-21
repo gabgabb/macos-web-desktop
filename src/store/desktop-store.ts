@@ -13,7 +13,7 @@ const DEFAULT_STATE: DesktopSnapshot = {
     terminal: { content: "" },
     settings: {
         theme: "auto",
-        wallpaper: "/Wallpaper/Big-Sur-Color-Day.jpg",
+        wallpaper: "/Wallpaper/Big-Sur-Color-Day.webp",
     },
 };
 
@@ -36,6 +36,7 @@ type DesktopState = DesktopSnapshot & {
     minimizeWindow: (windowId: string) => void;
     toggleFullscreen: (windowId: string) => void;
 
+    lock: () => void;
     unlock: () => void;
 
     setNotes: (content: string) => void;
@@ -313,6 +314,11 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         set((state) => ({
             settings: { ...state.settings, theme },
         }));
+        persist(get);
+    },
+
+    lock: () => {
+        set({ isLocked: true });
         persist(get);
     },
 

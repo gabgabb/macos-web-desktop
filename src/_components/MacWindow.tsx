@@ -79,6 +79,7 @@ export function MacWindow({
                 className="mac-window h-full w-full overflow-hidden rounded-2xl border border-white/10 bg-white/10 shadow-2xl backdrop-blur-md"
             >
                 <div
+                    data-testid={`window-${win.appId}-header`}
                     className={`mac-window-header flex h-10 items-center justify-between border-b border-white/10 bg-sky-700/30 px-3 select-none ${isFullscreen ? "" : "hover:cursor-grab active:cursor-grabbing"}`}
                 >
                     <div className="flex items-center gap-2">
