@@ -34,3 +34,8 @@ html, body {
     font-family: var(--font-system), serif;
     user-select: none;
 }
+
+html[data-e2e] * {
+  animation: none !important;
+  transition: none !important;
+}

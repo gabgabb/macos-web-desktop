@@ -39,7 +39,7 @@ export function Dock() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.25 }}
         >
-            <div className="flex items-end gap-3">
+            <div data-testid="dock" className="flex items-end gap-3">
                 {DOCK_APPS.map((app) => {
                     const isOpen = openAppIds.has(app.id);
                     return (
@@ -98,7 +98,7 @@ function DockIconButton({
 }) {
     return (
         <button
-            data-testid={datatestid}
+            data-testid={`dock-${datatestid}`}
             onMouseEnter={() => onHover(true)}
             onMouseLeave={() => onHover(false)}
             onClick={onClick}
@@ -138,7 +138,7 @@ function DockIconButton({
             </div>
 
             <div
-                data-testid="isActive"
+                data-testid={`dock-${datatestid}-active`}
                 className="mt-1 flex h-2 items-center justify-center"
             >
                 <AnimatePresence>

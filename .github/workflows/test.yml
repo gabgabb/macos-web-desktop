@@ -17,11 +17,6 @@ jobs:
         with:
           node-version: 22
 
-      - name: Create missing .env files
-        run: |
-          cp .env.dist .env
-          echo "NEXT_PUBLIC_LOCK_PASSWORD=aurora" >> .env
-
       - name: Enable Corepack
         run: corepack enable
 
@@ -32,6 +27,8 @@ jobs:
         run: yarn install --immutable
 
       - name: Start app (prod container)
+        env:
+          NEXT_PUBLIC_LOCK_PASSWORD: aurora
         run: make prod
 
       - name: Wait for app
