@@ -46,7 +46,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run E2E tests
-        run: make test-line
+        run: make test
 
       - name: Publish Test Report
         uses: ctrf-io/github-test-reporter@v1
