@@ -4,6 +4,9 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
 
+ARG NEXT_PUBLIC_LOCK_PASSWORD
+ENV NEXT_PUBLIC_LOCK_PASSWORD=$NEXT_PUBLIC_LOCK_PASSWORD
+
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
 

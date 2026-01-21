@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_LOCK_PASSWORD: ${NEXT_PUBLIC_LOCK_PASSWORD}
     ports:
       - "8000:8000"
     env_file:
