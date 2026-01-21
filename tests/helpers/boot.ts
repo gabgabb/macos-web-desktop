@@ -1,7 +1,7 @@
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { Page, expect } from "@playwright/test";
 
-export async function bootDesktop(page: Page, browserName = "webkit") {
+export async function bootDesktop(page: Page, browserName: string) {
     await page.goto("/");
 
     const lock = page.getByTestId("lock-screen");

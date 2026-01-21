@@ -7,8 +7,8 @@ test.beforeEach(async ({ page }) => {
     });
 });
 
-test("wallpaper persists after reload", async ({ page }) => {
-    await bootDesktop(page);
+test("wallpaper persists after reload", async ({ page, browserName }) => {
+    await bootDesktop(page, browserName);
 
     const wallpaper = page.getByTestId("wallpaper");
     await expect(wallpaper).toBeVisible();
