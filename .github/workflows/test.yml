@@ -34,8 +34,12 @@ jobs:
       - name: Start app (prod container)
         run: make prod
 
-      - name: Wait for app to be ready
-        run: npx wait-on http://localhost:3000
+      - name: Wait for app
+        run: |
+          echo "Waiting for http://localhost:3000 ..."
+          until curl -s http://localhost:3000 > /dev/null; do
+            sleep 2
+          done
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
