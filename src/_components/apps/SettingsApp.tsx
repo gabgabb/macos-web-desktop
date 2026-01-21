@@ -67,13 +67,13 @@ export function SettingsApp() {
 
                 <section>
                     <div className="text-base font-semibold">Wallpapers</div>
-                    <div className="mt-3 grid grid-cols-2 gap-3">
+                    <div className="mt-3 flex flex-wrap gap-3">
                         {wallpapers.map((w) => (
                             <button
                                 data-testid={w.id}
                                 key={w.id}
                                 onClick={() => setWallpaper(w.src)}
-                                className={`transform-all overflow-hidden rounded-2xl hover:scale-101 ${
+                                className={`transform-all max-w-87.5 overflow-hidden rounded-2xl hover:scale-101 ${
                                     wallpaper === w.src
                                         ? "border-3 border-blue-400/80"
                                         : ""

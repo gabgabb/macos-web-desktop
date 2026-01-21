@@ -157,7 +157,6 @@ export function DesktopIcons() {
 
                             if (intersects(rect, local)) next.add(id);
                         }
-
                         return next;
                     });
                 };
@@ -170,12 +169,6 @@ export function DesktopIcons() {
 
                 window.addEventListener("mousemove", onMove);
                 window.addEventListener("mouseup", onUp);
-            }}
-            onClick={(e) => {
-                const target = e.target as HTMLElement;
-                if (target.closest(".mac-window")) return;
-                if (target.closest(".dock")) return;
-                setSelected(new Set());
             }}
         >
             <DndContext

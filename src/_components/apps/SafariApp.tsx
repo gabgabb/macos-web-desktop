@@ -42,7 +42,7 @@ export function SafariApp() {
 
             <div className="relative flex-1 overflow-hidden">
                 <Image
-                    src="/Wallpaper/background-safarii.webp"
+                    src="/bg-safari.webp"
                     alt="Safari content background"
                     fill
                     priority
@@ -53,7 +53,7 @@ export function SafariApp() {
                 <div className="absolute inset-0 bg-black/30" />
 
                 <div className="z-1 mx-0 flex h-full items-center justify-center overflow-auto px-6">
-                    <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-md">
+                    <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-md">
                         <h2 className="text-lg font-semibold">Favorites</h2>
                         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
                             <button className="mt-3 flex flex-col items-center justify-center gap-1">
