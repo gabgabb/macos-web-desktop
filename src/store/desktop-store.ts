@@ -13,7 +13,7 @@ const DEFAULT_STATE: DesktopSnapshot = {
     terminal: { content: "" },
     settings: {
         theme: "auto",
-        wallpaper: "/Wallpaper/Big-Sur-Color-Day.jpg",
+        wallpaper: "/Wallpaper/Big-Sur-Color-Day.webp",
     },
 };
 

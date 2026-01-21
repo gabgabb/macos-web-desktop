@@ -135,7 +135,7 @@ export function LockScreen() {
                                 className="flex flex-col items-center gap-4"
                             >
                                 <Image
-                                    src="/Cameleon.png"
+                                    src="/Cameleon.webp"
                                     alt="User profile"
                                     width={650}
                                     height={256}

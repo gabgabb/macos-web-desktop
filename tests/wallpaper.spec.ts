@@ -7,7 +7,7 @@ test("wallpaper persists after reload", async ({ page }) => {
     const bg = await page.getByTestId("wallpaper").getAttribute("style");
 
     await page.getByTestId("settings").click();
-    await page.getByTestId("background-safarii.jpg").click();
+    await page.getByTestId("background-safarii.webp").click();
 
     await page.reload();
 

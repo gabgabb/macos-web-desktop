@@ -23,7 +23,7 @@ export function SettingsApp() {
             <div className="flex w-48 shrink-0 flex-col gap-2 rounded-2xl border border-white/10 bg-white/10 p-3 backdrop-blur-md">
                 <div className="flex gap-3">
                     <Image
-                        src="/Cameleon.png"
+                        src="/Cameleon.webp"
                         alt="Avatar"
                         width={200}
                         height={160}
