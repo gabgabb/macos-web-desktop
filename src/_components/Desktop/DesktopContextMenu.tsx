@@ -29,15 +29,10 @@ export function DesktopContextMenu({
             if (ref.current && !ref.current.contains(e.target as Node))
                 onClose();
         };
-        const onEsc = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onClose();
-        };
 
         window.addEventListener("mousedown", onDown);
-        window.addEventListener("keydown", onEsc);
         return () => {
             window.removeEventListener("mousedown", onDown);
-            window.removeEventListener("keydown", onEsc);
         };
     }, [open, onClose]);
 

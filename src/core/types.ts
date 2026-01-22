@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 export type AppId =
     | "finder"
     | "notes"
@@ -10,10 +8,19 @@ export type AppId =
     | "calendar"
     | "slack";
 
-export type DockApp = {
+export type AppDefinition = {
     id: AppId;
     title: string;
-    icon: string | ReactNode;
+    icon: string;
+    showInDock?: boolean;
+    showOnDesktop?: boolean;
+
+    window: {
+        defaultSize: { w: number; h: number };
+        minSize?: { w: number; h: number };
+        resizable?: boolean;
+        withPadding?: boolean;
+    };
 };
 
 export type WindowInstance = {

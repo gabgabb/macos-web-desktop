@@ -1,7 +1,8 @@
 "use client";
 
-import { DockApp } from "@/src/core/types";
-import { DOCK_APPS } from "@/src/core/ui-constants";
+import { APP_ICONS } from "@/src/core/apps/icon-map";
+import { AppDefinition } from "@/src/core/types";
+import { useSystemApps } from "@/src/hooks/useSystemApps";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { AnimatePresence, motion, useMotionValue } from "framer-motion";
 import Image from "next/image";
@@ -13,6 +14,9 @@ export function Dock() {
     const isAppOpen = useDesktopStore((s) => s.isAppOpen);
 
     const windows = useDesktopStore((s) => s.windows);
+
+    const apps = useSystemApps();
+    const dockApps = apps.filter((a) => a.showInDock);
 
     const [bouncing, setBouncing] = useState<string | null>(null);
     const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -40,7 +44,7 @@ export function Dock() {
             transition={{ duration: 0.25 }}
         >
             <div data-testid="dock" className="flex items-end gap-3">
-                {DOCK_APPS.map((app) => {
+                {dockApps.map((app) => {
                     const isOpen = openAppIds.has(app.id);
                     return (
                         <DockIconButton
@@ -88,7 +92,7 @@ function DockIconButton({
     onClick,
     datatestid = app.id,
 }: {
-    app: DockApp;
+    app: AppDefinition;
     isOpen: boolean;
     bouncing: boolean;
     hovered: boolean;
@@ -96,6 +100,7 @@ function DockIconButton({
     onClick: () => void;
     datatestid?: string;
 }) {
+    const icon = APP_ICONS[app.icon];
     return (
         <button
             data-testid={`dock-${datatestid}`}
@@ -125,9 +130,9 @@ function DockIconButton({
                         }
                         transition={{ duration: 0.45 }}
                     >
-                        {typeof app.icon === "string" ? (
+                        {typeof icon === "string" ? (
                             <Image
-                                src={app.icon}
+                                src={icon}
                                 alt={app.title}
                                 width={56}
                                 height={56}
@@ -135,7 +140,7 @@ function DockIconButton({
                                 className="pointer-events-none drop-shadow-md select-none"
                             />
                         ) : (
-                            app.icon
+                            icon
                         )}
                     </motion.div>
                 </motion.div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { WindowInstance } from "@/src/core/types";
+import { AppDefinition, WindowInstance } from "@/src/core/types";
 import { DOCK_RESERVED, MENU_BAR_HEIGHT } from "@/src/core/ui-constants";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { motion } from "framer-motion";
@@ -10,11 +10,11 @@ import { Rnd } from "react-rnd";
 export function MacWindow({
     win,
     children,
-    asPadding = true,
+    appDef,
 }: {
     win: WindowInstance;
     children: React.ReactNode;
-    asPadding?: boolean;
+    appDef: AppDefinition;
 }) {
     const closeWindow = useDesktopStore((s) => s.closeWindow);
     const focusWindow = useDesktopStore((s) => s.focusWindow);
@@ -63,7 +63,7 @@ export function MacWindow({
                     ? { x: 0, y: MENU_BAR_HEIGHT }
                     : { x: win.x, y: win.y }
             }
-            enableResizing={!isFullscreen}
+            enableResizing={!isFullscreen && appDef.window.resizable}
             disableDragging={isFullscreen}
             minWidth={360}
             minHeight={400}
@@ -114,7 +114,7 @@ export function MacWindow({
                 </div>
 
                 <div
-                    className={`h-[calc(100%-40px)] ${asPadding ? "p-3" : ""}`}
+                    className={`h-[calc(100%-40px)] ${appDef.window.withPadding ? "p-3" : ""}`}
                 >
                     {children}
                 </div>

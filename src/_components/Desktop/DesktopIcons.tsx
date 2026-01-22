@@ -1,71 +1,51 @@
 "use client";
 
 import { DesktopIconSortable } from "@/src/_components/Desktop/DesktopIconSortable";
-import {
-    loadDesktopIconOrder,
-    saveDesktopIconOrder,
-} from "@/src/core/desktop-icons-persist";
-import { AppId, DockApp } from "@/src/core/types";
-import { DOCK_APPS } from "@/src/core/ui-constants";
+import { APP_ICONS } from "@/src/core/apps/icon-map";
+import { useSystemApps } from "@/src/hooks/useSystemApps";
 import { useDesktopStore } from "@/src/store/desktop-store";
+
+import { AppDefinition, AppId } from "@/src/core/types";
+import {
+    useDesktopIconOrder,
+    useMarqueeSelection,
+} from "@/src/hooks/useDesktopIcons";
 import {
     DndContext,
-    DragEndEvent,
     PointerSensor,
     closestCenter,
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
-import {
-    SortableContext,
-    arrayMove,
-    rectSortingStrategy,
-} from "@dnd-kit/sortable";
-import { useMemo, useRef, useState } from "react";
+import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
+import { useMemo, useRef } from "react";
 
 export function DesktopIcons() {
     const openApp = useDesktopStore((s) => s.openApp);
-
-    const baseItems: DockApp[] = useMemo(() => DOCK_APPS, []);
-
-    const [order, setOrder] = useState<string[]>(() => {
-        if (typeof window === "undefined") {
-            return baseItems.map((i) => i.id);
-        }
-
-        const saved = loadDesktopIconOrder();
-        if (!saved) return baseItems.map((i) => i.id);
-
-        const known = new Set(baseItems.map((i) => i.id));
-        const cleaned = saved.filter((id) => known.has(id as AppId));
-
-        for (const it of baseItems) {
-            if (!cleaned.includes(it.id)) cleaned.push(it.id);
-        }
-
-        return cleaned;
-    });
-
-    const [selected, setSelected] = useState<Set<string>>(new Set());
-
     const layerRef = useRef<HTMLDivElement | null>(null);
-    const [drag, setDrag] = useState<null | {
-        x1: number;
-        y1: number;
-        x2: number;
-        y2: number;
-    }>(null);
+
+    const apps = useSystemApps();
+
+    const desktopApps = useMemo(
+        () => apps.filter((a) => a.showOnDesktop),
+        [apps],
+    );
+
+    const { order, onDragEnd } = useDesktopIconOrder(desktopApps);
+
+    const { selected, setSelected, drag, onMouseDown } =
+        useMarqueeSelection(layerRef);
 
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     );
 
-    const items = useMemo(() => {
-        const map = new Map(baseItems.map((i) => [i.id, i]));
-        return order
-            .map((id) => map.get(id as AppId))
-            .filter(Boolean) as DockApp[];
-    }, [baseItems, order]);
+    const orderedApps = useMemo(() => {
+        const map = new Map(desktopApps.map((a) => [a.id, a]));
+        return order.map((id: string) =>
+            map.get(id as AppId),
+        ) as AppDefinition[];
+    }, [desktopApps, order]);
 
     const marqueeRect = drag
         ? {
@@ -76,100 +56,11 @@ export function DesktopIcons() {
           }
         : null;
 
-    function intersects(a: any, b: any) {
-        const ar = a.left + a.width;
-        const ab = a.top + a.height;
-        const br = b.left + b.width;
-        const bb = b.top + b.height;
-        return !(ar < b.left || br < a.left || ab < b.top || bb < a.top);
-    }
-
-    function onDragEnd(event: DragEndEvent) {
-        const { active, over } = event;
-        if (!over) return;
-        if (active.id === over.id) return;
-
-        setOrder((prev) => {
-            const oldIndex = prev.indexOf(String(active.id));
-            const newIndex = prev.indexOf(String(over.id));
-            const next = arrayMove(prev, oldIndex, newIndex);
-            saveDesktopIconOrder(next);
-            return next;
-        });
-    }
-
     return (
         <div
             ref={layerRef}
             className="absolute inset-0 z-5 px-6 pt-14 pb-24 select-none"
-            onMouseDown={(e) => {
-                if (!layerRef.current) return;
-                if (e.button === 2) return;
-
-                const target = e.target as HTMLElement;
-
-                if (target.closest(".mac-window")) return;
-                if (target.closest(".dock")) return;
-                if (target.closest("[data-desktop-icon]")) return;
-
-                const bounds = layerRef.current.getBoundingClientRect();
-                const x = e.clientX - bounds.left;
-                const y = e.clientY - bounds.top;
-
-                setDrag({ x1: x, y1: y, x2: x, y2: y });
-
-                if (!e.shiftKey) setSelected(new Set());
-
-                const onMove = (ev: MouseEvent) => {
-                    const nx = ev.clientX - bounds.left;
-                    const ny = ev.clientY - bounds.top;
-
-                    setDrag((d) => (d ? { ...d, x2: nx, y2: ny } : d));
-
-                    const rect = {
-                        left: Math.min(x, nx),
-                        top: Math.min(y, ny),
-                        width: Math.abs(nx - x),
-                        height: Math.abs(ny - y),
-                    };
-
-                    const iconNodes = Array.from(
-                        layerRef.current!.querySelectorAll<HTMLElement>(
-                            "[data-icon-id]",
-                        ),
-                    );
-
-                    setSelected((prev) => {
-                        const next = new Set(prev);
-                        if (!e.shiftKey) next.clear();
-
-                        for (const node of iconNodes) {
-                            const id = node.dataset.iconId;
-                            if (!id) continue;
-
-                            const r = node.getBoundingClientRect();
-                            const local = {
-                                left: r.left - bounds.left,
-                                top: r.top - bounds.top,
-                                width: r.width,
-                                height: r.height,
-                            };
-
-                            if (intersects(rect, local)) next.add(id);
-                        }
-                        return next;
-                    });
-                };
-
-                const onUp = () => {
-                    setDrag(null);
-                    window.removeEventListener("mousemove", onMove);
-                    window.removeEventListener("mouseup", onUp);
-                };
-
-                window.addEventListener("mousemove", onMove);
-                window.addEventListener("mouseup", onUp);
-            }}
+            onMouseDown={onMouseDown}
         >
             <DndContext
                 sensors={sensors}
@@ -178,27 +69,27 @@ export function DesktopIcons() {
             >
                 <SortableContext items={order} strategy={rectSortingStrategy}>
                     <div className="desktop-icons grid w-fit gap-2">
-                        {items.map((it) => (
+                        {orderedApps.map((app) => (
                             <div
-                                key={it.id}
+                                key={app.id}
                                 data-desktop-icon
-                                data-icon-id={it.id}
+                                data-icon-id={app.id}
                                 className="w-20"
                             >
                                 <DesktopIconSortable
-                                    id={it.id}
-                                    icon={it.icon}
-                                    label={it.title}
-                                    selected={selected.has(it.id)}
+                                    id={app.id}
+                                    icon={APP_ICONS[app.icon]}
+                                    label={app.title}
+                                    selected={selected.has(app.id)}
                                     onClick={(id) => {
                                         setSelected((prev) => {
-                                            const next = new Set(prev);
+                                            const next = new Set<string>(prev);
                                             if (!prev.has(id)) next.clear();
                                             next.add(id);
                                             return next;
                                         });
                                     }}
-                                    onDoubleClick={() => openApp(it.id)}
+                                    onDoubleClick={() => openApp(app.id)}
                                 />
                             </div>
                         ))}

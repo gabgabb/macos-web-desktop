@@ -74,13 +74,12 @@ export function TerminalApp() {
                 push("out", "  clear                Clear the terminal");
                 push("out", "  date                 Print current date");
                 push("out", "  whoami               Print current user");
-                push("out", "  echo <text>           Print text");
+                push("out", "  echo <text>          Print text");
                 push(
                     "out",
-                    "  open <app>            Open an app: finder | notes | settings | terminal",
+                    "  open <app>           Open an app: finder | notes | settings | terminal",
                 );
                 push("out", "  lock                 Lock the session");
-                push("out", "  unlock <password>     Unlock (server check)");
                 return;
             }
 

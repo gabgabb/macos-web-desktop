@@ -1,15 +1,8 @@
 "use client";
 
-import { FinderApp } from "@/src/_components/apps/FinderApp";
-import { NotesApp } from "@/src/_components/apps/NotesApp";
-import { SettingsApp } from "@/src/_components/apps/SettingsApp";
-
-import { CalculatorApp } from "@/src/_components/apps/CalculatorApp";
-import { CalendarApp } from "@/src/_components/apps/CalendarApp";
-import { SafariApp } from "@/src/_components/apps/SafariApp";
-import { SlackApp } from "@/src/_components/apps/SlackApp";
-import { TerminalApp } from "@/src/_components/apps/TerminalApp";
 import { MacWindow } from "@/src/_components/MacWindow";
+import { APP_COMPONENTS } from "@/src/core/apps/app-components";
+import { APP_REGISTRY } from "@/src/core/apps/registry";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { AnimatePresence } from "framer-motion";
 import { useMemo } from "react";
@@ -25,27 +18,18 @@ export function WindowManager() {
     return (
         <div className="absolute inset-0">
             <AnimatePresence>
-                {visibleWindows.map((w) => (
-                    <MacWindow
-                        key={w.windowId}
-                        win={w}
-                        asPadding={
-                            w.appId !== "safari" &&
-                            w.appId !== "settings" &&
-                            w.appId !== "calculator" &&
-                            w.appId !== "slack"
-                        }
-                    >
-                        {w.appId === "notes" && <NotesApp />}
-                        {w.appId === "finder" && <FinderApp />}
-                        {w.appId === "settings" && <SettingsApp />}
-                        {w.appId === "terminal" && <TerminalApp />}
-                        {w.appId === "safari" && <SafariApp />}
-                        {w.appId === "calculator" && <CalculatorApp />}
-                        {w.appId === "calendar" && <CalendarApp />}
-                        {w.appId === "slack" && <SlackApp />}
-                    </MacWindow>
-                ))}
+                {visibleWindows.map((w) => {
+                    const AppComponent = APP_COMPONENTS[w.appId];
+                    const appDef = APP_REGISTRY[w.appId];
+
+                    if (!AppComponent || !appDef) return null;
+
+                    return (
+                        <MacWindow key={w.windowId} win={w} appDef={appDef}>
+                            <AppComponent />
+                        </MacWindow>
+                    );
+                })}
             </AnimatePresence>
         </div>
     );
