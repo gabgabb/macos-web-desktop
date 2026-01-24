@@ -1,3 +1,4 @@
+import { APP_REGISTRY } from "@/src/core/apps/registry";
 import { loadSnapshot, saveSnapshot } from "@/src/core/persist";
 import type { AppId, DesktopSnapshot, WindowInstance } from "@/src/core/types";
 import { create } from "zustand";
@@ -94,76 +95,37 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
 
     openApp: (appId) => {
         const { windows, topZ } = get();
+        const appDef = APP_REGISTRY[appId];
 
         const existing = windows.find((w) => w.appId === appId);
         if (existing) {
-            set((state) => ({
-                windows: state.windows.map((w) =>
+            set({
+                windows: windows.map((w) =>
                     w.windowId === existing.windowId
                         ? { ...w, isMinimized: false }
                         : w,
                 ),
-            }));
-
+            });
             get().focusWindow(existing.windowId);
-            persist(get);
             return;
         }
-
-        const titleMap: Record<AppId, string> = {
-            finder: "Finder",
-            notes: "Notes",
-            settings: "Settings",
-            terminal: "Terminal",
-            safari: "Safari",
-            calculator: "Calculator",
-            calendar: "Calendar",
-            slack: "Slack",
-        };
 
         const newZ = topZ + 1;
 
         const win: WindowInstance = {
             windowId: randId(),
             appId,
-            title: titleMap[appId],
+            title: appDef.title,
 
             x: 90 + windows.length * 18,
             y: 80 + windows.length * 18,
 
-            width:
-                appId === "safari" || appId === "settings"
-                    ? 920
-                    : appId === "terminal"
-                      ? 720
-                      : appId === "finder"
-                        ? 640
-                        : appId === "calculator"
-                          ? 280
-                          : appId === "calendar"
-                            ? 520
-                            : appId === "slack"
-                              ? 900
-                              : 520,
-
-            height:
-                appId === "safari" || appId === "settings"
-                    ? 620
-                    : appId === "terminal"
-                      ? 420
-                      : appId === "notes"
-                        ? 380
-                        : appId === "calculator"
-                          ? 420
-                          : appId === "calendar"
-                            ? 480
-                            : appId === "slack"
-                              ? 600
-                              : 360,
+            width: appDef.window.defaultSize.w,
+            height: appDef.window.defaultSize.h,
 
             isMinimized: false,
-            zIndex: newZ,
             isFullscreen: false,
+            zIndex: newZ,
             restoreRect: undefined,
         };
 
