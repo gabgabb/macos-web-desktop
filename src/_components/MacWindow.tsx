@@ -1,6 +1,7 @@
 "use client";
 
 import { AppDefinition, WindowInstance } from "@/src/core/types";
+import { DOCK_RESERVED, MENU_BAR_HEIGHT } from "@/src/core/ui-constants";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { motion } from "framer-motion";
 import React from "react";
@@ -27,7 +28,17 @@ export function MacWindow({
     return (
         <Rnd
             data-testid={`window-${win.appId}`}
-            size={{ width: win.width, height: win.height }}
+            size={
+                isFullscreen
+                    ? {
+                          width: window.innerWidth,
+                          height:
+                              window.innerHeight -
+                              MENU_BAR_HEIGHT -
+                              DOCK_RESERVED,
+                      }
+                    : { width: win.width, height: win.height }
+            }
             position={{ x: win.x, y: win.y }}
             onDragStart={() => focusWindow(win.windowId)}
             onResizeStart={() => focusWindow(win.windowId)}
