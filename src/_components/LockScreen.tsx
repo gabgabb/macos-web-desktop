@@ -193,6 +193,9 @@ export function LockScreen() {
                                         placeholder="Password"
                                         className="w-full rounded-4xl border border-white/10 bg-white/15 px-4 py-3 outline-none placeholder:text-white/80 focus:ring-2 focus:ring-white/30 disabled:opacity-60"
                                     />
+                                    <div className="mx-auto mt-5 w-1/2 rounded-3xl bg-white/10 p-2 text-center font-semibold text-amber-50 drop-shadow">
+                                        Password : aurora
+                                    </div>
 
                                     {error && (
                                         <div className="mt-2 text-center text-sm text-red-200/90 drop-shadow">
