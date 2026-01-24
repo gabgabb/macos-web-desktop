@@ -116,7 +116,18 @@ export function TerminalApp() {
                     return;
                 }
                 const app = args.toLowerCase();
-                if (!["finder", "notes", "about", "terminal"].includes(app)) {
+                if (
+                    ![
+                        "finder",
+                        "notes",
+                        "settings",
+                        "terminal",
+                        "calculator",
+                        "calendar",
+                        "slack",
+                        "doom",
+                    ].includes(app)
+                ) {
                     push("err", `Unknown app: ${args}`);
                     return;
                 }

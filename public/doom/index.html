@@ -50,6 +50,10 @@
 
     window.addEventListener("resize", resize);
 
+    window.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+    });
+
     window.Module = {
         canvas,
         locateFile: (p) => p,
