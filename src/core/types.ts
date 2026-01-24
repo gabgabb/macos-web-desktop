@@ -6,7 +6,8 @@ export type AppId =
     | "safari"
     | "calculator"
     | "calendar"
-    | "slack";
+    | "slack"
+    | "doom";
 
 export type AppDefinition = {
     id: AppId;

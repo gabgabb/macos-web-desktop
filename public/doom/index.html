@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Doom</title>
+
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: black;
+        overflow: hidden;
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        image-rendering: pixelated;
+        background: black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="canvas" tabindex="0"></canvas>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+
+      window.Module = {
+        canvas,
+        locateFile: (p) => p,
+
+        onRuntimeInitialized() {
+          canvas.focus();
+        },
+      };
+
+      window.addEventListener("beforeunload", () => {
+        if (Module?.SDL2?.audio?.scriptProcessorNode) {
+          try {
+            Module.SDL2.audio.scriptProcessorNode.disconnect();
+          } catch {}
+        }
+      });
+    </script>
+
+    <script src="doomgeneric.js"></script>
+  </body>
+</html>

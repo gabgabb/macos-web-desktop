@@ -95,4 +95,16 @@ export const APP_REGISTRY: Record<string, AppDefinition> = {
             withPadding: false,
         },
     },
+    doom: {
+        id: "doom",
+        title: "DOOM",
+        icon: "doom",
+        showInDock: true,
+        showOnDesktop: true,
+        window: {
+            defaultSize: { w: 910, h: 610 },
+            resizable: false,
+            withPadding: false,
+        },
+    },
 };

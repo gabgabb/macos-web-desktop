@@ -10,4 +10,5 @@ export const APP_ICONS: Record<string, ReactNode> = {
     calculator: "/icones/calculator.webp",
     slack: "/icones/slack.webp",
     calendar: <CalendarIcon />,
+    doom: "/icones/doom.webp",
 };
