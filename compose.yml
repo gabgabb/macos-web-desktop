@@ -11,4 +11,4 @@ services:
       - .env
     volumes:
       - ./ctrf:/app/ctrf
-    restart: unless-stopped
+    restart: always
