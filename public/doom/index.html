@@ -25,19 +25,10 @@
 <canvas id="canvas" tabindex="0"></canvas>
 
 <script>
-    const params = new URLSearchParams(location.search);
-    const wad = params.get("wad") || "doom-ori.wad";
-
-    window.Module = {
-        arguments: ["-iwad", wad],
-        canvas: document.getElementById("canvas"),
-        locateFile: (p) => p,
-        onRuntimeInitialized() {
-            Module.canvas.focus();
-        }
-    };
-
     const canvas = document.getElementById("canvas");
+
+    const params = new URLSearchParams(location.search);
+    const wad = params.get("wad") ?? "doom2.wad";
 
     function resize() {
         canvas.width = window.innerWidth;
@@ -48,13 +39,8 @@
         }
     }
 
-    window.addEventListener("resize", resize);
-
-    window.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
-    });
-
     window.Module = {
+        arguments: ["-iwad", wad],
         canvas,
         locateFile: (p) => p,
         onRuntimeInitialized() {
@@ -62,6 +48,9 @@
             canvas.focus();
         },
     };
+
+    window.addEventListener("resize", resize);
+    window.addEventListener("contextmenu", e => e.preventDefault());
 </script>
 
 <script src="doomgeneric.js"></script>
