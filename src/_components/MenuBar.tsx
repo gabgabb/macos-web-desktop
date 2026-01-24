@@ -33,6 +33,9 @@ export function MenuBar() {
         fetch("/api/lock", { method: "POST" }).catch(() => {});
     }
 
+    const toggleAudioPanel = useDesktopStore((s) => s.toggleAudioPanel);
+    const toggleWifiPanel = useDesktopStore((s) => s.toggleWifiPanel);
+
     return (
         <div
             onContextMenu={(e) => {
@@ -61,10 +64,12 @@ export function MenuBar() {
                 <WifiIcon
                     className="text-white/90 hover:cursor-pointer"
                     aria-hidden="true"
+                    onClick={toggleWifiPanel}
                 />
                 <Volume2Icon
                     className="text-white/90 hover:cursor-pointer"
                     aria-hidden="true"
+                    onClick={toggleAudioPanel}
                 />
                 <LockIcon
                     data-testid="lock-icon"

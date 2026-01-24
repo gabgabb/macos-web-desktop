@@ -12,9 +12,19 @@ const DEFAULT_STATE: DesktopSnapshot = {
     isLocked: true,
     notes: { content: "" },
     terminal: { content: "" },
+
     settings: {
         theme: "auto",
         wallpaper: "/Wallpaper/Big-Sur-Color-Day.webp",
+    },
+    audio: {
+        masterVolume: 1,
+        muted: false,
+        appVolumes: {},
+    },
+    ui: {
+        audioPanelOpen: false,
+        wifiPanelOpen: false,
     },
 };
 
@@ -46,6 +56,16 @@ type DesktopState = DesktopSnapshot & {
     setWallpaper: (url: string) => void;
     setTheme: (theme: "auto" | "dark" | "light") => void;
 
+    setMasterVolume: (v: number) => void;
+    toggleMute: () => void;
+    setAppVolume: (appId: AppId, v: number) => void;
+
+    toggleAudioPanel: () => void;
+    closeAudioPanel: () => void;
+
+    toggleWifiPanel: () => void;
+    closeWifiPanel: () => void;
+
     reset: () => void;
 };
 
@@ -58,6 +78,8 @@ function persist(get: () => DesktopState) {
         notes,
         terminal,
         settings,
+        audio,
+        ui,
     } = get();
     saveSnapshot({
         windows,
@@ -67,6 +89,8 @@ function persist(get: () => DesktopState) {
         notes,
         terminal,
         settings,
+        audio,
+        ui,
     });
 }
 
@@ -76,6 +100,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
     notes: DEFAULT_STATE.notes,
     terminal: DEFAULT_STATE.terminal,
     settings: DEFAULT_STATE.settings,
+    audio: DEFAULT_STATE.audio,
 
     hydrate: () => {
         const snap = loadSnapshot();
@@ -174,6 +199,10 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             ),
             activeWindowId: windowId,
             topZ: newZ,
+            ui: {
+                ...get().ui,
+                audioPanelOpen: false,
+            },
         });
 
         persist(get);
@@ -303,4 +332,54 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         set({ isLocked: false });
         persist(get);
     },
+
+    setMasterVolume: (v) => {
+        set((s) => ({
+            audio: { ...s.audio, masterVolume: v },
+        }));
+        persist(get);
+    },
+
+    toggleMute: () => {
+        set((s) => ({
+            audio: { ...s.audio, muted: !s.audio.muted },
+        }));
+        persist(get);
+    },
+
+    setAppVolume: (appId, v) => {
+        set((s) => ({
+            audio: {
+                ...s.audio,
+                appVolumes: { ...s.audio.appVolumes, [appId]: v },
+            },
+        }));
+        persist(get);
+    },
+
+    toggleAudioPanel: () =>
+        set((state) => ({
+            ui: {
+                audioPanelOpen: !state.ui.audioPanelOpen,
+                wifiPanelOpen: false,
+            },
+        })),
+
+    closeAudioPanel: () =>
+        set((state) => ({
+            ui: { ...state.ui, audioPanelOpen: false },
+        })),
+
+    toggleWifiPanel: () =>
+        set((state) => ({
+            ui: {
+                wifiPanelOpen: !state.ui.wifiPanelOpen,
+                audioPanelOpen: false,
+            },
+        })),
+
+    closeWifiPanel: () =>
+        set((state) => ({
+            ui: { ...state.ui, wifiPanelOpen: false },
+        })),
 }));

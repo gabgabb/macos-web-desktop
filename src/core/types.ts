@@ -57,4 +57,13 @@ export type DesktopSnapshot = {
         theme: "light" | "dark" | "auto";
         wallpaper: string;
     };
+    audio: {
+        masterVolume: number;
+        muted: boolean;
+        appVolumes: Partial<Record<AppId, number>>;
+    };
+    ui: {
+        audioPanelOpen: boolean;
+        wifiPanelOpen: boolean;
+    };
 };

@@ -4,6 +4,8 @@ import { DesktopContextMenu } from "@/src/_components/Desktop/DesktopContextMenu
 import { DesktopIcons } from "@/src/_components/Desktop/DesktopIcons";
 import { Dock } from "@/src/_components/Dock";
 import { MenuBar } from "@/src/_components/MenuBar";
+import { AudioPanel } from "@/src/_components/settings/AudioPanel";
+import { WifiPanel } from "@/src/_components/settings/WifiPanel";
 import { WindowManager } from "@/src/_components/WindowManager";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { useCallback, useState } from "react";
@@ -20,6 +22,12 @@ export function Desktop() {
     const closeCtx = useCallback(() => {
         setCtx((s) => ({ ...s, open: false }));
     }, []);
+
+    const audioOpen = useDesktopStore((s) => s.ui.audioPanelOpen);
+    const closeAudioPanel = useDesktopStore((s) => s.closeAudioPanel);
+
+    const wifiOpen = useDesktopStore((s) => s.ui.wifiPanelOpen);
+    const closeWifi = useDesktopStore((s) => s.closeWifiPanel);
 
     return (
         <main
@@ -42,6 +50,8 @@ export function Desktop() {
             }}
         >
             <MenuBar />
+            {wifiOpen && <WifiPanel onClose={closeWifi} />}
+            {audioOpen && <AudioPanel onClose={closeAudioPanel} />}
             <DesktopIcons />
             <WindowManager />
             <Dock />
