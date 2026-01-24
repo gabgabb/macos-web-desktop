@@ -40,23 +40,26 @@ export function LockScreen() {
         setLoading(true);
         setError(null);
 
-        const res = await fetch("/api/unlock", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ password: pwd }),
-        });
+        try {
+            const res = await fetch("/api/unlock", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password: pwd }),
+            });
 
-        if (!res.ok) {
-            setLoading(false);
-            triggerShake("Wrong password");
-
+            if (!res.ok) {
+                throw new Error("Wrong password");
+            }
+            unlock();
+            setStage(0);
             setPassword("");
-
+        } catch (err) {
+            triggerShake("Wrong password");
+            setPassword("");
             lastTriedRef.current = "";
-            return;
+        } finally {
+            setLoading(false);
         }
-
-        unlock();
     }
 
     return (

@@ -43,7 +43,7 @@ export function Dock() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.25 }}
         >
-            <div data-testid="dock" className="flex items-end gap-3">
+            <div data-testid="dock" className="flex items-end">
                 {dockApps.map((app) => {
                     const isOpen = openAppIds.has(app.id);
                     return (
