@@ -1,6 +1,6 @@
 import { CalculatorApp } from "@/src/_components/apps/CalculatorApp";
 import { CalendarApp } from "@/src/_components/apps/CalendarApp";
-import { DoomApp } from "@/src/_components/apps/DoomApp";
+import { DoomApp } from "@/src/_components/apps/DoomApp/DoomApp";
 import { FinderApp } from "@/src/_components/apps/FinderApp";
 import { NotesApp } from "@/src/_components/apps/NotesApp";
 import { SafariApp } from "@/src/_components/apps/SafariApp";
