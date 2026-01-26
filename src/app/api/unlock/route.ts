@@ -1,25 +1,16 @@
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
     const { password } = await req.json();
-
     const expected = process.env.NEXT_PUBLIC_LOCK_PASSWORD;
 
-    if (!expected) {
-        return NextResponse.json(
-            { ok: false, error: "Missing server password env" },
-            { status: 500 },
-        );
+    if (!expected || password !== expected) {
+        return NextResponse.json({ unlocked: false }, { status: 401 });
     }
 
-    if (password !== expected) {
-        return NextResponse.json(
-            { ok: false, error: "Invalid password" },
-            { status: 401 },
-        );
-    }
-
-    const res = NextResponse.json({ ok: true });
+    const res = NextResponse.json({ unlocked: true });
 
     res.cookies.set("os_unlocked", "1", {
         httpOnly: true,

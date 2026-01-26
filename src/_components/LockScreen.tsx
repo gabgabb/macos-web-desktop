@@ -21,6 +21,10 @@ export function LockScreen() {
 
     const unlock = useDesktopStore((s) => s.unlock);
 
+    const hydrated = useDesktopStore((s) => s.hydrated);
+
+    if (!hydrated) return null;
+
     function triggerShake(message?: string) {
         setShake(true);
         if (message) setError(message);
@@ -33,10 +37,9 @@ export function LockScreen() {
     async function tryUnlock(pwd: string) {
         if (loading) return;
         if (pwd.length !== REQUIRED_LEN) return;
-
         if (lastTriedRef.current === pwd) return;
-        lastTriedRef.current = pwd;
 
+        lastTriedRef.current = pwd;
         setLoading(true);
         setError(null);
 
@@ -50,10 +53,18 @@ export function LockScreen() {
             if (!res.ok) {
                 throw new Error("Wrong password");
             }
+
+            const data = await res.json();
+
+            if (!data?.unlocked) {
+                throw new Error("Unlock failed");
+            }
+
             unlock();
-            setStage(0);
             setPassword("");
-        } catch (err) {
+            setError(null);
+            lastTriedRef.current = "";
+        } catch {
             triggerShake("Wrong password");
             setPassword("");
             lastTriedRef.current = "";

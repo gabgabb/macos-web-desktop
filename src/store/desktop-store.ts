@@ -9,10 +9,8 @@ const DEFAULT_STATE: DesktopSnapshot = {
     windows: [],
     activeWindowId: null,
     topZ: 10,
-    isLocked: true,
     notes: { content: "" },
     terminal: { content: "" },
-
     settings: {
         theme: "auto",
         wallpaper: "/Wallpaper/Big-Sur-Color-Day.webp",
@@ -31,6 +29,7 @@ const DEFAULT_STATE: DesktopSnapshot = {
 type DesktopState = DesktopSnapshot & {
     hydrated: boolean;
     hydrate: () => void;
+    isLocked: boolean;
 
     openApp: (appId: AppId) => void;
     closeApp: (appId: AppId) => void;
@@ -74,7 +73,6 @@ function persist(get: () => DesktopState) {
         windows,
         activeWindowId,
         topZ,
-        isLocked,
         notes,
         terminal,
         settings,
@@ -85,7 +83,6 @@ function persist(get: () => DesktopState) {
         windows,
         activeWindowId,
         topZ,
-        isLocked,
         notes,
         terminal,
         settings,
@@ -96,24 +93,31 @@ function persist(get: () => DesktopState) {
 
 export const useDesktopStore = create<DesktopState>((set, get) => ({
     ...DEFAULT_STATE,
+    isLocked: true,
     hydrated: false,
     notes: DEFAULT_STATE.notes,
     terminal: DEFAULT_STATE.terminal,
     settings: DEFAULT_STATE.settings,
     audio: DEFAULT_STATE.audio,
 
-    hydrate: () => {
+    hydrate: async () => {
         const snap = loadSnapshot();
-        if (!snap) {
-            set({ hydrated: true });
-            return;
-        }
+
+        let unlocked = false;
+        try {
+            const res = await fetch("/api/session");
+            const data = await res.json();
+            unlocked = !!data.unlocked;
+        } catch {}
 
         set({
             ...DEFAULT_STATE,
             ...snap,
-            notes: snap.notes ?? DEFAULT_STATE.notes,
-            terminal: snap.terminal ?? DEFAULT_STATE.terminal,
+            notes: snap?.notes ?? DEFAULT_STATE.notes,
+            isLocked: !unlocked,
+            terminal: snap?.terminal ?? DEFAULT_STATE.terminal,
+            audio: { ...DEFAULT_STATE.audio, ...snap?.audio },
+            ui: { ...DEFAULT_STATE.ui, ...snap?.ui },
             hydrated: true,
         });
     },
@@ -200,8 +204,8 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             activeWindowId: windowId,
             topZ: newZ,
             ui: {
-                ...get().ui,
                 audioPanelOpen: false,
+                wifiPanelOpen: false,
             },
         });
 
@@ -325,12 +329,10 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
 
     lock: () => {
         set({ isLocked: true });
-        persist(get);
     },
 
     unlock: () => {
         set({ isLocked: false });
-        persist(get);
     },
 
     setMasterVolume: (v) => {

@@ -1,15 +1,11 @@
 import { NextResponse } from "next/server";
 
-export async function POST() {
-    const res = NextResponse.json({ ok: true });
+export const dynamic = "force-dynamic";
 
-    res.cookies.set("os_unlocked", "0", {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        maxAge: 0,
-    });
+export async function POST() {
+    const res = NextResponse.json({ unlocked: false });
+
+    res.cookies.delete("os_unlocked");
 
     return res;
 }

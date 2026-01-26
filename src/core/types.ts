@@ -52,7 +52,6 @@ export type DesktopSnapshot = {
     terminal: {
         content: string;
     };
-    isLocked: boolean;
     settings: {
         theme: "light" | "dark" | "auto";
         wallpaper: string;
