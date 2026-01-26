@@ -29,6 +29,12 @@ export function Dock() {
     const mouseX = useMotionValue(Infinity);
     const dockRef = useRef<HTMLDivElement | null>(null);
 
+    if (!dockApps.length) {
+        return (
+            <div className="absolute bottom-5 left-1/2 h-20 w-64 -translate-x-1/2" />
+        );
+    }
+
     return (
         <motion.div
             ref={dockRef}
@@ -39,8 +45,8 @@ export function Dock() {
             onMouseLeave={() => {
                 mouseX.set(Infinity);
             }}
-            initial={{ opacity: 0, y: 10, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
+            initial={false}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.25 }}
         >
             <div data-testid="dock" className="flex items-end">
@@ -136,7 +142,7 @@ function DockIconButton({
                                 alt={app.title}
                                 width={56}
                                 height={56}
-                                priority
+                                loading="eager"
                                 className="pointer-events-none drop-shadow-md select-none"
                             />
                         ) : (

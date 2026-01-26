@@ -2,32 +2,16 @@
 
 import { Desktop } from "@/src/_components/Desktop/Desktop";
 import { Wallpaper } from "@/src/_components/Wallpaper";
+import { useSessionGuard } from "@/src/hooks/useSessionGuard";
 import { useDesktopStore } from "@/src/store/desktop-store";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function Home() {
-    const hydrate = useDesktopStore((s) => s.hydrate);
-    const hydrated = useDesktopStore((s) => s.hydrated);
-    const isLocked = useDesktopStore((s) => s.isLocked);
+    const hydrated = useSessionGuard("unlocked");
     const wallpaper = useDesktopStore((s) => s.settings.wallpaper);
-    const router = useRouter();
-
-    useEffect(() => {
-        hydrate();
-    }, [hydrate]);
-
-    useEffect(() => {
-        if (hydrated && isLocked) {
-            router.replace("/lock");
-        }
-    }, [hydrated, isLocked, router]);
-
-    if (!hydrated) return <div className="h-screen w-screen bg-black" />;
 
     return (
         <>
-            <Desktop />
+            {hydrated && <Desktop />}
             <Wallpaper url={wallpaper} />
         </>
     );
