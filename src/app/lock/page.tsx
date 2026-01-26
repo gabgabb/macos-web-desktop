@@ -4,6 +4,7 @@ import { LockScreen } from "@/src/_components/LockScreen";
 import { Wallpaper } from "@/src/_components/Wallpaper";
 import { useSessionGuard } from "@/src/hooks/useSessionGuard";
 import { useDesktopStore } from "@/src/store/desktop-store";
+import { motion } from "framer-motion";
 
 export default function LockPage() {
     const hydrated = useSessionGuard("locked");
@@ -12,7 +13,15 @@ export default function LockPage() {
     return (
         <>
             {hydrated && <LockScreen />}
-            <Wallpaper url={wallpaper} />
+            {hydrated && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.1 }}
+                >
+                    <Wallpaper url={wallpaper} />
+                </motion.div>
+            )}
         </>
     );
 }
