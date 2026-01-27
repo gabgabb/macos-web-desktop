@@ -68,13 +68,13 @@ export function DesktopIcons() {
                 onDragEnd={onDragEnd}
             >
                 <SortableContext items={order} strategy={rectSortingStrategy}>
-                    <div className="desktop-icons grid w-fit gap-2">
+                    <div className="desktop-icons flex h-full w-fit flex-col flex-wrap gap-1">
                         {orderedApps.map((app) => (
                             <div
                                 key={app.id}
                                 data-desktop-icon
                                 data-icon-id={app.id}
-                                className="w-20"
+                                className="h-fit"
                             >
                                 <DesktopIconSortable
                                     id={app.id}

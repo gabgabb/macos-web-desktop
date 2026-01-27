@@ -28,6 +28,7 @@ export function SafariApp() {
 
                 <input
                     value={url}
+                    id="safari-url-bar"
                     onChange={(e) => setUrl(e.target.value)}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {

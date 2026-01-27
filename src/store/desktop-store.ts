@@ -1,6 +1,12 @@
 import { APP_REGISTRY } from "@/src/core/apps/registry";
+import { FS } from "@/src/core/fs/fs.service";
 import { loadSnapshot, saveSnapshot } from "@/src/core/persist";
-import type { AppId, DesktopSnapshot, WindowInstance } from "@/src/core/types";
+import type {
+    AppId,
+    DesktopSnapshot,
+    TerminalLine,
+    WindowInstance,
+} from "@/src/core/types";
 import { create } from "zustand";
 
 const randId = () => Math.random().toString(16).slice(2);
@@ -10,7 +16,7 @@ const DEFAULT_STATE: DesktopSnapshot = {
     activeWindowId: null,
     topZ: 10,
     notes: { content: "" },
-    terminal: { content: "" },
+    terminal: { lines: [] },
     settings: {
         theme: "auto",
         wallpaper: "/Wallpaper/Big-Sur-Color-Day.webp",
@@ -50,7 +56,10 @@ type DesktopState = DesktopSnapshot & {
     unlock: () => void;
 
     setNotes: (content: string) => void;
-    setTerminal: (content: string) => void;
+    setTerminal: (lines: TerminalLine[]) => void;
+
+    cwd: string[];
+    refreshFs: () => void;
 
     setWallpaper: (url: string) => void;
     setTheme: (theme: "auto" | "dark" | "light") => void;
@@ -97,6 +106,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
     hydrated: false,
     notes: DEFAULT_STATE.notes,
     terminal: DEFAULT_STATE.terminal,
+    cwd: FS.getCwd(),
     settings: DEFAULT_STATE.settings,
     audio: DEFAULT_STATE.audio,
 
@@ -116,6 +126,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             notes: snap?.notes ?? DEFAULT_STATE.notes,
             isLocked: !unlocked,
             terminal: snap?.terminal ?? DEFAULT_STATE.terminal,
+            cwd: FS.getCwd(),
             audio: { ...DEFAULT_STATE.audio, ...snap?.audio },
             ui: { ...DEFAULT_STATE.ui, ...snap?.ui },
             hydrated: true,
@@ -222,7 +233,12 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
     },
 
     reset: () => {
-        set({ ...DEFAULT_STATE });
+        set({
+            ...DEFAULT_STATE,
+            isLocked: true,
+            hydrated: false,
+            cwd: FS.getCwd(),
+        });
         saveSnapshot(DEFAULT_STATE);
     },
 
@@ -305,13 +321,15 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         persist(get);
     },
 
-    setTerminal: (content) => {
+    setTerminal: (lines) => {
         set(() => ({
-            terminal: { content },
+            terminal: { lines },
         }));
 
         persist(get);
     },
+
+    refreshFs: () => set({ cwd: FS.getCwd() }),
 
     setWallpaper: (wallpaper: string) => {
         set((state) => ({

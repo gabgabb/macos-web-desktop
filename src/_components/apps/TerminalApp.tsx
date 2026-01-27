@@ -1,60 +1,59 @@
 "use client";
 
+import { FS } from "@/src/core/fs/fs.service";
+import { TerminalLine } from "@/src/core/types";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-
-type Line = {
-    id: string;
-    type: "out" | "err" | "info";
-    text: string;
-};
 
 function rid() {
     return Math.random().toString(16).slice(2);
 }
 
+const WELCOME_LINE: TerminalLine = {
+    id: "welcome",
+    type: "info",
+    text: "Type `help` to see commands.",
+};
+
 export function TerminalApp() {
     const openApp = useDesktopStore((s) => s.openApp);
-    const contentTerminal = useDesktopStore((s) => s.terminal.content);
+    const savedLines = useDesktopStore((s) => s.terminal.lines);
     const setTerminal = useDesktopStore((s) => s.setTerminal);
+    const refreshFs = useDesktopStore((s) => s.refreshFs);
     const lock = useDesktopStore((s) => s.lock);
 
     const router = useRouter();
 
-    const [input, setInput] = useState("");
-    const [lines, setLines] = useState<Line[]>(() => {
-        if (!contentTerminal.trim()) {
-            return [
-                {
-                    id: rid(),
-                    type: "info",
-                    text: "Type `help` to see commands.",
-                },
-                { id: rid(), type: "out", text: "" },
-            ];
-        }
+    const [input, setInput] = useState<string>("");
+    const [lines, setLines] = useState<TerminalLine[]>(
+        savedLines.length ? savedLines : [WELCOME_LINE],
+    );
 
-        return contentTerminal.split("\n").map((text) => ({
-            id: rid(),
-            type: "out",
-            text,
-        }));
-    });
+    const [history, setHistory] = useState<string[]>([]);
+    const [historyIndex, setHistoryIndex] = useState(-1);
 
     const scrollRef = useRef<HTMLDivElement | null>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
     const prompt = useMemo(() => "user@macos-web-desktop %", []);
 
     useEffect(() => {
-        scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
+        scrollRef.current?.scrollTo({
+            top: scrollRef.current.scrollHeight,
+            behavior: "smooth",
+        });
     }, [lines]);
 
     useEffect(() => {
-        const full = lines.map((l) => l.text).join("\n");
-        setTerminal(full);
+        setTerminal(lines);
     }, [lines, setTerminal]);
 
-    function push(type: Line["type"], text: string) {
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
+
+    function push(type: TerminalLine["type"], text: string) {
         setLines((prev) => [...prev, { id: rid(), type, text }]);
     }
 
@@ -73,6 +72,12 @@ export function TerminalApp() {
                 push("out", "  help                 Show this help");
                 push("out", "  clear                Clear the terminal");
                 push("out", "  date                 Print current date");
+                push("out", "  pwd                  Print current directory");
+                push(
+                    "out",
+                    "  ls                   List files in current directory",
+                );
+                push("out", "  cd <dir>             Change directory");
                 push("out", "  whoami               Print current user");
                 push("out", "  echo <text>          Print text");
                 push(
@@ -84,14 +89,7 @@ export function TerminalApp() {
             }
 
             case "clear": {
-                setInput("");
-                setLines([
-                    {
-                        id: rid(),
-                        type: "info",
-                        text: "Type `help` to see commands.",
-                    },
-                ]);
+                setLines([WELCOME_LINE]);
                 return;
             }
 
@@ -99,6 +97,27 @@ export function TerminalApp() {
                 push("out", new Date().toString());
                 return;
             }
+
+            case "pwd":
+                push("out", FS.pwd());
+                return;
+
+            case "ls":
+                try {
+                    push("out", FS.ls(args).join("  "));
+                } catch {
+                    push("err", "ls: not a directory");
+                }
+                return;
+
+            case "cd":
+                try {
+                    FS.cd(args || "/home/user");
+                    refreshFs();
+                } catch {
+                    push("err", `cd: no such directory: ${args}`);
+                }
+                return;
 
             case "whoami": {
                 push("out", "User");
@@ -115,6 +134,7 @@ export function TerminalApp() {
                     push("err", "Usage: open <app>");
                     return;
                 }
+
                 const app = args.toLowerCase();
                 if (
                     ![
@@ -131,6 +151,7 @@ export function TerminalApp() {
                     push("err", `Unknown app: ${args}`);
                     return;
                 }
+
                 openApp(app as any);
                 push("out", `Opening ${app}...`);
                 return;
@@ -138,18 +159,15 @@ export function TerminalApp() {
 
             case "lock": {
                 lock();
-                router.replace("/lock");
                 fetch("/api/lock", { method: "POST" }).catch(() => {});
-
+                router.replace("/lock");
                 return;
             }
 
             default: {
                 push(
                     "err",
-                    `Command not found: ${head}` +
-                        "\n" +
-                        "Try the command `help`",
+                    `Command not found: ${head}\nTry the command \`help\``,
                 );
                 return;
             }
@@ -157,7 +175,10 @@ export function TerminalApp() {
     }
 
     return (
-        <div className="flex h-full flex-col rounded-2xl bg-black/55 p-3 font-mono text-[13px] text-white">
+        <div
+            className="flex h-full flex-col rounded-2xl bg-black/55 p-3 font-mono text-[13px] text-white"
+            onClick={() => inputRef.current?.focus()}
+        >
             <div
                 ref={scrollRef}
                 className="flex-1 overflow-auto pr-2 whitespace-pre-wrap"
@@ -176,17 +197,51 @@ export function TerminalApp() {
                         {l.text}
                     </div>
                 ))}
+
                 <div className="flex w-fit shrink-0 gap-2 text-white/80">
                     <div className="min-w-fit">{prompt}</div>
                     <input
-                        autoFocus
+                        ref={inputRef}
+                        id={"terminal-input"}
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
                                 const cmd = input;
+                                if (!cmd) return;
+                                setHistory((h) => [...h, cmd]);
+                                setHistoryIndex(-1);
                                 setInput("");
                                 runCommand(cmd);
+                            }
+                            if (e.key === "ArrowUp") {
+                                e.preventDefault();
+                                setHistoryIndex((prev) => {
+                                    const nextIndex = Math.min(
+                                        prev + 1,
+                                        history.length - 1,
+                                    );
+                                    const cmd =
+                                        history[history.length - 1 - nextIndex];
+                                    if (cmd) setInput(cmd);
+                                    return nextIndex;
+                                });
+                            }
+
+                            if (e.key === "ArrowDown") {
+                                e.preventDefault();
+
+                                setHistoryIndex((prev) => {
+                                    const nextIndex = Math.max(prev - 1, -1);
+                                    const cmd =
+                                        nextIndex === -1
+                                            ? ""
+                                            : history[
+                                                  history.length - 1 - nextIndex
+                                              ];
+                                    setInput(cmd ?? "");
+                                    return nextIndex;
+                                });
                             }
                         }}
                         className="w-full bg-transparent outline-none placeholder:text-white/30"

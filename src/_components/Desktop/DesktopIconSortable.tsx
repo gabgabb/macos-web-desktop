@@ -60,7 +60,7 @@ export function DesktopIconSortable({
             {typeof icon === "string" ? (
                 <Image src={icon} alt={label} width={40} height={40} priority />
             ) : (
-                icon
+                <div className="size-10">{icon}</div>
             )}
             <div className="text-center text-xs leading-tight text-white/90">
                 {label}

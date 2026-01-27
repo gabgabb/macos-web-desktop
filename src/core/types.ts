@@ -50,7 +50,7 @@ export type DesktopSnapshot = {
         content: string;
     };
     terminal: {
-        content: string;
+        lines: TerminalLine[];
     };
     settings: {
         theme: "light" | "dark" | "auto";
@@ -65,4 +65,10 @@ export type DesktopSnapshot = {
         audioPanelOpen: boolean;
         wifiPanelOpen: boolean;
     };
+};
+
+export type TerminalLine = {
+    id: string;
+    type: "out" | "err" | "info";
+    text: string;
 };

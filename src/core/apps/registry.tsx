@@ -10,7 +10,7 @@ export const APP_REGISTRY: Record<string, AppDefinition> = {
         window: {
             defaultSize: { w: 720, h: 520 },
             resizable: true,
-            withPadding: true,
+            withPadding: false,
         },
     },
     notes: {

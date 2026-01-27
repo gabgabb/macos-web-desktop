@@ -21,7 +21,6 @@ export function Wallpaper({ url }: { url: string }) {
                 src={url}
                 alt="Wallpaper"
                 fill
-                priority
                 sizes="100vw"
                 className={`object-cover transition-opacity duration-300 ${
                     loaded ? "opacity-100" : "opacity-0"

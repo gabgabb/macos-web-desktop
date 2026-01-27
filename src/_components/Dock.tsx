@@ -146,7 +146,7 @@ function DockIconButton({
                                 className="pointer-events-none drop-shadow-md select-none"
                             />
                         ) : (
-                            icon
+                            <div className="size-12">{icon}</div>
                         )}
                     </motion.div>
                 </motion.div>

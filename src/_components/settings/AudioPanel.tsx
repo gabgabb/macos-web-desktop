@@ -20,6 +20,7 @@ export function AudioPanel({ onClose }: { onClose: () => void }) {
 
                 <input
                     type="range"
+                    id={"masterVolume"}
                     min={0}
                     max={1}
                     step={0.01}

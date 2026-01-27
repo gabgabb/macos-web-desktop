@@ -82,10 +82,10 @@ export function SettingsApp() {
                                 <Image
                                     src={w.src}
                                     alt={w.label}
-                                    width={1900}
-                                    height={800}
-                                    priority
-                                    className="h-48"
+                                    width={320}
+                                    height={180}
+                                    loading="lazy"
+                                    className="h-48 object-cover"
                                 />
                             </button>
                         ))}
