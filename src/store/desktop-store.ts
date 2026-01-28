@@ -1,4 +1,5 @@
 import { APP_REGISTRY } from "@/src/core/apps/registry";
+import { Conversation, CONVERSATIONS } from "@/src/core/chatData";
 import { FS } from "@/src/core/fs/fs.service";
 import { loadSnapshot, saveSnapshot } from "@/src/core/persist";
 import type {
@@ -29,6 +30,12 @@ const DEFAULT_STATE: DesktopSnapshot = {
     ui: {
         audioPanelOpen: false,
         wifiPanelOpen: false,
+    },
+    progress: {
+        slackIntroPlayed: false,
+    },
+    slack: {
+        conversations: CONVERSATIONS,
     },
 };
 
@@ -74,6 +81,11 @@ type DesktopState = DesktopSnapshot & {
     toggleWifiPanel: () => void;
     closeWifiPanel: () => void;
 
+    markSlackIntroPlayed: () => void;
+    setSlackConversations: (
+        updater: (prev: Conversation[]) => Conversation[],
+    ) => void;
+
     reset: () => void;
 };
 
@@ -87,6 +99,8 @@ function persist(get: () => DesktopState) {
         settings,
         audio,
         ui,
+        progress,
+        slack,
     } = get();
     saveSnapshot({
         windows,
@@ -97,6 +111,8 @@ function persist(get: () => DesktopState) {
         settings,
         audio,
         ui,
+        progress,
+        slack,
     });
 }
 
@@ -109,6 +125,8 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
     cwd: FS.getCwd(),
     settings: DEFAULT_STATE.settings,
     audio: DEFAULT_STATE.audio,
+    progress: DEFAULT_STATE.progress,
+    slack: DEFAULT_STATE.slack,
 
     hydrate: async () => {
         const snap = loadSnapshot();
@@ -129,6 +147,8 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             cwd: FS.getCwd(),
             audio: { ...DEFAULT_STATE.audio, ...snap?.audio },
             ui: { ...DEFAULT_STATE.ui, ...snap?.ui },
+            progress: snap?.progress ?? DEFAULT_STATE.progress,
+            slack: snap?.slack ?? DEFAULT_STATE.slack,
             hydrated: true,
         });
     },
@@ -402,4 +422,26 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         set((state) => ({
             ui: { ...state.ui, wifiPanelOpen: false },
         })),
+
+    markSlackIntroPlayed: () => {
+        set((state) => ({
+            progress: {
+                ...state.progress,
+                slackIntroPlayed: true,
+            },
+        }));
+        persist(get);
+    },
+
+    setSlackConversations: (
+        updater: (prev: Conversation[]) => Conversation[],
+    ) => {
+        set((state) => ({
+            slack: {
+                ...state.slack,
+                conversations: updater(state.slack!.conversations),
+            },
+        }));
+        persist(get);
+    },
 }));

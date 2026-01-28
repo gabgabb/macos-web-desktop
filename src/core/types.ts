@@ -1,3 +1,5 @@
+import { Conversation } from "@/src/core/chatData";
+
 export type AppId =
     | "finder"
     | "notes"
@@ -64,6 +66,12 @@ export type DesktopSnapshot = {
     ui: {
         audioPanelOpen: boolean;
         wifiPanelOpen: boolean;
+    };
+    progress?: {
+        slackIntroPlayed?: boolean;
+    };
+    slack?: {
+        conversations: Conversation[];
     };
 };
 

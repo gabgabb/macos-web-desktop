@@ -196,7 +196,7 @@ export function FinderApp() {
                         <FolderClosed className="size-5" /> <span>Shared</span>
                     </li>
                 </ul>
-                <ul className="z-5 text-sm font-semibold text-neutral-800">
+                <ul className="text-sm font-semibold text-neutral-800">
                     <span className="text-sm font-semibold text-gray-400">
                         Favorites
                     </span>

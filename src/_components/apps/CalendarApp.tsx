@@ -57,11 +57,11 @@ export function CalendarApp() {
     }
 
     const CURRENT_YEAR = new Date().getFullYear();
-    const YEAR_RANGE = 20;
+    const YEAR_RANGE = 5;
 
     const YEAR_OPTIONS = Array.from({ length: YEAR_RANGE * 2 + 1 }).map(
         (_, i) => {
-            const y = CURRENT_YEAR - YEAR_RANGE + i;
+            const y = CURRENT_YEAR + YEAR_RANGE - i;
             return { label: `${y}`, value: y };
         },
     );

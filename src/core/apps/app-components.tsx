@@ -5,7 +5,7 @@ import { FinderApp } from "@/src/_components/apps/FinderApp/FinderApp";
 import { NotesApp } from "@/src/_components/apps/NotesApp";
 import { SafariApp } from "@/src/_components/apps/SafariApp";
 import { SettingsApp } from "@/src/_components/apps/SettingsApp";
-import { SlackApp } from "@/src/_components/apps/SlackApp";
+import { SlackApp } from "@/src/_components/apps/SlackApp/SlackApp";
 import { TerminalApp } from "@/src/_components/apps/TerminalApp";
 import { AppId } from "@/src/core/types";
 import { ComponentType } from "react";
