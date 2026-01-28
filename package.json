@@ -1,6 +1,7 @@
 {
     "name": "macos-web-desktop",
     "version": "1.0.0",
+    "author": "Gabriel Filiot <Gabrielfiliot@gmail.com>",
     "private": true,
     "scripts": {
         "dev": "next dev",

@@ -67,6 +67,7 @@ export const APP_REGISTRY: Record<string, AppDefinition> = {
         showOnDesktop: true,
         window: {
             defaultSize: { w: 320, h: 420 },
+            minSize: { w: 320, h: 420 },
             resizable: false,
             withPadding: false,
         },
@@ -78,9 +79,10 @@ export const APP_REGISTRY: Record<string, AppDefinition> = {
         showInDock: true,
         showOnDesktop: true,
         window: {
-            defaultSize: { w: 820, h: 620 },
+            defaultSize: { w: 600, h: 400 },
+            minSize: { w: 600, h: 400 },
             resizable: true,
-            withPadding: true,
+            withPadding: false,
         },
     },
     slack: {

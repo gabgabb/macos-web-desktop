@@ -61,8 +61,8 @@ export function MacWindow({
             }}
             enableResizing={!isFullscreen && appDef.window.resizable}
             disableDragging={isFullscreen}
-            minWidth={690}
-            minHeight={480}
+            minWidth={appDef.window.minSize?.w || 690}
+            minHeight={appDef.window.minSize?.h || 480}
             bounds="parent"
             dragHandleClassName="mac-window-header"
             style={{ zIndex: win.zIndex }}
