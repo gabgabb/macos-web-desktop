@@ -11,7 +11,8 @@ type CalendarSelectProps = {
     options: Option[];
     onChange: (v: number) => void;
     isMonth?: boolean;
-    changeMonth?: (d: number) => void;
+    onPrevMonth?: () => void;
+    onNextMonth?: () => void;
 };
 
 export function SelectCalendar({
@@ -19,7 +20,8 @@ export function SelectCalendar({
     options,
     onChange,
     isMonth = false,
-    changeMonth = () => {},
+    onPrevMonth = () => {},
+    onNextMonth = () => {},
 }: CalendarSelectProps) {
     const [open, setOpen] = useState<boolean>(false);
     const ref = useRef<HTMLDivElement>(null);
@@ -41,19 +43,13 @@ export function SelectCalendar({
         <div ref={ref} className="relative">
             {isMonth ? (
                 <div className="flex items-center justify-center gap-1 rounded-lg bg-white/10 px-3 py-2 text-sm backdrop-blur hover:bg-white/20">
-                    <button
-                        onClick={() => changeMonth(-1)}
-                        aria-label="Previous month"
-                    >
+                    <button onClick={onPrevMonth} aria-label="Previous month">
                         <MoveLeft className="size-4" />
                     </button>
                     <button onClick={() => setOpen((v) => !v)} className="w-20">
                         <span>{selected?.label}</span>
                     </button>
-                    <button
-                        onClick={() => changeMonth(1)}
-                        aria-label="Next month"
-                    >
+                    <button onClick={onNextMonth} aria-label="Next month">
                         <MoveRight className="size-4" />
                     </button>
                 </div>
