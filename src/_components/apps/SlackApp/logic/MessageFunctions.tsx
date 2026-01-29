@@ -1,4 +1,4 @@
-import { Conversation, USER_COLORS, USERS } from "@/src/core/chatData";
+import { Conversation, Message, USER_COLORS, USERS } from "@/src/core/chatData";
 import clsx from "clsx";
 import Image from "next/image";
 
@@ -108,4 +108,20 @@ export function getUserColor(name: string) {
         hash = name.charCodeAt(i) + ((hash << 5) - hash);
     }
     return USER_COLORS[Math.abs(hash) % USER_COLORS.length];
+}
+
+export function addMessageToConversation(
+    conversations: Conversation[],
+    conversationId: string,
+    message: Message,
+) {
+    return conversations.map((c) =>
+        c.id === conversationId
+            ? {
+                  ...c,
+                  unreadCount: c.unreadCount + 1,
+                  messages: [...c.messages, message],
+              }
+            : c,
+    );
 }

@@ -26,7 +26,9 @@ export function ChatHeader({
                             unoptimized
                         />
                         <div className="flex flex-col leading-tight">
-                            <span className="font-semibold">{user!.name}</span>
+                            <span className="font-semibold text-neutral-900">
+                                {user!.name}
+                            </span>
                             <span className="text-xs text-green-600">
                                 Online
                             </span>
@@ -37,7 +39,7 @@ export function ChatHeader({
                         className="flex flex-col gap-1 leading-tight"
                         data-testid="channel-name"
                     >
-                        <span className="font-semibold">
+                        <span className="font-semibold text-neutral-900">
                             # {activeConversation.name}
                         </span>
                         <div

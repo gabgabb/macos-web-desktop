@@ -7,7 +7,7 @@ export function InputSlack({
     activeConversation: Conversation;
 }) {
     return (
-        <div className="w-full p-5">
+        <div className="w-full p-5 text-neutral-900">
             <div className="flex w-2/3 flex-col rounded-xl border border-gray-600/20 bg-white/80 backdrop-blur-md">
                 <textarea
                     rows={1}
