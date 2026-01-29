@@ -70,8 +70,12 @@ export type DesktopSnapshot = {
     progress?: {
         slackIntroPlayed?: boolean;
     };
-    slack?: {
+    slack: {
         conversations: Conversation[];
+        typing: {
+            conversationId: string;
+            authorId: string;
+        } | null;
     };
 };
 

@@ -11,6 +11,15 @@ const nextConfig: NextConfig = {
     },
     compress: true,
     bundlePagesRouterDependencies: true,
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "api.dicebear.com",
+                pathname: "/9.x/**",
+            },
+        ], //https://api.dicebear.com/9.x/shapes/svg?seed=Sarah
+    },
 };
 
 export default nextConfig;

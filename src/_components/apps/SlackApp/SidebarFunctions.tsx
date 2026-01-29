@@ -1,4 +1,3 @@
-import { UnreadBadge } from "@/src/_components/apps/SlackApp/TypingIndicator";
 import { Conversation } from "@/src/core/chatData";
 import { LockIcon } from "lucide-react";
 
@@ -37,10 +36,12 @@ export function ConversationItem({
     );
 }
 
-export function markConversationAsRead(c: Conversation) {
-    return {
-        ...c,
-        unreadCount: 0,
-        messages: c.messages.map((m) => (m.read ? m : { ...m, read: true })),
-    };
+function UnreadBadge({ count }: { count: number }) {
+    if (count <= 0) return null;
+
+    return (
+        <span className="pl-0.1 ml-auto flex min-w-4.5 items-center justify-center rounded-full bg-red-500 py-0.5 text-[10px] font-bold text-white">
+            {count}
+        </span>
+    );
 }

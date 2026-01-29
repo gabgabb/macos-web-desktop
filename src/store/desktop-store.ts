@@ -36,6 +36,7 @@ const DEFAULT_STATE: DesktopSnapshot = {
     },
     slack: {
         conversations: CONVERSATIONS,
+        typing: null,
     },
 };
 
@@ -85,6 +86,9 @@ type DesktopState = DesktopSnapshot & {
     setSlackConversations: (
         updater: (prev: Conversation[]) => Conversation[],
     ) => void;
+
+    startTyping: (conversationId: string, authorId: string) => void;
+    stopTyping: () => void;
 
     reset: () => void;
 };
@@ -255,10 +259,10 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
     reset: () => {
         set({
             ...DEFAULT_STATE,
-            isLocked: true,
             hydrated: false,
             cwd: FS.getCwd(),
         });
+        window.location.reload();
         saveSnapshot(DEFAULT_STATE);
     },
 
@@ -443,5 +447,26 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             },
         }));
         persist(get);
+    },
+
+    startTyping: (conversationId, authorId) => {
+        set((state) => ({
+            slack: {
+                ...state.slack!,
+                typing: {
+                    conversationId,
+                    authorId,
+                },
+            },
+        }));
+    },
+
+    stopTyping: () => {
+        set((state) => ({
+            slack: {
+                ...state.slack!,
+                typing: null,
+            },
+        }));
     },
 }));

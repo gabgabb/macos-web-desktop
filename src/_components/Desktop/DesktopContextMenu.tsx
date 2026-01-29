@@ -40,7 +40,7 @@ export function DesktopContextMenu({
 
     const items: ContextAction[] = [
         { id: "new-folder", label: "New Folder" },
-        { id: "refresh", label: "Refresh" },
+        { id: "refresh", label: "Refresh (dev mode only)" },
         { id: "wallpaper", label: "Change Wallpaper" },
     ];
 
