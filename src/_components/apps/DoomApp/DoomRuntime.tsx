@@ -12,8 +12,15 @@ export function DoomRuntime({
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
     useEffect(() => {
+        const iframe = iframeRef.current;
+        if (!iframe) return;
+
+        iframe.onload = () => {
+            iframe.contentWindow?.focus();
+        };
+
         return () => {
-            iframeRef.current?.remove();
+            iframe.remove();
         };
     }, []);
 
@@ -22,7 +29,8 @@ export function DoomRuntime({
             <iframe
                 src={`/doom/index.html?wad=${wad}`}
                 className="h-full w-full border-0"
-                allow="autoplay; fullscreen"
+                allow="autoplay; fullscreen; gamepad; pointer-lock"
+                sandbox="allow-scripts allow-same-origin allow-pointer-lock"
             />
 
             <button

@@ -27,8 +27,121 @@
 <script>
     const canvas = document.getElementById("canvas");
 
+    const KEY = {
+        UP: 0xad,
+        DOWN: 0xaf,
+        LEFT: 0xac,
+        RIGHT: 0xae,
+
+        FIRE: 0xa3,
+        USE: 0xa2,
+        RUN: 0x80 + 0x36
+    };
+
+    function mapKey(e) {
+        switch (e.code) {
+            // Déplacement
+            case "KeyW":
+            case "ArrowUp":
+            case "KeyZ":
+                return KEY.UP;
+            case "KeyS":
+            case "ArrowDown":
+                return KEY.DOWN;
+
+            case "KeyE":
+            case "Space":
+                return KEY.USE
+
+            // Rotation
+            case "ArrowLeft":
+            case "KeyA":
+            case "KeyQ":
+                return KEY.LEFT;
+            case "ArrowRight":
+            case "KeyD":
+                return KEY.RIGHT;
+
+            case "ControlLeft":
+            case "ControlRight":
+                return KEY.FIRE;
+
+            case "ShiftLeft":
+            case "ShiftRight":
+                return KEY.RUN;
+
+            case "Enter":
+                return 13;
+
+            case "Escape":
+                setTimeout(() => document.exitPointerLock(), 0);
+                return 27
+
+            default:
+                return 0;
+        }
+    }
+
+
     const params = new URLSearchParams(location.search);
     const wad = params.get("wad") ?? "doom2.wad";
+
+    canvas.addEventListener("click", () => {
+        canvas.focus();
+        if (document.pointerLockElement !== canvas) {
+            canvas.requestPointerLock();
+        }
+    });
+
+    window.addEventListener("keydown", (e) => {
+        if (e.repeat) return;
+        const key = mapKey(e);
+        if (key) {
+            Module.ccall("doomgeneric_key_event", null, ["number", "number"], [1, key]);
+        }
+    });
+
+    window.addEventListener("keyup", (e) => {
+        const key = mapKey(e);
+        if (key) {
+            Module.ccall("doomgeneric_key_event", null, ["number", "number"], [0, key]);
+        }
+    });
+
+    let mouseButtons = 0;
+    let MOUSE_SENS = 3;
+
+    document.addEventListener("mousemove", e => {
+        if (document.pointerLockElement !== canvas) return;
+
+        Module.ccall(
+            "doomgeneric_mouse_event",
+            null,
+            ["number", "number", "number"],
+            [mouseButtons, e.movementX * MOUSE_SENS, e.movementY * MOUSE_SENS]
+        );
+    });
+
+    document.addEventListener("mousedown", e => {
+        mouseButtons |= (1 << e.button);
+        Module.ccall(
+            "doomgeneric_mouse_event",
+            null,
+            ["number", "number", "number"],
+            [mouseButtons, 0, 0]
+        );
+    });
+
+    document.addEventListener("mouseup", e => {
+        mouseButtons &= ~(1 << e.button);
+        Module.ccall(
+            "doomgeneric_mouse_event",
+            null,
+            ["number", "number", "number"],
+            [mouseButtons, 0, 0]
+        );
+    });
+
 
     function resize() {
         canvas.width = window.innerWidth;
@@ -51,6 +164,7 @@
 
     window.addEventListener("resize", resize);
     window.addEventListener("contextmenu", e => e.preventDefault());
+
 </script>
 
 <script src="doomgeneric.js"></script>
