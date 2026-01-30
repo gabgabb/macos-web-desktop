@@ -27,6 +27,10 @@
 <script>
     const canvas = document.getElementById("canvas");
 
+    const Doom = {
+        ready: false,
+    };
+
     const KEY = {
         UP: 0xad,
         DOWN: 0xaf,
@@ -82,7 +86,6 @@
         }
     }
 
-
     const params = new URLSearchParams(location.search);
     const wad = params.get("wad") ?? "doom2.wad";
 
@@ -111,37 +114,30 @@
     let mouseButtons = 0;
     let MOUSE_SENS = 3;
 
-    document.addEventListener("mousemove", e => {
-        if (document.pointerLockElement !== canvas) return;
-
+    function doomMouse(buttons, dx, dy) {
+        if (!Doom.ready) return;
         Module.ccall(
             "doomgeneric_mouse_event",
             null,
             ["number", "number", "number"],
-            [mouseButtons, e.movementX * MOUSE_SENS, e.movementY * MOUSE_SENS]
+            [buttons, dx, dy]
         );
+    }
+
+    document.addEventListener("mousemove", e => {
+        if (document.pointerLockElement !== canvas) return;
+        doomMouse(mouseButtons, e.movementX * MOUSE_SENS, e.movementY * MOUSE_SENS);
     });
 
     document.addEventListener("mousedown", e => {
         mouseButtons |= (1 << e.button);
-        Module.ccall(
-            "doomgeneric_mouse_event",
-            null,
-            ["number", "number", "number"],
-            [mouseButtons, 0, 0]
-        );
+        doomMouse(mouseButtons, 0, 0);
     });
 
     document.addEventListener("mouseup", e => {
         mouseButtons &= ~(1 << e.button);
-        Module.ccall(
-            "doomgeneric_mouse_event",
-            null,
-            ["number", "number", "number"],
-            [mouseButtons, 0, 0]
-        );
+        doomMouse(mouseButtons, 0, 0);
     });
-
 
     function resize() {
         canvas.width = window.innerWidth;
@@ -157,6 +153,7 @@
         canvas,
         locateFile: (p) => p,
         onRuntimeInitialized() {
+            Doom.ready = true;
             resize();
             canvas.focus();
         },
