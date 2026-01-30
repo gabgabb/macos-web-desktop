@@ -73,6 +73,15 @@ export function DoomLauncher({
             <div className="mt-6 text-xs opacity-60">
                 ← → select • ENTER launch
             </div>
+            <div className="mt-4 flex items-center justify-center text-center text-xs opacity-60">
+                WASD / ZQSD • Move & strafe
+                <br />
+                Mouse • Look around
+                <br />
+                Shift • Run • Ctrl / Click • Fire
+                <br />
+                Space / E • Use • Esc • Exit mouse
+            </div>
         </div>
     );
 }

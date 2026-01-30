@@ -26,6 +26,7 @@
 
 <script>
     const canvas = document.getElementById("canvas");
+    let lastMouseTime = 0;
 
     const Doom = {
         ready: false,
@@ -34,8 +35,11 @@
     const KEY = {
         UP: 0xad,
         DOWN: 0xaf,
-        LEFT: 0xac,
-        RIGHT: 0xae,
+        STRAFE_L: 0xa0,
+        STRAFE_R: 0xa1,
+
+        TURN_L: 0xac,
+        TURN_R: 0xae,
 
         FIRE: 0xa3,
         USE: 0xa2,
@@ -58,13 +62,17 @@
                 return KEY.USE
 
             // Rotation
-            case "ArrowLeft":
             case "KeyA":
             case "KeyQ":
-                return KEY.LEFT;
-            case "ArrowRight":
+                return KEY.STRAFE_L;
             case "KeyD":
-                return KEY.RIGHT;
+                return KEY.STRAFE_R;
+
+            case "ArrowLeft":
+                return KEY.TURN_L;
+
+            case "ArrowRight":
+                return KEY.TURN_R;
 
             case "ControlLeft":
             case "ControlRight":
@@ -112,7 +120,7 @@
     });
 
     let mouseButtons = 0;
-    let MOUSE_SENS = 3;
+    let MOUSE_SENS = 2.5;
 
     function doomMouse(buttons, dx, dy) {
         if (!Doom.ready) return;
@@ -126,15 +134,27 @@
 
     document.addEventListener("mousemove", e => {
         if (document.pointerLockElement !== canvas) return;
+        if (!Doom.ready) return;
+
+        const now = performance.now();
+        if (now - lastMouseTime < 16) return;
+        lastMouseTime = now;
+
         doomMouse(mouseButtons, e.movementX * MOUSE_SENS, e.movementY * MOUSE_SENS);
     });
 
+
     document.addEventListener("mousedown", e => {
+        if (e.button === 2) return;
+
         mouseButtons |= (1 << e.button);
         doomMouse(mouseButtons, 0, 0);
     });
 
+
     document.addEventListener("mouseup", e => {
+        if (e.button === 2) return;
+
         mouseButtons &= ~(1 << e.button);
         doomMouse(mouseButtons, 0, 0);
     });
