@@ -61,7 +61,12 @@ type DesktopState = DesktopSnapshot & {
     toggleFullscreen: (windowId: string) => void;
 
     lock: () => void;
+    lockConfig?: {
+        passwordLength: number;
+    };
+
     unlock: () => void;
+    refreshSession: () => Promise<void>;
 
     setNotes: (content: string) => void;
     setTerminal: (lines: TerminalLine[]) => void;
@@ -133,7 +138,10 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
     slack: DEFAULT_STATE.slack,
 
     hydrate: async () => {
-        const snap = loadSnapshot();
+        const [snap, cfgRes] = await Promise.all([
+            loadSnapshot(),
+            fetch("/api/lock-config").then((r) => r.json()),
+        ]);
 
         let unlocked = false;
         try {
@@ -146,6 +154,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             ...DEFAULT_STATE,
             ...snap,
             notes: snap?.notes ?? DEFAULT_STATE.notes,
+            lockConfig: cfgRes,
             isLocked: !unlocked,
             terminal: snap?.terminal ?? DEFAULT_STATE.terminal,
             cwd: FS.getCwd(),
@@ -375,6 +384,21 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
 
     unlock: () => {
         set({ isLocked: false });
+    },
+
+    refreshSession: async () => {
+        try {
+            const res = await fetch("/api/session", {
+                cache: "no-store",
+            });
+            const data = await res.json();
+
+            set({
+                isLocked: !data.unlocked,
+            });
+        } catch {
+            set({ isLocked: true });
+        }
     },
 
     setMasterVolume: (v) => {

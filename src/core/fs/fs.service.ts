@@ -198,6 +198,7 @@ export const FS = {
         }
         return node;
     },
+
     search(query: string) {
         const results: Array<{ name: string; node: FsNode; path: string[] }> =
             [];

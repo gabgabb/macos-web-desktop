@@ -6,8 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
-const REQUIRED_LEN = 6;
-
 export function LockScreen() {
     const [stage, setStage] = useState<0 | 1>(0);
     const [password, setPassword] = useState<string>("");
@@ -19,9 +17,10 @@ export function LockScreen() {
 
     const { hhmm, dateLong } = useLiveClock();
 
-    const unlock = useDesktopStore((s) => s.unlock);
-
     const hydrated = useDesktopStore((s) => s.hydrated);
+    const requiredLen =
+        useDesktopStore((s) => s.lockConfig?.passwordLength) ?? 6;
+    const refreshSession = useDesktopStore((s) => s.refreshSession);
 
     if (!hydrated) return null;
 
@@ -36,7 +35,7 @@ export function LockScreen() {
 
     async function tryUnlock(pwd: string) {
         if (loading) return;
-        if (pwd.length !== REQUIRED_LEN) return;
+        if (pwd.length !== requiredLen) return;
         if (lastTriedRef.current === pwd) return;
 
         lastTriedRef.current = pwd;
@@ -60,7 +59,7 @@ export function LockScreen() {
                 throw new Error("Unlock failed");
             }
 
-            unlock();
+            await refreshSession();
             setPassword("");
             setError(null);
             lastTriedRef.current = "";
@@ -172,13 +171,13 @@ export function LockScreen() {
                                         onChange={(e) => {
                                             const next = e.target.value.slice(
                                                 0,
-                                                REQUIRED_LEN,
+                                                requiredLen,
                                             );
 
                                             setPassword(next);
                                             setError(null);
 
-                                            if (next.length === REQUIRED_LEN) {
+                                            if (next.length === requiredLen) {
                                                 tryUnlock(next);
                                             } else {
                                                 lastTriedRef.current = "";
@@ -188,10 +187,10 @@ export function LockScreen() {
                                             if (e.key === "Enter") {
                                                 if (
                                                     password.length !==
-                                                    REQUIRED_LEN
+                                                    requiredLen
                                                 ) {
                                                     triggerShake(
-                                                        `Password must be ${REQUIRED_LEN} characters`,
+                                                        `Password must be ${requiredLen} characters`,
                                                     );
                                                     return;
                                                 }

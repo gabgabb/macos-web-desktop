@@ -109,7 +109,7 @@ It is intentionally **not backed by a real filesystem or backend**, allowing ful
 
 ## Screenshots
 
-![img.png](public/img.png)
+![Demo](public/img.webp)
 
 ---
 

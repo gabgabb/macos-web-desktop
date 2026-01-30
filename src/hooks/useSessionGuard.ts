@@ -2,7 +2,7 @@
 
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export function useSessionGuard(mode: "locked" | "unlocked") {
     const hydrate = useDesktopStore((s) => s.hydrate);
@@ -10,7 +10,11 @@ export function useSessionGuard(mode: "locked" | "unlocked") {
     const isLocked = useDesktopStore((s) => s.isLocked);
     const router = useRouter();
 
+    const didHydrate = useRef(false);
+
     useEffect(() => {
+        if (didHydrate.current) return;
+        didHydrate.current = true;
         hydrate();
     }, [hydrate]);
 

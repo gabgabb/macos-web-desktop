@@ -31,7 +31,7 @@ jobs:
 
       - name: Start app (prod container)
         env:
-          NEXT_PUBLIC_LOCK_PASSWORD: aurora
+          LOCK_PASSWORD: aurora
         run: make prod
 
       - name: Wait for app

@@ -52,7 +52,7 @@ export function MessageRow({
                 </p>
 
                 {msg.reactions && msg.reactions.length > 0 && (
-                    <div className="mt-1 flex gap-3 text-xs text-gray-400">
+                    <div className="mt-1 flex gap-2 text-xs text-gray-400">
                         {msg.reactions.map((r, i) => (
                             <ReactionToMessage
                                 key={i}

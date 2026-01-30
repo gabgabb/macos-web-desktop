@@ -1,13 +1,33 @@
 import type { DesktopSnapshot, TerminalLine } from "./types";
 
-const KEY = "macos-web-desktop:v1";
+const STORAGE_KEY = "macos-web-desktop:v1";
+const SALT = "--macos-web-desktop-salt--";
+
+function encode(data: unknown): string {
+    const json = JSON.stringify(data);
+    const utf8 = encodeURIComponent(json + SALT);
+    return btoa(utf8);
+}
+
+function decode(raw: string): unknown | null {
+    try {
+        const utf8 = atob(raw);
+        const decoded = decodeURIComponent(utf8);
+
+        if (!decoded.endsWith(SALT)) return null;
+
+        const json = decoded.slice(0, -SALT.length);
+        return JSON.parse(json);
+    } catch {
+        return null;
+    }
+}
 
 export function saveSnapshot(snapshot: DesktopSnapshot) {
     try {
-        localStorage.setItem(KEY, JSON.stringify(snapshot));
-    } catch {
-        // ignore
-    }
+        const encoded = encode(snapshot);
+        localStorage.setItem(STORAGE_KEY, encoded);
+    } catch {}
 }
 
 function migrateSnapshot(raw: any): DesktopSnapshot {
@@ -42,12 +62,13 @@ function migrateSnapshot(raw: any): DesktopSnapshot {
 
 export function loadSnapshot(): DesktopSnapshot | null {
     try {
-        const raw = localStorage.getItem(KEY);
+        const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return null;
 
-        const parsed = JSON.parse(raw);
+        const decoded = decode(raw);
+        if (!decoded) return null;
 
-        return migrateSnapshot(parsed);
+        return migrateSnapshot(decoded);
     } catch {
         return null;
     }
