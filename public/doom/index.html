@@ -169,21 +169,16 @@
     }
 
     window.Module = {
-      noInitialRun: true,
-      arguments: ["-iwad", wad],
-      canvas,
-      locateFile: (p) => p,
-      onRuntimeInitialized() {
-        const check = () => {
-          if (Module.runDependencies === 0) {
+        canvas,
+        locateFile: p => p,
+        arguments: ["-iwad", wad],
+
+        onRuntimeInitialized() {
+            console.log("DOOM ready");
             resize();
-            Module.callMain(Module.arguments);
-          } else {
-            setTimeout(check, 50);
-          }
-        };
-        check();
-      }
+            Doom.ready = true;
+            canvas.focus();
+        }
     };
 
     window.addEventListener("resize", resize);
