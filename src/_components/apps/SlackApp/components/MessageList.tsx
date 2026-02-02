@@ -3,7 +3,7 @@ import {
     DaySeparator,
     TypingRow,
 } from "@/src/_components/apps/SlackApp/logic/MessageFunctions";
-import { Conversation } from "@/src/core/chatData";
+import { Conversation } from "@/src/core/apps/chatData";
 import { useDesktopStore } from "@/src/store/desktop-store";
 
 export function MessageList({ conversation }: { conversation: Conversation }) {

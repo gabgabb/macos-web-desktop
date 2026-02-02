@@ -1,5 +1,5 @@
 import { playChatSequence } from "@/src/_components/apps/SlackApp/hooks/playChatSequence";
-import { ChatEvent, INTRO_SEQUENCE } from "@/src/core/chatData";
+import { ChatEvent, INTRO_SEQUENCE } from "@/src/core/apps/chatData";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { useEffect, useRef } from "react";
 

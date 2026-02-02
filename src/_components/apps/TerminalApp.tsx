@@ -1,7 +1,7 @@
 "use client";
 
+import { TerminalLine } from "@/src/core/apps/types";
 import { FS } from "@/src/core/fs/fs.service";
-import { TerminalLine } from "@/src/core/types";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";

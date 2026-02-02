@@ -1,4 +1,9 @@
-import { Conversation, Message, USER_COLORS, USERS } from "@/src/core/chatData";
+import {
+    Conversation,
+    Message,
+    USER_COLORS,
+    USERS,
+} from "@/src/core/apps/chatData";
 import clsx from "clsx";
 import Image from "next/image";
 

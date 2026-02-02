@@ -1,6 +1,6 @@
 import { iconFor } from "@/src/_components/apps/FinderApp/FinderApp";
+import { AppId } from "@/src/core/apps/types";
 import { FsNode } from "@/src/core/fs/types";
-import { AppId } from "@/src/core/types";
 import { useDesktopStore } from "@/src/store/desktop-store";
 
 export function ListView({

@@ -1,4 +1,4 @@
-import { ChatEvent } from "@/src/core/chatData";
+import { ChatEvent } from "@/src/core/apps/chatData";
 
 export async function playChatSequence({
     steps,

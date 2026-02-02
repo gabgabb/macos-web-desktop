@@ -1,4 +1,4 @@
-import { Conversation } from "@/src/core/chatData";
+import { Conversation } from "@/src/core/apps/chatData";
 import { LockIcon } from "lucide-react";
 
 export function ConversationItem({

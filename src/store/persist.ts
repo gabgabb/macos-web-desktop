@@ -1,4 +1,4 @@
-import type { DesktopSnapshot, TerminalLine } from "./types";
+import type { DesktopSnapshot, TerminalLine } from "../core/apps/types";
 
 const STORAGE_KEY = "macos-web-desktop:v1";
 const SALT = "--macos-web-desktop-salt--";

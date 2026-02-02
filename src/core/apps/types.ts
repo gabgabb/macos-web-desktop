@@ -1,4 +1,4 @@
-import { Conversation } from "@/src/core/chatData";
+import { Conversation } from "@/src/core/apps/chatData";
 
 export type AppId =
     | "finder"

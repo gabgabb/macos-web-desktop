@@ -5,7 +5,7 @@ import { APP_ICONS } from "@/src/core/apps/icon-map";
 import { useSystemApps } from "@/src/hooks/useSystemApps";
 import { useDesktopStore } from "@/src/store/desktop-store";
 
-import { AppDefinition, AppId } from "@/src/core/types";
+import { AppDefinition, AppId } from "@/src/core/apps/types";
 import {
     useDesktopIconOrder,
     useMarqueeSelection,

@@ -1,4 +1,4 @@
-import { AppDefinition } from "@/src/core/types";
+import { AppDefinition } from "@/src/core/apps/types";
 
 export const APP_REGISTRY: Record<string, AppDefinition> = {
     finder: {

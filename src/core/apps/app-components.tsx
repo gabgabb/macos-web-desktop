@@ -7,7 +7,7 @@ import { SafariApp } from "@/src/_components/apps/SafariApp";
 import { SettingsApp } from "@/src/_components/apps/SettingsApp";
 import { SlackApp } from "@/src/_components/apps/SlackApp/SlackApp";
 import { TerminalApp } from "@/src/_components/apps/TerminalApp";
-import { AppId } from "@/src/core/types";
+import { AppId } from "@/src/core/apps/types";
 import { ComponentType } from "react";
 
 export const APP_COMPONENTS: Record<AppId, ComponentType> = {

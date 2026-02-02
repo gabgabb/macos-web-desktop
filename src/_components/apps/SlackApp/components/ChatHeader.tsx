@@ -1,4 +1,4 @@
-import { Conversation, USERS } from "@/src/core/chatData";
+import { Conversation, USERS } from "@/src/core/apps/chatData";
 import { InfoIcon, PinIcon, SearchIcon, User } from "lucide-react";
 import Image from "next/image";
 import { ReactNode } from "react";

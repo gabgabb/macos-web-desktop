@@ -1,8 +1,8 @@
+import { AppId } from "@/src/core/apps/types";
 import {
     loadDesktopIconOrder,
     saveDesktopIconOrder,
-} from "@/src/core/desktop-icons-persist";
-import { AppId } from "@/src/core/types";
+} from "@/src/store/desktop-icons-persist";
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import React, { useEffect, useState } from "react";

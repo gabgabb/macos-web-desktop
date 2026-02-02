@@ -3,7 +3,7 @@ import {
     ReactionToMessage,
     renderWithMentions,
 } from "@/src/_components/apps/SlackApp/logic/MessageFunctions";
-import { Message, USERS } from "@/src/core/chatData";
+import { Message, USERS } from "@/src/core/apps/chatData";
 import clsx from "clsx";
 import Image from "next/image";
 

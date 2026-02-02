@@ -1,4 +1,4 @@
-import { AppDefinition } from "@/src/core/types";
+import { AppDefinition } from "@/src/core/apps/types";
 import { useEffect, useState } from "react";
 
 export function useSystemApps() {

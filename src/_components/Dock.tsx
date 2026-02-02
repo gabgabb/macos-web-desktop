@@ -1,7 +1,7 @@
 "use client";
 
 import { APP_ICONS } from "@/src/core/apps/icon-map";
-import { AppDefinition } from "@/src/core/types";
+import { AppDefinition } from "@/src/core/apps/types";
 import { useSystemApps } from "@/src/hooks/useSystemApps";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { AnimatePresence, motion, useMotionValue } from "framer-motion";
