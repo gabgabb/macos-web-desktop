@@ -1,13 +1,13 @@
+import { Conversation, CONVERSATIONS } from "@/src/core/apps/chatData";
 import { APP_REGISTRY } from "@/src/core/apps/registry";
-import { Conversation, CONVERSATIONS } from "@/src/core/chatData";
-import { FS } from "@/src/core/fs/fs.service";
-import { loadSnapshot, saveSnapshot } from "@/src/core/persist";
 import type {
     AppId,
     DesktopSnapshot,
     TerminalLine,
     WindowInstance,
-} from "@/src/core/types";
+} from "@/src/core/apps/types";
+import { FS } from "@/src/core/fs/fs.service";
+import { loadSnapshot, saveSnapshot } from "@/src/store/persist";
 import { create } from "zustand";
 
 const randId = () => Math.random().toString(16).slice(2);
@@ -148,7 +148,9 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             const res = await fetch("/api/session");
             const data = await res.json();
             unlocked = !!data.unlocked;
-        } catch {}
+        } catch {
+            /* empty */
+        }
 
         set({
             ...DEFAULT_STATE,
@@ -309,9 +311,9 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
                                   height: w.height,
                               },
                               x: 0,
-                              y: 40,
+                              y: 0,
                               width: window.innerWidth,
-                              height: window.innerHeight - 40,
+                              height: window.innerHeight,
                               zIndex: newZ,
                           }
                         : w,

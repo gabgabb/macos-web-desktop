@@ -1,7 +1,7 @@
 "use client";
 
-import { AppDefinition, WindowInstance } from "@/src/core/types";
-import { DOCK_RESERVED, MENU_BAR_HEIGHT } from "@/src/core/ui-constants";
+import { AppDefinition, WindowInstance } from "@/src/core/apps/types";
+import { DOCK_RESERVED, MENU_BAR_HEIGHT } from "@/src/core/ui/ui-constants";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { motion } from "framer-motion";
 import React from "react";

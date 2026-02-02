@@ -7,8 +7,9 @@ import { MenuBar } from "@/src/_components/MenuBar";
 import { AudioPanel } from "@/src/_components/settings/AudioPanel";
 import { WifiPanel } from "@/src/_components/settings/WifiPanel";
 import { WindowManager } from "@/src/_components/WindowManager";
+import { DOCK_RESERVED, MENU_BAR_HEIGHT } from "@/src/core/ui/ui-constants";
 import { useDesktopStore } from "@/src/store/desktop-store";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 export function Desktop() {
     const [ctx, setCtx] = useState<{ open: boolean; x: number; y: number }>({
@@ -31,6 +32,12 @@ export function Desktop() {
 
     return (
         <main
+            style={
+                {
+                    "--menu-bar-height": `${MENU_BAR_HEIGHT}px`,
+                    "--dock-height": `${DOCK_RESERVED}px`,
+                } as React.CSSProperties
+            }
             data-testid="desktop"
             className="relative h-screen w-screen overflow-hidden text-white"
             onContextMenu={(e) => {
@@ -53,7 +60,10 @@ export function Desktop() {
             {wifiOpen && <WifiPanel onClose={closeWifi} />}
             {audioOpen && <AudioPanel onClose={closeAudioPanel} />}
             <DesktopIcons />
-            <WindowManager />
+
+            <div className="absolute inset-x-0 top-(--menu-bar-height) bottom-(--dock-height)">
+                <WindowManager />
+            </div>
             <Dock />
 
             <DesktopContextMenu
