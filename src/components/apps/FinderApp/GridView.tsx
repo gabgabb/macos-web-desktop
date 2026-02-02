@@ -1,4 +1,4 @@
-import { iconFor } from "@/src/_components/apps/FinderApp/FinderApp";
+import { iconFor } from "@/src/components/apps/FinderApp/FinderApp";
 import { AppId } from "@/src/core/apps/types";
 import { FsNode } from "@/src/core/fs/types";
 import { useDesktopStore } from "@/src/store/desktop-store";

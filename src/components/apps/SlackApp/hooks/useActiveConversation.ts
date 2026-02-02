@@ -1,4 +1,4 @@
-import { markConversationAsRead } from "@/src/_components/apps/SlackApp/logic/MessageFunctions";
+import { markConversationAsRead } from "@/src/components/apps/SlackApp/logic/MessageFunctions";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { useEffect, useRef, useState } from "react";
 

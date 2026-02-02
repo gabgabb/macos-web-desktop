@@ -1,7 +1,7 @@
 "use client";
 
-import { GridView } from "@/src/_components/apps/FinderApp/GridView";
-import { ListView } from "@/src/_components/apps/FinderApp/ListView";
+import { GridView } from "@/src/components/apps/FinderApp/GridView";
+import { ListView } from "@/src/components/apps/FinderApp/ListView";
 import { FS } from "@/src/core/fs/fs.service";
 import type { FsNode } from "@/src/core/fs/types";
 import { useDesktopStore } from "@/src/store/desktop-store";

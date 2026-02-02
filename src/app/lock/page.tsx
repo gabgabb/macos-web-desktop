@@ -1,7 +1,7 @@
 "use client";
 
-import { LockScreen } from "@/src/_components/LockScreen";
-import { Wallpaper } from "@/src/_components/Wallpaper";
+import { LockScreen } from "@/src/components/LockScreen";
+import { Wallpaper } from "@/src/components/Wallpaper";
 import { useSessionGuard } from "@/src/hooks/useSessionGuard";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { motion } from "framer-motion";

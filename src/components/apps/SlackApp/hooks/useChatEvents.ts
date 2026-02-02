@@ -1,4 +1,4 @@
-import { addMessageToConversation } from "@/src/_components/apps/SlackApp/logic/MessageFunctions";
+import { addMessageToConversation } from "@/src/components/apps/SlackApp/logic/MessageFunctions";
 import { ChatEvent } from "@/src/core/apps/chatData";
 import { useDesktopStore } from "@/src/store/desktop-store";
 

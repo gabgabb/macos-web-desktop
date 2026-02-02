@@ -1,8 +1,8 @@
-import { MessageRow } from "@/src/_components/apps/SlackApp/components/MessageRow";
+import { MessageRow } from "@/src/components/apps/SlackApp/components/MessageRow";
 import {
     DaySeparator,
     TypingRow,
-} from "@/src/_components/apps/SlackApp/logic/MessageFunctions";
+} from "@/src/components/apps/SlackApp/logic/MessageFunctions";
 import { Conversation } from "@/src/core/apps/chatData";
 import { useDesktopStore } from "@/src/store/desktop-store";
 

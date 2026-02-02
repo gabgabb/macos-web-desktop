@@ -1,12 +1,12 @@
 "use client";
 
-import { DesktopContextMenu } from "@/src/_components/Desktop/DesktopContextMenu";
-import { DesktopIcons } from "@/src/_components/Desktop/DesktopIcons";
-import { Dock } from "@/src/_components/Dock";
-import { MenuBar } from "@/src/_components/MenuBar";
-import { AudioPanel } from "@/src/_components/settings/AudioPanel";
-import { WifiPanel } from "@/src/_components/settings/WifiPanel";
-import { WindowManager } from "@/src/_components/WindowManager";
+import { DesktopContextMenu } from "@/src/components/Desktop/DesktopContextMenu";
+import { DesktopIcons } from "@/src/components/Desktop/DesktopIcons";
+import { Dock } from "@/src/components/Dock";
+import { MenuBar } from "@/src/components/MenuBar";
+import { AudioPanel } from "@/src/components/settings/AudioPanel";
+import { WifiPanel } from "@/src/components/settings/WifiPanel";
+import { WindowManager } from "@/src/components/WindowManager";
 import { DOCK_RESERVED, MENU_BAR_HEIGHT } from "@/src/core/ui/ui-constants";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import React, { useCallback, useState } from "react";

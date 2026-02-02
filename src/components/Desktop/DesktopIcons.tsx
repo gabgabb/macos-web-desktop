@@ -1,6 +1,6 @@
 "use client";
 
-import { DesktopIconSortable } from "@/src/_components/Desktop/DesktopIconSortable";
+import { DesktopIconSortable } from "@/src/components/Desktop/DesktopIconSortable";
 import { APP_ICONS } from "@/src/core/apps/icon-map";
 import { useSystemApps } from "@/src/hooks/useSystemApps";
 import { useDesktopStore } from "@/src/store/desktop-store";

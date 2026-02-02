@@ -10,8 +10,7 @@ import { useMemo, useRef, useState } from "react";
 
 export function Dock() {
     const openApp = useDesktopStore((s) => s.openApp);
-    const closeApp = useDesktopStore((s) => s.closeApp);
-    const isAppOpen = useDesktopStore((s) => s.isAppOpen);
+    const closeWindow = useDesktopStore((s) => s.closeWindow);
 
     const windows = useDesktopStore((s) => s.windows);
 
@@ -72,8 +71,8 @@ export function Dock() {
                                     return;
                                 }
 
-                                if (isAppOpen(app.id)) {
-                                    closeApp(app.id);
+                                if (openAppIds.has(app.id)) {
+                                    closeWindow(app.id);
                                     return;
                                 }
 

@@ -1,4 +1,4 @@
-import { ConversationItem } from "@/src/_components/apps/SlackApp/logic/SidebarFunctions";
+import { ConversationItem } from "@/src/components/apps/SlackApp/logic/SidebarFunctions";
 import { Conversation } from "@/src/core/apps/chatData";
 
 export function Sidebar({

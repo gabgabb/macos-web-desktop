@@ -1,16 +1,18 @@
 import { Conversation, CONVERSATIONS } from "@/src/core/apps/chatData";
 import { APP_REGISTRY } from "@/src/core/apps/registry";
-import type {
+import {
     AppId,
     DesktopSnapshot,
     TerminalLine,
     WindowInstance,
 } from "@/src/core/apps/types";
 import { FS } from "@/src/core/fs/fs.service";
+import { bringToFront, updateWindow } from "@/src/helpers/desktop.helpers";
 import { loadSnapshot, saveSnapshot } from "@/src/store/persist";
+import { persistDesktop } from "@/src/store/persist-desktop";
 import { create } from "zustand";
 
-const randId = () => Math.random().toString(16).slice(2);
+const randId = () => crypto.randomUUID();
 
 const DEFAULT_STATE: DesktopSnapshot = {
     windows: [],
@@ -40,23 +42,22 @@ const DEFAULT_STATE: DesktopSnapshot = {
     },
 };
 
-type DesktopState = DesktopSnapshot & {
+export type DesktopState = DesktopSnapshot & {
     hydrated: boolean;
-    hydrate: () => void;
     isLocked: boolean;
+    cwd: string[];
+
+    hydrate: () => void;
+    reset: () => void;
 
     openApp: (appId: AppId) => void;
-    closeApp: (appId: AppId) => void;
-    isAppOpen: (appId: AppId) => boolean;
-
     closeWindow: (windowId: string) => void;
-
     focusWindow: (windowId: string) => void;
+
     setWindowRect: (
         windowId: string,
         rect: { x: number; y: number; width: number; height: number },
     ) => void;
-
     minimizeWindow: (windowId: string) => void;
     toggleFullscreen: (windowId: string) => void;
 
@@ -64,14 +65,11 @@ type DesktopState = DesktopSnapshot & {
     lockConfig?: {
         passwordLength: number;
     };
-
     unlock: () => void;
     refreshSession: () => Promise<void>;
 
     setNotes: (content: string) => void;
     setTerminal: (lines: TerminalLine[]) => void;
-
-    cwd: string[];
     refreshFs: () => void;
 
     setWallpaper: (url: string) => void;
@@ -82,10 +80,7 @@ type DesktopState = DesktopSnapshot & {
     setAppVolume: (appId: AppId, v: number) => void;
 
     toggleAudioPanel: () => void;
-    closeAudioPanel: () => void;
-
-    toggleWifiPanel: () => void;
-    closeWifiPanel: () => void;
+    toggleWifiPanel(): void;
 
     markSlackIntroPlayed: () => void;
     setSlackConversations: (
@@ -94,177 +89,99 @@ type DesktopState = DesktopSnapshot & {
 
     startTyping: (conversationId: string, authorId: string) => void;
     stopTyping: () => void;
-
-    reset: () => void;
 };
-
-function persist(get: () => DesktopState) {
-    const {
-        windows,
-        activeWindowId,
-        topZ,
-        notes,
-        terminal,
-        settings,
-        audio,
-        ui,
-        progress,
-        slack,
-    } = get();
-    saveSnapshot({
-        windows,
-        activeWindowId,
-        topZ,
-        notes,
-        terminal,
-        settings,
-        audio,
-        ui,
-        progress,
-        slack,
-    });
-}
 
 export const useDesktopStore = create<DesktopState>((set, get) => ({
     ...DEFAULT_STATE,
     isLocked: true,
     hydrated: false,
-    notes: DEFAULT_STATE.notes,
-    terminal: DEFAULT_STATE.terminal,
     cwd: FS.getCwd(),
-    settings: DEFAULT_STATE.settings,
-    audio: DEFAULT_STATE.audio,
-    progress: DEFAULT_STATE.progress,
-    slack: DEFAULT_STATE.slack,
 
     hydrate: async () => {
-        const [snap, cfgRes] = await Promise.all([
+        let unlocked = false;
+        const [snap] = await Promise.all([
             loadSnapshot(),
             fetch("/api/lock-config").then((r) => r.json()),
+            fetch("/api/session", { credentials: "same-origin" })
+                .then(async (r) => {
+                    const data = await r.json();
+                    unlocked = !!data.unlocked;
+                })
+                .catch(() => null),
         ]);
-
-        let unlocked = false;
-        try {
-            const res = await fetch("/api/session");
-            const data = await res.json();
-            unlocked = !!data.unlocked;
-        } catch {
-            /* empty */
-        }
 
         set({
             ...DEFAULT_STATE,
             ...snap,
-            notes: snap?.notes ?? DEFAULT_STATE.notes,
-            lockConfig: cfgRes,
             isLocked: !unlocked,
-            terminal: snap?.terminal ?? DEFAULT_STATE.terminal,
             cwd: FS.getCwd(),
-            audio: { ...DEFAULT_STATE.audio, ...snap?.audio },
-            ui: { ...DEFAULT_STATE.ui, ...snap?.ui },
-            progress: snap?.progress ?? DEFAULT_STATE.progress,
-            slack: snap?.slack ?? DEFAULT_STATE.slack,
             hydrated: true,
         });
     },
 
-    openApp: (appId) => {
+    openApp(appId) {
         const { windows, topZ } = get();
         const appDef = APP_REGISTRY[appId];
 
         const existing = windows.find((w) => w.appId === appId);
         if (existing) {
-            set({
-                windows: windows.map((w) =>
-                    w.windowId === existing.windowId
-                        ? { ...w, isMinimized: false }
-                        : w,
+            set((s) => ({
+                ...bringToFront(
+                    updateWindow(s.windows, existing.windowId, {
+                        isMinimized: false,
+                    }),
+                    s.topZ,
+                    existing.windowId,
                 ),
-            });
-            get().focusWindow(existing.windowId);
+            }));
+            persistDesktop(get);
             return;
         }
-
-        const newZ = topZ + 1;
 
         const win: WindowInstance = {
             windowId: randId(),
             appId,
             title: appDef.title,
-
-            x: 90 + windows.length * 18,
-            y: 80 + windows.length * 18,
-
+            x: 120,
+            y: 80,
             width: appDef.window.defaultSize.w,
             height: appDef.window.defaultSize.h,
-
             isMinimized: false,
             isFullscreen: false,
-            zIndex: newZ,
-            restoreRect: undefined,
+            zIndex: topZ + 1,
         };
 
         set({
             windows: [...windows, win],
             activeWindowId: win.windowId,
-            topZ: newZ,
+            topZ: topZ + 1,
         });
 
-        persist(get);
+        persistDesktop(get);
     },
 
-    closeApp: (appId) => {
-        set((state) => ({
-            windows: state.windows.filter((w) => w.appId !== appId),
+    closeWindow(windowId) {
+        set((s) => ({
+            windows: s.windows.filter((w) => w.windowId !== windowId),
             activeWindowId:
-                state.activeWindowId &&
-                state.windows.some(
-                    (w) =>
-                        w.windowId === state.activeWindowId &&
-                        w.appId !== appId,
-                )
-                    ? state.activeWindowId
-                    : null,
+                s.activeWindowId === windowId ? null : s.activeWindowId,
         }));
+        persistDesktop(get);
     },
 
-    isAppOpen: (appId) => get().windows.some((w) => w.appId === appId),
-
-    closeWindow: (windowId) => {
-        set((state) => ({
-            windows: state.windows.filter((w) => w.windowId !== windowId),
-            activeWindowId:
-                state.activeWindowId === windowId ? null : state.activeWindowId,
+    focusWindow(windowId) {
+        set((s) => ({
+            ...bringToFront(s.windows, s.topZ, windowId),
+            ui: DEFAULT_STATE.ui,
         }));
-        persist(get);
+        persistDesktop(get);
     },
 
-    focusWindow: (windowId) => {
-        const { windows, topZ } = get();
-        const newZ = topZ + 1;
-
-        set({
-            windows: windows.map((w) =>
-                w.windowId === windowId ? { ...w, zIndex: newZ } : w,
-            ),
-            activeWindowId: windowId,
-            topZ: newZ,
-            ui: {
-                audioPanelOpen: false,
-                wifiPanelOpen: false,
-            },
-        });
-
-        persist(get);
-    },
-
-    setWindowRect: (windowId, rect) => {
-        set((state) => ({
-            windows: state.windows.map((w) =>
-                w.windowId === windowId ? { ...w, ...rect } : w,
-            ),
+    setWindowRect(windowId, rect) {
+        set((s) => ({
+            windows: updateWindow(s.windows, windowId, rect),
         }));
-        persist(get);
+        persistDesktop(get);
     },
 
     reset: () => {
@@ -277,91 +194,57 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         saveSnapshot(DEFAULT_STATE);
     },
 
-    minimizeWindow: (windowId) => {
-        set((state) => ({
-            windows: state.windows.map((w) =>
-                w.windowId === windowId
-                    ? { ...w, isMinimized: !w.isMinimized }
-                    : w,
-            ),
-            activeWindowId:
-                state.activeWindowId === windowId ? null : state.activeWindowId,
+    minimizeWindow(windowId) {
+        set((s) => ({
+            windows: updateWindow(s.windows, windowId, {
+                isMinimized: !s.windows.find((w) => w.windowId === windowId)
+                    ?.isMinimized,
+            }),
         }));
-        persist(get);
+        persistDesktop(get);
     },
 
-    toggleFullscreen: (windowId) => {
-        const { windows, topZ } = get();
-        const newZ = topZ + 1;
+    toggleFullscreen(windowId) {
+        const w = get().windows.find((w) => w.windowId === windowId);
+        if (!w) return;
 
-        const target = windows.find((w) => w.windowId === windowId);
-        if (!target) return;
-
-        if (!target.isFullscreen) {
-            set((state) => ({
-                windows: state.windows.map((w) =>
-                    w.windowId === windowId
-                        ? {
-                              ...w,
-                              isFullscreen: true,
-                              restoreRect: {
-                                  x: w.x,
-                                  y: w.y,
-                                  width: w.width,
-                                  height: w.height,
-                              },
-                              x: 0,
-                              y: 0,
-                              width: window.innerWidth,
-                              height: window.innerHeight,
-                              zIndex: newZ,
-                          }
-                        : w,
-                ),
-                activeWindowId: windowId,
-                topZ: newZ,
-            }));
-        } else {
-            set((state) => ({
-                windows: state.windows.map((w) => {
-                    if (w.windowId !== windowId) return w;
-                    const r = w.restoreRect;
-                    return {
-                        ...w,
-                        isFullscreen: false,
-                        restoreRect: undefined,
-                        x: r?.x ?? 120,
-                        y: r?.y ?? 80,
-                        width: r?.width ?? 520,
-                        height: r?.height ?? 360,
-                        zIndex: newZ,
-                    };
+        if (!w.isFullscreen) {
+            set((s) => ({
+                windows: updateWindow(s.windows, windowId, {
+                    isFullscreen: true,
+                    restoreRect: {
+                        x: w.x,
+                        y: w.y,
+                        width: w.width,
+                        height: w.height,
+                    },
+                    x: 0,
+                    y: 0,
+                    width: window.innerWidth,
+                    height: window.innerHeight,
                 }),
-                activeWindowId: windowId,
-                topZ: newZ,
+            }));
+        } else if (w.restoreRect) {
+            set((s) => ({
+                windows: updateWindow(s.windows, windowId, {
+                    isFullscreen: false,
+                    ...w.restoreRect,
+                    restoreRect: undefined,
+                }),
             }));
         }
 
-        persist(get);
+        persistDesktop(get);
     },
 
-    setNotes: (content) => {
-        set((state) => ({
-            notes: {
-                ...state.notes,
-                content,
-            },
-        }));
-
-        persist(get);
+    setNotes(content) {
+        set((s) => ({ notes: { ...s.notes, content } }));
+        persistDesktop(get);
     },
 
-    setTerminal: (lines) => {
-        set(() => ({
-            terminal: { lines },
-        }));
-
-        persist(get);
+    setTerminal(lines) {
+        set({ terminal: { lines } });
+        persistDesktop(get);
     },
 
     refreshFs: () => set({ cwd: FS.getCwd() }),
@@ -370,14 +253,14 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         set((state) => ({
             settings: { ...state.settings, wallpaper },
         }));
-        persist(get);
+        persistDesktop(get);
     },
 
     setTheme: (theme: "light" | "dark" | "auto") => {
         set((state) => ({
             settings: { ...state.settings, theme },
         }));
-        persist(get);
+        persistDesktop(get);
     },
 
     lock: () => {
@@ -392,6 +275,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         try {
             const res = await fetch("/api/session", {
                 cache: "no-store",
+                credentials: "same-origin",
             });
             const data = await res.json();
 
@@ -407,14 +291,14 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         set((s) => ({
             audio: { ...s.audio, masterVolume: v },
         }));
-        persist(get);
+        persistDesktop(get);
     },
 
     toggleMute: () => {
         set((s) => ({
             audio: { ...s.audio, muted: !s.audio.muted },
         }));
-        persist(get);
+        persistDesktop(get);
     },
 
     setAppVolume: (appId, v) => {
@@ -424,7 +308,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
                 appVolumes: { ...s.audio.appVolumes, [appId]: v },
             },
         }));
-        persist(get);
+        persistDesktop(get);
     },
 
     toggleAudioPanel: () =>
@@ -435,22 +319,12 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             },
         })),
 
-    closeAudioPanel: () =>
-        set((state) => ({
-            ui: { ...state.ui, audioPanelOpen: false },
-        })),
-
     toggleWifiPanel: () =>
         set((state) => ({
             ui: {
                 wifiPanelOpen: !state.ui.wifiPanelOpen,
                 audioPanelOpen: false,
             },
-        })),
-
-    closeWifiPanel: () =>
-        set((state) => ({
-            ui: { ...state.ui, wifiPanelOpen: false },
         })),
 
     markSlackIntroPlayed: () => {
@@ -460,7 +334,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
                 slackIntroPlayed: true,
             },
         }));
-        persist(get);
+        persistDesktop(get);
     },
 
     setSlackConversations: (
@@ -472,7 +346,7 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
                 conversations: updater(state.slack!.conversations),
             },
         }));
-        persist(get);
+        persistDesktop(get);
     },
 
     startTyping: (conversationId, authorId) => {

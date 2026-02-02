@@ -1,10 +1,10 @@
-import { ChatHeader } from "@/src/_components/apps/SlackApp/components/ChatHeader";
-import { InputSlack } from "@/src/_components/apps/SlackApp/components/InputSlack";
-import { MessageList } from "@/src/_components/apps/SlackApp/components/MessageList";
-import { Sidebar } from "@/src/_components/apps/SlackApp/components/Sidebar";
-import { useActiveConversation } from "@/src/_components/apps/SlackApp/hooks/useActiveConversation";
-import { useChatEvents } from "@/src/_components/apps/SlackApp/hooks/useChatEvents";
-import { useSlackIntro } from "@/src/_components/apps/SlackApp/hooks/useSlackIntro";
+import { ChatHeader } from "@/src/components/apps/SlackApp/components/ChatHeader";
+import { InputSlack } from "@/src/components/apps/SlackApp/components/InputSlack";
+import { MessageList } from "@/src/components/apps/SlackApp/components/MessageList";
+import { Sidebar } from "@/src/components/apps/SlackApp/components/Sidebar";
+import { useActiveConversation } from "@/src/components/apps/SlackApp/hooks/useActiveConversation";
+import { useChatEvents } from "@/src/components/apps/SlackApp/hooks/useChatEvents";
+import { useSlackIntro } from "@/src/components/apps/SlackApp/hooks/useSlackIntro";
 
 export function SlackApp() {
     const { handleChatEvent } = useChatEvents();

@@ -1,6 +1,6 @@
 "use client";
 
-import { SelectCalendar } from "@/src/_components/SelectCalendar";
+import { SelectCalendar } from "@/src/components/SelectCalendar";
 import { motion } from "framer-motion";
 import { useState } from "react";
 

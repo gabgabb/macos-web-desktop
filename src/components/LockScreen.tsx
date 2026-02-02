@@ -45,6 +45,7 @@ export function LockScreen() {
         try {
             const res = await fetch("/api/unlock", {
                 method: "POST",
+                credentials: "same-origin",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ password: pwd }),
             });

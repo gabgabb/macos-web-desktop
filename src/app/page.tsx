@@ -1,7 +1,7 @@
 "use client";
 
-import { Desktop } from "@/src/_components/Desktop/Desktop";
-import { Wallpaper } from "@/src/_components/Wallpaper";
+import { Desktop } from "@/src/components/Desktop/Desktop";
+import { Wallpaper } from "@/src/components/Wallpaper";
 import { useSessionGuard } from "@/src/hooks/useSessionGuard";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import { motion } from "framer-motion";
