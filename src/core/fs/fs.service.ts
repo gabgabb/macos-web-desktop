@@ -25,15 +25,17 @@ function searchNode(
 const applicationsDir: FsNode = {
     type: "dir",
     children: Object.fromEntries(
-        Object.entries(APP_REGISTRY).map(([id, app]) => [
-            `${app.title}`,
-            {
-                type: "app",
-                id: id,
-                title: app.title,
-                icon: APP_ICONS[app.icon],
-            },
-        ]),
+        Object.entries(APP_REGISTRY)
+            .filter(([, app]) => app.showInDock && app.showOnDesktop)
+            .map(([id, app]) => [
+                `${app.title}`,
+                {
+                    type: "app",
+                    id: id,
+                    title: app.title,
+                    icon: APP_ICONS[app.icon],
+                },
+            ]),
     ),
 };
 
@@ -63,7 +65,10 @@ let root: FsNode = {
                         Documents: {
                             type: "dir",
                             children: {
-                                "cv.pdf": { type: "file", content: "" },
+                                "CV_Gabriel_EN.pdf": {
+                                    type: "file",
+                                    content: "",
+                                },
                                 "cover-letter.txt": {
                                     type: "file",
                                     content: "Dear recruiter...",
@@ -84,7 +89,7 @@ let root: FsNode = {
                                             children: {
                                                 "index.html": {
                                                     type: "file",
-                                                    content: "<html></html>",
+                                                    content: "<html>cc</html>",
                                                 },
                                                 "style.css": {
                                                     type: "file",
@@ -162,9 +167,15 @@ export const FS = {
         return Object.keys(node.children);
     },
 
-    readFile(path: string) {
-        const { node } = resolvePath(root, cwd, path);
-        if (!node || node.type !== "file") {
+    readFile(path: string[]) {
+        let node: FsNode = root;
+        for (const p of path) {
+            if (node.type !== "dir") {
+                throw new Error("Not a file");
+            }
+            node = node.children[p];
+        }
+        if (node.type !== "file") {
             throw new Error("Not a file");
         }
         return node.content;

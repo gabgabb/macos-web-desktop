@@ -9,6 +9,7 @@ export type AppId =
     | "calculator"
     | "calendar"
     | "slack"
+    | "preview"
     | "doom";
 
 export type AppDefinition = {
@@ -76,6 +77,10 @@ export type DesktopSnapshot = {
             conversationId: string;
             authorId: string;
         } | null;
+    };
+    activeFile?: {
+        name: string;
+        path: string[];
     };
 };
 

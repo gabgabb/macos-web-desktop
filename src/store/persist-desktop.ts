@@ -13,6 +13,7 @@ export function persistDesktop(get: () => DesktopState) {
         ui,
         progress,
         slack,
+        activeFile,
     } = get();
 
     saveSnapshot({
@@ -26,5 +27,6 @@ export function persistDesktop(get: () => DesktopState) {
         ui,
         progress,
         slack,
+        activeFile,
     });
 }

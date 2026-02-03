@@ -20,7 +20,7 @@ import {
     SearchIcon,
 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SIDEBAR_PATHS = {
     recents: [],
@@ -116,7 +116,8 @@ export function iconFor(node: FsNode, name: string) {
 export function FinderApp() {
     const cwd = useDesktopStore((s) => s.cwd);
     const refreshFs = useDesktopStore((s) => s.refreshFs);
-    const [viewPath, setViewPath] = useState<string[]>(cwd);
+    const isHistoryNavigation = useRef(false);
+    const prevCwdRef = useRef<string[] | null>(null);
 
     const [history, setHistory] = useState<string[][]>([cwd]);
     const [historyIndex, setHistoryIndex] = useState<number>(0);
@@ -135,11 +136,13 @@ export function FinderApp() {
     }
 
     const filteredEntries =
-        query.trim() === ""
-            ? Object.entries(node.children)
-            : FS.search(query).map(
-                  ({ name, node }) => [name, node] as [string, FsNode],
-              );
+        query === ""
+            ? Object.entries(node.children).map(([name, node]) => ({
+                  name,
+                  node,
+                  path: [...cwd, name],
+              }))
+            : FS.search(query);
 
     function navigate(next: string[]) {
         setHistory((h) => [...h.slice(0, historyIndex + 1), next]);
@@ -147,35 +150,64 @@ export function FinderApp() {
 
         FS.cd("/" + next.join("/"));
         refreshFs();
-        setViewPath(next);
     }
 
     function navigateTo(key: SidebarKey) {
         navigate([...SIDEBAR_PATHS[key]]);
+        if (query !== "") {
+            exitSearchAndNavigate();
+        }
     }
 
     function goBack() {
-        if (historyIndex === 0) return;
+        if (historyIndex <= 0) return;
         const next = history[historyIndex - 1];
+        isHistoryNavigation.current = true;
         setHistoryIndex((i) => i - 1);
         FS.cd("/" + next.join("/"));
         refreshFs();
-        setViewPath(next);
     }
 
     function goForward() {
         if (historyIndex >= history.length - 1) return;
         const next = history[historyIndex + 1];
+        isHistoryNavigation.current = true;
         setHistoryIndex((i) => i + 1);
         FS.cd("/" + next.join("/"));
         refreshFs();
-        setViewPath(next);
     }
 
     function titleFromPath(path: string[]) {
         if (path.length === 0) return "Recents";
         return path[path.length - 1];
     }
+
+    function exitSearchAndNavigate() {
+        setQuery("");
+        setSearchOpen(false);
+        setSelected(null);
+    }
+
+    useEffect(() => {
+        const prev = prevCwdRef.current;
+
+        if (!prev) {
+            prevCwdRef.current = cwd;
+            return;
+        }
+
+        if (prev.join("/") === cwd.join("/")) return;
+
+        if (isHistoryNavigation.current) {
+            isHistoryNavigation.current = false;
+            prevCwdRef.current = cwd;
+            return;
+        }
+
+        setHistory((h) => [...h.slice(0, historyIndex + 1), cwd]);
+        setHistoryIndex((i) => i + 1);
+        prevCwdRef.current = cwd;
+    }, [cwd]);
 
     return (
         <div className="flex h-full w-full bg-gray-100">
@@ -272,7 +304,7 @@ export function FinderApp() {
                         </div>
 
                         <div className="text-sm font-bold">
-                            {query ? `Searching...` : titleFromPath(viewPath)}
+                            {query ? `Searching...` : titleFromPath(cwd)}
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -354,14 +386,16 @@ export function FinderApp() {
                             entries={filteredEntries}
                             selected={selected}
                             setSelected={setSelected}
-                            onOpenDir={(name) => navigate([...cwd, name])}
+                            cwd={cwd}
+                            exitSearchAndNavigate={exitSearchAndNavigate}
                         />
                     ) : (
                         <ListView
                             entries={filteredEntries}
                             selected={selected}
                             setSelected={setSelected}
-                            onOpenDir={(name) => navigate([...cwd, name])}
+                            cwd={cwd}
+                            exitSearchAndNavigate={exitSearchAndNavigate}
                         />
                     )}
                 </>

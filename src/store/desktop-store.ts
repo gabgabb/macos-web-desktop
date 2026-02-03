@@ -70,7 +70,14 @@ export type DesktopState = DesktopSnapshot & {
 
     setNotes: (content: string) => void;
     setTerminal: (lines: TerminalLine[]) => void;
+
     refreshFs: () => void;
+    activeFile?: {
+        name: string;
+        path: string[];
+    };
+
+    setActiveFile(file: DesktopState["activeFile"]): void;
 
     setWallpaper: (url: string) => void;
     setTheme: (theme: "auto" | "dark" | "light") => void;
@@ -117,6 +124,10 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             cwd: FS.getCwd(),
             hydrated: true,
         });
+
+        if (snap?.activeFile) {
+            get().openApp("preview");
+        }
     },
 
     openApp(appId) {
@@ -161,11 +172,16 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
     },
 
     closeWindow(windowId) {
-        set((s) => ({
-            windows: s.windows.filter((w) => w.windowId !== windowId),
-            activeWindowId:
-                s.activeWindowId === windowId ? null : s.activeWindowId,
-        }));
+        set((s) => {
+            const win = s.windows.find((w) => w.windowId === windowId);
+
+            return {
+                windows: s.windows.filter((w) => w.windowId !== windowId),
+                activeWindowId:
+                    s.activeWindowId === windowId ? null : s.activeWindowId,
+                activeFile: win?.appId === "preview" ? undefined : s.activeFile,
+            };
+        });
         persistDesktop(get);
     },
 
@@ -248,6 +264,11 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
     },
 
     refreshFs: () => set({ cwd: FS.getCwd() }),
+
+    setActiveFile(file) {
+        set({ activeFile: file });
+        persistDesktop(get);
+    },
 
     setWallpaper: (wallpaper: string) => {
         set((state) => ({

@@ -1,31 +1,20 @@
 import { iconFor } from "@/src/components/apps/FinderApp/FinderApp";
-import { AppId } from "@/src/core/apps/types";
-import { FsNode } from "@/src/core/fs/types";
-import { useDesktopStore } from "@/src/store/desktop-store";
+import { openNode } from "@/src/core/fs/openNode";
+import { FinderEntry } from "@/src/core/fs/types";
 
 export function GridView({
     entries,
     selected,
     setSelected,
-    onOpenDir,
+    cwd,
+    exitSearchAndNavigate,
 }: {
-    entries: Array<[string, FsNode]>;
+    entries: FinderEntry[];
     selected: string | null;
     setSelected: (name: string | null) => void;
-    onOpenDir: (name: string) => void;
+    cwd: string[];
+    exitSearchAndNavigate: () => void;
 }) {
-    const openApp = useDesktopStore((s) => s.openApp);
-
-    function handleOpen(name: string, node: FsNode) {
-        if (node.type === "dir") {
-            onOpenDir(name);
-        }
-
-        if (node.type === "app") {
-            openApp(node.id as AppId);
-        }
-    }
-
     return (
         <div className="mt-2 overflow-y-auto border-t border-gray-200 px-4 pb-1">
             {entries.length === 0 && (
@@ -34,7 +23,7 @@ export function GridView({
                 </div>
             )}
             <div className="mt-2 flex w-fit flex-wrap gap-4">
-                {entries.map(([name, node]) => (
+                {entries.map(({ name, node, path }) => (
                     <button
                         key={name}
                         onClick={(e) => {
@@ -43,7 +32,12 @@ export function GridView({
                         }}
                         onDoubleClick={(e) => {
                             e.stopPropagation();
-                            handleOpen(name, node);
+                            openNode(
+                                name,
+                                node,
+                                path.slice(0, -1),
+                                exitSearchAndNavigate,
+                            );
                         }}
                         className={`flex flex-col items-center rounded-xl p-2 text-center transition ${
                             selected === name

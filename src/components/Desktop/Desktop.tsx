@@ -24,11 +24,11 @@ export function Desktop() {
         setCtx((s) => ({ ...s, open: false }));
     }, []);
 
-    const audioOpen = useDesktopStore((s) => s.ui.audioPanelOpen);
-    const closeAudioPanel = useDesktopStore((s) => s.closeAudioPanel);
+    const audioPanelOpen = useDesktopStore((s) => s.ui.audioPanelOpen);
+    const wifiPanelOpen = useDesktopStore((s) => s.ui.wifiPanelOpen);
 
-    const wifiOpen = useDesktopStore((s) => s.ui.wifiPanelOpen);
-    const closeWifi = useDesktopStore((s) => s.closeWifiPanel);
+    const toggleAudioPanel = useDesktopStore((s) => s.toggleAudioPanel);
+    const toggleWifiPanel = useDesktopStore((s) => s.toggleWifiPanel);
 
     return (
         <main
@@ -57,8 +57,10 @@ export function Desktop() {
             }}
         >
             <MenuBar />
-            {wifiOpen && <WifiPanel onClose={closeWifi} />}
-            {audioOpen && <AudioPanel onClose={closeAudioPanel} />}
+            {wifiPanelOpen && <WifiPanel onClose={toggleWifiPanel} />}
+
+            {audioPanelOpen && <AudioPanel onClose={toggleAudioPanel} />}
+
             <DesktopIcons />
 
             <div className="absolute inset-x-0 top-(--menu-bar-height) bottom-(--dock-height)">

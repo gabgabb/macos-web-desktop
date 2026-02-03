@@ -97,6 +97,18 @@ export const APP_REGISTRY: Record<string, AppDefinition> = {
             withPadding: false,
         },
     },
+    preview: {
+        id: "preview",
+        title: "Preview",
+        icon: "preview",
+        showInDock: false,
+        showOnDesktop: false,
+        window: {
+            defaultSize: { w: 700, h: 500 },
+            resizable: true,
+            withPadding: false,
+        },
+    },
     doom: {
         id: "doom",
         title: "DOOM",

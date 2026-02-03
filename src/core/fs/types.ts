@@ -18,3 +18,9 @@ export type FsApp = {
 };
 
 export type FsNode = FsFile | FsDir | FsApp;
+
+export type FinderEntry = {
+    name: string;
+    node: FsNode;
+    path: string[];
+};
