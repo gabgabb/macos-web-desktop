@@ -22,7 +22,7 @@ export const PreviewApp: FunctionComponent<AppProps> = ({ windowId }) => {
             return;
         }
 
-        setWindowTitle(windowId, `Preview — ${activeFile.name}`);
+        setWindowTitle(windowId, `Preview - ${activeFile.name}`);
     }, [activeFile, windowId, setWindowTitle]);
 
     if (!activeFile) {
