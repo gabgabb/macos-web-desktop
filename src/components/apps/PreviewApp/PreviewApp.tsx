@@ -1,15 +1,29 @@
 import { TextFileViewer } from "@/src/components/apps/PreviewApp/TextViewer";
+import { AppProps } from "@/src/core/apps/types";
 import { useDesktopStore } from "@/src/store/desktop-store";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { FunctionComponent, useEffect } from "react";
 
 const PdfViewerDynamic = dynamic(
     () => import("./PdfViewer").then((m) => m.PdfViewer),
     { ssr: false },
 );
 
-export function PreviewApp() {
+export const PreviewApp: FunctionComponent<AppProps> = ({ windowId }) => {
     const activeFile = useDesktopStore((s) => s.activeFile);
+    const setWindowTitle = useDesktopStore((s) => s.setWindowTitle);
+
+    useEffect(() => {
+        if (!windowId) return;
+
+        if (!activeFile) {
+            setWindowTitle(windowId, "Preview");
+            return;
+        }
+
+        setWindowTitle(windowId, `Preview — ${activeFile.name}`);
+    }, [activeFile, windowId, setWindowTitle]);
 
     if (!activeFile) {
         return (
@@ -51,4 +65,4 @@ export function PreviewApp() {
             Cannot preview this file
         </div>
     );
-}
+};

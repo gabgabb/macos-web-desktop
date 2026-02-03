@@ -89,3 +89,7 @@ export type TerminalLine = {
     type: "out" | "err" | "info";
     text: string;
 };
+
+export type AppProps = {
+    windowId?: string;
+};

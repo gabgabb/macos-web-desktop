@@ -26,7 +26,7 @@ export function WindowManager() {
 
                     return (
                         <MacWindow key={w.windowId} win={w} appDef={appDef}>
-                            <AppComponent />
+                            <AppComponent windowId={w.windowId} />
                         </MacWindow>
                     );
                 })}

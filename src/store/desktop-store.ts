@@ -58,6 +58,7 @@ export type DesktopState = DesktopSnapshot & {
         windowId: string,
         rect: { x: number; y: number; width: number; height: number },
     ) => void;
+    setWindowTitle: (windowId: string, title: string) => void;
     minimizeWindow: (windowId: string) => void;
     toggleFullscreen: (windowId: string) => void;
 
@@ -196,6 +197,13 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
     setWindowRect(windowId, rect) {
         set((s) => ({
             windows: updateWindow(s.windows, windowId, rect),
+        }));
+        persistDesktop(get);
+    },
+
+    setWindowTitle(windowId: string, title: string) {
+        set((s) => ({
+            windows: updateWindow(s.windows, windowId, { title }),
         }));
         persistDesktop(get);
     },

@@ -8,10 +8,10 @@ import { SafariApp } from "@/src/components/apps/SafariApp";
 import { SettingsApp } from "@/src/components/apps/SettingsApp";
 import { SlackApp } from "@/src/components/apps/SlackApp/SlackApp";
 import { TerminalApp } from "@/src/components/apps/TerminalApp";
-import { AppId } from "@/src/core/apps/types";
+import { AppId, AppProps } from "@/src/core/apps/types";
 import { ComponentType } from "react";
 
-export const APP_COMPONENTS: Record<AppId, ComponentType> = {
+export const APP_COMPONENTS: Record<AppId, ComponentType<AppProps>> = {
     finder: FinderApp,
     notes: NotesApp,
     settings: SettingsApp,

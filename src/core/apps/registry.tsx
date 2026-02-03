@@ -104,7 +104,7 @@ export const APP_REGISTRY: Record<string, AppDefinition> = {
         showInDock: false,
         showOnDesktop: false,
         window: {
-            defaultSize: { w: 700, h: 500 },
+            defaultSize: { w: 900, h: 600 },
             resizable: true,
             withPadding: false,
         },
