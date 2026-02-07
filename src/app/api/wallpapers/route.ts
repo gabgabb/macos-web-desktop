@@ -4,10 +4,11 @@ import { NextResponse } from "next/server";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const ROOT =
+const PROJECT_ROOT = path.join(process.cwd(), "public", "wallpapers");
+const VIDEO_ROOT =
     process.env.NODE_ENV === "production"
         ? "/var/www/assets/wallpapers"
-        : path.join(process.cwd(), "public", "wallpapers");
+        : PROJECT_ROOT;
 
 export async function GET() {
     try {
@@ -15,7 +16,10 @@ export async function GET() {
         const wallpapers: any[] = [];
 
         for (const category of categories) {
-            const categoryDir = path.join(ROOT, category);
+            const baseRoot = category === "video" ? VIDEO_ROOT : PROJECT_ROOT;
+
+            const categoryDir = path.join(baseRoot, category);
+
             let entries: string[];
             try {
                 entries = await fs.readdir(categoryDir);
