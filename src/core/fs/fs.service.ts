@@ -73,6 +73,21 @@ let root: FsNode = {
                                     type: "file",
                                     content: "Dear recruiter...",
                                 },
+                                LeagueOfLegends: {
+                                    type: "dir",
+                                    children: {
+                                        "how_to_make_babies.txt": {
+                                            type: "file",
+                                            content:
+                                                "Un moment de détente bien mérité après la venue au monde d'Elena.\n" +
+                                                "De la part de Louis, Dimitri, Raph, Thibault, Sylvain, Olivier et Gabriel",
+                                        },
+                                        "how_to_become_good_parents.pdf": {
+                                            type: "file",
+                                            content: "",
+                                        },
+                                    },
+                                },
                                 Projects: {
                                     type: "dir",
                                     children: {

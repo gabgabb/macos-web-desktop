@@ -39,16 +39,19 @@ export function GridView({
                                 exitSearchAndNavigate,
                             );
                         }}
-                        className={`flex flex-col items-center rounded-xl p-2 text-center transition ${
+                        className={`group flex flex-col items-center rounded-xl p-2 text-center transition ${
                             selected === name
                                 ? "bg-blue-500/20 ring-1 ring-blue-400"
                                 : "hover:bg-gray-200"
-                        } `}
+                        }`}
                     >
                         <div className="flex h-10 w-10 justify-center">
                             {iconFor(node, name)}
                         </div>
-                        <div className="mt-2 w-16 truncate text-xs">{name}</div>
+
+                        <div className="mt-2 line-clamp-1 w-18 text-xs break-all group-hover:line-clamp-3 group-focus:line-clamp-2">
+                            {name}
+                        </div>
                     </button>
                 ))}
             </div>
