@@ -4,9 +4,11 @@ import {
     AppId,
     DesktopSnapshot,
     TerminalLine,
+    Wallpaper,
     WindowInstance,
 } from "@/src/core/apps/types";
 import { FS } from "@/src/core/fs/fs.service";
+import { AccentColor } from "@/src/core/ui/ui-constants";
 import { bringToFront, updateWindow } from "@/src/helpers/desktop.helpers";
 import { loadSnapshot, saveSnapshot } from "@/src/store/persist";
 import { persistDesktop } from "@/src/store/persist-desktop";
@@ -21,8 +23,27 @@ const DEFAULT_STATE: DesktopSnapshot = {
     notes: { content: "" },
     terminal: { lines: [] },
     settings: {
-        theme: "auto",
-        wallpaper: "/Wallpaper/Big-Sur-Color-Day.webp",
+        theme: "system",
+        accentColor: "blue",
+        wallpaper: {
+            id: "default",
+            label: "Default Wallpaper",
+            category: "dynamic",
+            variants: {
+                light: {
+                    type: "image",
+                    src: "/wallpapers/dynamic/big-sur-color-light.webp",
+                },
+                dark: {
+                    type: "image",
+                    src: "/wallpapers/dynamic/big-sur-color-dark.webp",
+                },
+            },
+            media: {
+                type: "image",
+                src: "/wallpapers/dynamic/big-sur-color-light.webp",
+            },
+        },
     },
     audio: {
         masterVolume: 1,
@@ -80,8 +101,9 @@ export type DesktopState = DesktopSnapshot & {
 
     setActiveFile(file: DesktopState["activeFile"]): void;
 
-    setWallpaper: (url: string) => void;
-    setTheme: (theme: "auto" | "dark" | "light") => void;
+    setWallpaper: (wallpaper: Wallpaper) => void;
+    setTheme: (theme: "dark" | "light" | "system") => void;
+    setAccentColor: (color: AccentColor) => void;
 
     setMasterVolume: (v: number) => void;
     toggleMute: () => void;
@@ -278,19 +300,25 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         persistDesktop(get);
     },
 
-    setWallpaper: (wallpaper: string) => {
-        set((state) => ({
-            settings: { ...state.settings, wallpaper },
-        }));
+    setWallpaper: (wallpaper) => {
+        set({ settings: { ...get().settings, wallpaper } });
         persistDesktop(get);
     },
 
-    setTheme: (theme: "light" | "dark" | "auto") => {
+    setTheme: (theme: "light" | "dark" | "system") => {
         set((state) => ({
             settings: { ...state.settings, theme },
         }));
         persistDesktop(get);
     },
+
+    setAccentColor: (accentColor: AccentColor) =>
+        set((state) => ({
+            settings: {
+                ...state.settings,
+                accentColor,
+            },
+        })),
 
     lock: () => {
         set({ isLocked: true });

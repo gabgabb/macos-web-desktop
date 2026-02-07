@@ -3,34 +3,33 @@
 @import "react-pdf/dist/Page/AnnotationLayer.css";
 
 :root {
-    --background: #ffffff;
-    --foreground: #171717;
     --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-  system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --accent: var(--accent)
 }
 
 * {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.25) transparent;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
 }
 
 /* Chrome, Edge, Safari */
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+    width: 8px;
+    height: 8px;
 }
 
 *::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: rgba(255,255,255,0.25);
-  border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255,255,255,0.4);
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
 
@@ -45,14 +44,7 @@ button, [role="button"] {
 }
 
 ::-ms-reveal {
-  filter: invert(100%);
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
-    }
+    filter: invert(100%);
 }
 
 html, body {
@@ -63,12 +55,77 @@ html, body {
 }
 
 html[data-e2e] * {
-  animation: none !important;
-  transition: none !important;
+    animation: none !important;
+    transition: none !important;
 }
 
 /* react-pdf */
 .react-pdf__Page__textContent {
     user-select: text;
 }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 700ms;
+    animation-timing-function: ease-in-out;
+}
+
+:root[data-theme="dark"] {
+    /* Base */
+    --background: #0b0f14;
+    --foreground: #f5f7fa;
+
+    /* Glass surfaces */
+    --bg-window: rgba(255, 255, 255, 0.08);
+    --bg-window-strong: rgba(255, 255, 255, 0.12);
+    --bg-hover: rgba(255, 255, 255, 0.16);
+    --border-window: rgba(255, 255, 255, 0.14);
+
+    /* Text */
+    --text-primary: #f5f7fa;
+    --text-secondary: rgba(245, 247, 250, 0.65);
+    --text-tertiary: rgba(245, 247, 250, 0.4);
+
+}
+
+
+:root[data-theme="light"] {
+    /* Base */
+    --background: #f3f4f7;
+    --foreground: #0f172a;
+
+    /* Glass surfaces */
+    --bg-window: rgba(255, 255, 255, 0.72);
+    --bg-window-strong: rgba(255, 255, 255, 0.85);
+    --bg-hover: rgba(0, 0, 0, 0.05);
+    --border-window: rgba(0, 0, 0, 0.08);
+
+    /* Text */
+    --text-primary: #0f172a;
+    --text-secondary: rgba(15, 23, 42, 0.65);
+    --text-tertiary: rgba(15, 23, 42, 0.4);
+}
+
+
+:root[data-theme="dark"] *::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+:root[data-theme="light"] *::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme="dark"] *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+:root[data-theme="light"] *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+html:not([data-theme]) {
+    visibility: hidden;
+}
+
+
 

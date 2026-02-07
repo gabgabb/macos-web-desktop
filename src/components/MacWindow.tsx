@@ -76,7 +76,7 @@ export function MacWindow({
             >
                 <div
                     data-testid={`window-${win.appId}-header`}
-                    className={`mac-window-header flex h-10 items-center justify-between border-b border-white/10 bg-sky-700/30 px-3 select-none ${isFullscreen ? "" : "hover:cursor-grab active:cursor-grabbing"}`}
+                    className={`mac-window-header flex h-10 items-center justify-between border-b border-white/10 bg-[rgb(var(--accent))]/40 px-3 transition select-none ${isFullscreen ? "" : "hover:cursor-grab active:cursor-grabbing"}`}
                 >
                     <div className="flex items-center gap-2">
                         <button

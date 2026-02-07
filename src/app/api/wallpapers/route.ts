@@ -4,24 +4,112 @@ import { NextResponse } from "next/server";
 import fs from "node:fs/promises";
 import path from "node:path";
 
+const ROOT = path.join(process.cwd(), "public", "wallpapers");
+
 export async function GET() {
     try {
-        const dir = path.join(process.cwd(), "public", "Wallpaper");
-        const files = await fs.readdir(dir);
+        const categories = ["dynamic", "static", "video"] as const;
+        const wallpapers: any[] = [];
 
-        const wallpapers = files
-            .filter((f) => /\.(png|jpg|jpeg|webp)$/i.test(f))
-            .map((f) => ({
-                id: f,
-                label: f
-                    .replace(/\.(png|jpg|jpeg|webp)$/i, "")
-                    .replace(/[-_]/g, " "),
-                src: `/Wallpaper/${f}`,
-            }));
+        for (const category of categories) {
+            const categoryDir = path.join(ROOT, category);
+            let entries: string[];
+            try {
+                entries = await fs.readdir(categoryDir);
+            } catch {
+                continue;
+            }
+
+            // ---- DYNAMIC (light / dark) ----
+            if (category === "dynamic") {
+                const map = new Map<string, any>();
+
+                for (const file of entries) {
+                    const ext = path.extname(file);
+                    if (![".webp", ".jpg", ".png"].includes(ext)) continue;
+
+                    const name = path.basename(file, ext);
+                    const match = name.match(/(.+)-(light|dark)$/i);
+                    if (!match) continue;
+
+                    const base = match[1];
+                    const variant = match[2] as "light" | "dark";
+
+                    if (!map.has(base)) {
+                        map.set(base, {
+                            id: base,
+                            label: base.replace(/[-_]/g, " "),
+                            category: "dynamic",
+                            variants: {},
+                            media: null,
+                            thumb: undefined,
+                        });
+                    }
+
+                    const entry = map.get(base);
+
+                    const src = `/wallpapers/dynamic/${file}`;
+
+                    entry.variants[variant] = {
+                        type: "image",
+                        src,
+                    };
+
+                    if (!entry.thumb) entry.thumb = src;
+                }
+
+                for (const w of map.values()) {
+                    w.media = w.variants.light ?? w.variants.dark;
+                    wallpapers.push(w);
+                }
+            }
+
+            // ---- STATIC ----
+            if (category === "static") {
+                for (const file of entries) {
+                    const ext = path.extname(file);
+                    if (![".webp", ".jpg", ".png"].includes(ext)) continue;
+
+                    const name = path.basename(file, ext);
+
+                    wallpapers.push({
+                        id: name,
+                        label: name.replace(/[-_]/g, " "),
+                        category: "static",
+                        media: {
+                            type: "image",
+                            src: `/wallpapers/static/${file}`,
+                        },
+                        thumb: `/wallpapers/static/${file}`,
+                    });
+                }
+            }
+
+            // ---- VIDEO ----
+            if (category === "video") {
+                for (const file of entries) {
+                    if (!file.endsWith(".mp4")) continue;
+
+                    const name = path.basename(file, ".mp4");
+                    const poster = `${name}-poster.webp`;
+
+                    wallpapers.push({
+                        id: name,
+                        label: name.replace(/[-_]/g, " "),
+                        category: "video",
+                        media: {
+                            type: "video",
+                            src: `/wallpapers/video/${file}`,
+                            poster: `/wallpapers/video/${poster}`,
+                        },
+                        thumb: `/wallpapers/video/${poster}`,
+                    });
+                }
+            }
+        }
 
         return NextResponse.json({ wallpapers });
-    } catch (e) {
-        console.error("API /wallpapers failed:", e);
+    } catch {
         return NextResponse.json({ wallpapers: [] }, { status: 500 });
     }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { FS } from "@/src/core/fs/fs.service";
+import { FileStorage } from "@/src/core/fs/fileStorage";
 import DOMPurify from "dompurify";
 import { useEffect, useState } from "react";
 
@@ -17,12 +17,29 @@ export function TextFileViewer({
     const isText = ext === "txt" || ext === "md" || ext === "css";
 
     useEffect(() => {
-        try {
-            const text = FS.readFile([...file.path, file.name]);
-            setContent(text);
-        } catch {
-            setContent("");
+        let cancelled = false;
+
+        async function load() {
+            try {
+                const text = await FileStorage.readText([
+                    ...file.path,
+                    file.name,
+                ]);
+                if (!cancelled) {
+                    setContent(text);
+                }
+            } catch {
+                if (!cancelled) {
+                    setContent("");
+                }
+            }
         }
+
+        load();
+
+        return () => {
+            cancelled = true;
+        };
     }, [file.name, file.path.join("/")]);
 
     if (isHtml) {

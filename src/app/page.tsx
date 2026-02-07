@@ -1,27 +1,27 @@
 "use client";
 
+import { AccentSync } from "@/src/components/AccentSync";
 import { Desktop } from "@/src/components/Desktop/Desktop";
-import { Wallpaper } from "@/src/components/Wallpaper";
+import { ThemeSync } from "@/src/components/ThemeSync";
+import { Wallpaper } from "@/src/components/Wallpaper/Wallpaper";
 import { useSessionGuard } from "@/src/hooks/useSessionGuard";
-import { useDesktopStore } from "@/src/store/desktop-store";
-import { motion } from "framer-motion";
+import { ThemeProvider } from "next-themes";
 
 export default function Home() {
     const hydrated = useSessionGuard("unlocked");
-    const wallpaper = useDesktopStore((s) => s.settings.wallpaper);
+
+    if (!hydrated) return null;
 
     return (
-        <>
-            {hydrated && <Desktop />}
-            {hydrated && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.1 }}
-                >
-                    <Wallpaper url={wallpaper} />
-                </motion.div>
-            )}
-        </>
+        <ThemeProvider
+            attribute="data-theme"
+            defaultTheme="system"
+            enableSystem
+        >
+            <ThemeSync />
+            <AccentSync />
+            <Wallpaper />
+            <Desktop />
+        </ThemeProvider>
     );
 }

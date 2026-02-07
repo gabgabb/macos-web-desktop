@@ -32,7 +32,7 @@ export const APP_REGISTRY: Record<string, AppDefinition> = {
         showInDock: true,
         showOnDesktop: true,
         window: {
-            defaultSize: { w: 600, h: 480 },
+            defaultSize: { w: 900, h: 600 },
             withPadding: false,
         },
     },

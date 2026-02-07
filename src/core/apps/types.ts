@@ -1,4 +1,5 @@
 import { Conversation } from "@/src/core/apps/chatData";
+import { AccentColor } from "@/src/core/ui/ui-constants";
 
 export type AppId =
     | "finder"
@@ -56,8 +57,9 @@ export type DesktopSnapshot = {
         lines: TerminalLine[];
     };
     settings: {
-        theme: "light" | "dark" | "auto";
-        wallpaper: string;
+        theme: "light" | "dark" | "system";
+        accentColor: AccentColor;
+        wallpaper: Wallpaper;
     };
     audio: {
         masterVolume: number;
@@ -92,4 +94,28 @@ export type TerminalLine = {
 
 export type AppProps = {
     windowId?: string;
+};
+
+export type WallpaperMedia =
+    | {
+          type: "image";
+          src: string;
+      }
+    | {
+          type: "video";
+          src: string;
+          poster: string;
+      };
+
+export type Wallpaper = {
+    id: string;
+    label: string;
+    category: "dynamic" | "static" | "video";
+    media: WallpaperMedia;
+
+    variants?: {
+        light?: WallpaperMedia;
+        dark?: WallpaperMedia;
+    };
+    thumb?: string;
 };

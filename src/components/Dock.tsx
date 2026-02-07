@@ -117,7 +117,6 @@ function DockIconButton({
         >
             <div className="relative flex h-14 w-14 items-center justify-center">
                 <motion.div
-                    className="will-change-transform"
                     animate={{
                         scale: hovered ? 1.18 : 1,
                         y: hovered ? -6 : 0,
