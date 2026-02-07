@@ -4,7 +4,6 @@ export function withViewTransition(fn: () => void) {
         "startViewTransition" in document &&
         !window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
-        // @ts-ignore
         document.startViewTransition(fn);
     } else {
         fn();
