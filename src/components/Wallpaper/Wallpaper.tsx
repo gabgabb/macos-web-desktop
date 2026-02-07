@@ -13,17 +13,31 @@ export function Wallpaper() {
     const reduceMotion = useAccessibilityPreferency();
     const { resolvedTheme } = useTheme();
 
-    const theme = resolvedTheme === "dark" ? "dark" : "light";
+    const theme =
+        resolvedTheme === "dark" || resolvedTheme === "light"
+            ? resolvedTheme
+            : "light";
 
-    const resolvedMedia = wallpaper.variants?.[theme] ?? wallpaper.media;
+    const resolvedMedia = wallpaper?.variants?.[theme] ?? wallpaper?.media;
 
     const media = reduceMotion
         ? getReducedMotionMedia(resolvedMedia)
         : resolvedMedia;
 
+    if (!media?.src) {
+        console.warn("Wallpaper media undefined", {
+            wallpaper,
+            resolvedTheme,
+            reduceMotion,
+            resolvedMedia,
+            media,
+        });
+        return null;
+    }
+
     return (
         <div className="pointer-events-none fixed inset-0">
-            <WallpaperLayer key={media.src + theme} media={media} />
+            <WallpaperLayer key={`${media.src}-${theme}`} media={media} />
         </div>
     );
 }
