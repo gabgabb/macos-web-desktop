@@ -4,7 +4,10 @@ import { NextResponse } from "next/server";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const ROOT = path.join(process.cwd(), "public", "wallpapers");
+const ROOT =
+    process.env.NODE_ENV === "production"
+        ? "/var/www/assets/wallpapers"
+        : path.join(process.cwd(), "public", "wallpapers");
 
 export async function GET() {
     try {
