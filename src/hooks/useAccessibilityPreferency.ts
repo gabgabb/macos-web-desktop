@@ -16,7 +16,11 @@ export function useAccessibilityPreferency() {
     return reduced;
 }
 
-export function getReducedMotionMedia(media: WallpaperMedia): WallpaperMedia {
+export function getReducedMotionMedia(
+    media: WallpaperMedia | undefined,
+): WallpaperMedia | undefined {
+    if (!media) return undefined;
+
     if (media.type === "video") {
         return {
             type: "image",

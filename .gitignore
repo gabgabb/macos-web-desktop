@@ -11,6 +11,8 @@
 !.yarn/versions
 .idea
 
+public/wallpapers/video
+
 test-results
 ctrf
 
