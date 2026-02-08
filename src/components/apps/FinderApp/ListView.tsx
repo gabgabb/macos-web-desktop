@@ -38,7 +38,7 @@ export function ListView({
                             exitSearchAndNavigate,
                         );
                     }}
-                    className={`${selected === name ? "bg-blue-400/15!" : ""} flex items-center justify-start gap-2 py-2 pl-2 text-center transition-all hover:bg-(--bg-hover) ${index % 2 === 0 ? "bg-(--row-even)" : "bg-(--window)"}`}
+                    className={`${selected === name ? "bg-blue-400/15!" : ""} flex items-center justify-start gap-2 py-2 pl-2 text-center transition-all hover:bg-(--border-soft) ${index % 2 === 0 ? "bg-(--row-even)" : "bg-(--window)"}`}
                 >
                     <div className="w-8">{iconFor(node, name)}</div>
                     <div className="text-md truncate">{name}</div>

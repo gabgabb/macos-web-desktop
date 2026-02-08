@@ -10,7 +10,7 @@ export function NotesApp() {
         <div className="h-full w-full">
             <textarea
                 id={"notes"}
-                className="h-full w-full resize-none rounded-xl border border-white/10 bg-black/20 p-3 outline-none"
+                className="bg-background h-full w-full resize-none rounded-xl border border-(--border-control)/20 p-3 text-(--text-primary) shadow-(--shadow-window) outline-none"
                 placeholder="Write something..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}

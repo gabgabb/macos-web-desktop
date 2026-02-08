@@ -1,6 +1,6 @@
 "use client";
 
-import { SelectCalendar } from "@/src/components/SelectCalendar";
+import { SelectCalendar } from "@/src/components/apps/CalendarApp/SelectCalendar";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -98,7 +98,7 @@ export function CalendarApp() {
     }
 
     return (
-        <div className="p-3 text-white">
+        <div className="h-full bg-(--sidebar) p-3 text-(--text-primary)">
             <div className="mb-8 flex items-center justify-center gap-2">
                 <SelectCalendar
                     value={month}
@@ -149,14 +149,14 @@ export function CalendarApp() {
                             className={`relative h-9 rounded text-sm transition ${
                                 hasEvent
                                     ? "bg-emerald-500/70 hover:bg-emerald-500/80"
-                                    : "hover:bg-white/10"
+                                    : "hover:bg-(--border-soft)"
                             }`}
                         >
                             <span className="relative inline-flex items-center justify-center">
                                 <span className="z-2">{day}</span>
 
                                 {isToday(day) && (
-                                    <span className="pointer-events-none absolute size-8 rounded-full bg-purple-600" />
+                                    <span className="pointer-events-none absolute size-8 rounded-full bg-[rgb(var(--accent))]" />
                                 )}
                             </span>
                             {hasEvent && (

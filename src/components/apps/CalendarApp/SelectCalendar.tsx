@@ -40,13 +40,16 @@ export function SelectCalendar({
     }, []);
 
     return (
-        <div ref={ref} className="relative">
+        <div ref={ref} className="relative text-(--text-primary)">
             {isMonth ? (
-                <div className="flex items-center justify-center gap-1 rounded-lg bg-white/10 px-3 py-2 text-sm backdrop-blur hover:bg-white/20">
+                <div className="bg-background flex items-center justify-center gap-1 rounded-lg border border-(--border-control)/30 px-3 py-2 text-sm shadow hover:bg-(--border-soft)/10">
                     <button onClick={onPrevMonth} aria-label="Previous month">
                         <MoveLeft className="size-4" />
                     </button>
-                    <button onClick={() => setOpen((v) => !v)} className="w-20">
+                    <button
+                        onClick={() => setOpen((v) => !v)}
+                        className="w-20 font-bold"
+                    >
                         <span>{selected?.label}</span>
                     </button>
                     <button onClick={onNextMonth} aria-label="Next month">
@@ -56,14 +59,14 @@ export function SelectCalendar({
             ) : (
                 <button
                     onClick={() => setOpen((v) => !v)}
-                    className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm backdrop-blur hover:bg-white/20"
+                    className="bg-background flex items-center gap-2 rounded-lg border border-(--border-control)/30 px-3 py-2 text-sm shadow backdrop-blur hover:bg-(--border-soft)/10"
                 >
-                    <span>{selected?.label}</span>
+                    <span className="font-bold">{selected?.label}</span>
                 </button>
             )}
 
             {open && (
-                <div className="absolute z-10 mt-1 max-h-48 w-40 overflow-y-auto rounded-xl bg-neutral-900 shadow-lg">
+                <div className="bg-background absolute z-10 mt-1 max-h-48 w-40 overflow-y-auto rounded-xl border border-(--border-control) shadow-lg">
                     {options.map((o) => (
                         <button
                             key={o.value}
@@ -71,7 +74,7 @@ export function SelectCalendar({
                                 onChange(o.value);
                                 setOpen(false);
                             }}
-                            className={`w-full px-3 py-1.5 text-left text-sm transition hover:bg-white/10 ${
+                            className={`w-full px-3 py-1.5 text-left text-sm transition hover:bg-(--border-soft) ${
                                 o.value === value ? "bg-white/10" : ""
                             }`}
                         >

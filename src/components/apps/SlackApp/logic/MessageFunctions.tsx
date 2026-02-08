@@ -23,9 +23,12 @@ export function ReactionToMessage({
     number: number;
 }) {
     return (
-        <span className="flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-gray-400/10 py-0.5 pr-1.5 pl-0.5 transition-colors hover:bg-gray-400/20">
+        <span className="flex cursor-pointer items-center gap-1 rounded-md border border-(--border-control) bg-gray-400/10 py-0.5 pr-1.5 pl-0.5 transition-colors hover:bg-gray-400/20">
             <div className="text-base">{emoji}</div>{" "}
-            <div className="font-semibold"> {number > 0 && `${number}`}</div>
+            <div className="font-semibold text-(--text-strong)">
+                {" "}
+                {number > 0 && `${number}`}
+            </div>
         </span>
     );
 }

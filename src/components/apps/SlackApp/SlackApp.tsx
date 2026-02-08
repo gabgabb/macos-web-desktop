@@ -18,7 +18,7 @@ export function SlackApp() {
     } = useActiveConversation();
 
     return (
-        <div className="flex h-full w-full bg-gray-100">
+        <div className="flex h-full w-full bg-(--sidebar)">
             <Sidebar
                 conversations={conversations}
                 handleSelectConversation={selectConversation}

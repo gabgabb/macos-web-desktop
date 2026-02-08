@@ -40,7 +40,7 @@ export const PreviewApp: FunctionComponent<AppProps> = ({ windowId }) => {
 
     if (isImage) {
         return (
-            <div className="flex h-full w-full items-center justify-center bg-black">
+            <div className="bg-background flex h-full w-full items-center justify-center">
                 <Image
                     src="/icones/image.webp"
                     alt={activeFile.name}

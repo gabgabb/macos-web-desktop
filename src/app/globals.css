@@ -80,7 +80,7 @@ html[data-e2e] * {
     --sidebar: rgba(16, 20, 28, 0.82);
     --bg-row-even: rgba(255, 255, 255, 0.06);
 
-    --bg-hover: rgba(255, 255, 255, 0.08);
+    --border-soft: rgba(255, 255, 255, 0.08);
     --border-control: rgba(255, 255, 255, 0.18);
 
     --shadow-window: 0 20px 40px rgba(0, 0, 0, 0.45);
@@ -106,7 +106,7 @@ html[data-e2e] * {
     --surface-muted: #f3f4f6;
     --bg-row-even: rgba(0, 0, 0, 0.045);
 
-    --bg-hover: rgba(0, 0, 0, 0.06);
+    --border-soft: rgba(0, 0, 0, 0.06);
     --border-control: rgba(0, 0, 0, 0.15);
 
     --shadow-window: 0 10px 30px rgba(0, 0, 0, 0.08);

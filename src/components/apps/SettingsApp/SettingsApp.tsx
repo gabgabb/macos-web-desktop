@@ -53,7 +53,7 @@ export function SettingsApp() {
 
                 <div className="mt-3 space-y-1 text-sm font-semibold text-(--text-strong)">
                     <div
-                        className="rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--bg-hover) hover:font-bold"
+                        className="rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--border-soft) hover:font-bold"
                         onClick={() =>
                             appearanceRef.current?.scrollIntoView({
                                 behavior: "smooth",
@@ -68,14 +68,14 @@ export function SettingsApp() {
                                 behavior: "smooth",
                             })
                         }
-                        className="rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--bg-hover) hover:font-bold"
+                        className="rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--border-soft) hover:font-bold"
                     >
                         Accent color
                     </div>
                     <div className="flex flex-col items-start">
                         Wallpapers
                         <div
-                            className="mt-1 w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--bg-hover) hover:font-bold"
+                            className="mt-1 w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--border-soft) hover:font-bold"
                             onClick={() =>
                                 dynamicRef.current?.scrollIntoView({
                                     behavior: "smooth",
@@ -85,7 +85,7 @@ export function SettingsApp() {
                             Dynamic wallpapers
                         </div>
                         <div
-                            className="w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--bg-hover) hover:font-bold"
+                            className="w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--border-soft) hover:font-bold"
                             onClick={() =>
                                 staticRef.current?.scrollIntoView({
                                     behavior: "smooth",
@@ -95,7 +95,7 @@ export function SettingsApp() {
                             Static wallpapers
                         </div>
                         <div
-                            className="w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--bg-hover) hover:font-bold"
+                            className="w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--border-soft) hover:font-bold"
                             onClick={() =>
                                 videoRef.current?.scrollIntoView({
                                     behavior: "smooth",

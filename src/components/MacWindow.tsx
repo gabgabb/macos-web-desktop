@@ -72,11 +72,11 @@ export function MacWindow({
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 10 }}
                 transition={{ duration: 0.15 }}
-                className="mac-window h-full w-full overflow-hidden rounded-2xl border border-white/10 bg-white/10 shadow-2xl backdrop-blur-md"
+                className="mac-window h-full w-full overflow-hidden rounded-2xl border border-(--border-control)/10 shadow-2xl backdrop-blur-md"
             >
                 <div
                     data-testid={`window-${win.appId}-header`}
-                    className={`mac-window-header flex h-10 items-center justify-between border-b border-white/10 bg-[rgb(var(--accent))]/80 px-3 transition-all select-none ${isFullscreen ? "" : "hover:cursor-grab active:cursor-grabbing"}`}
+                    className={`mac-window-header flex h-10 items-center justify-between border-b border-(--border-control)/10 bg-[rgb(var(--accent))]/80 px-3 transition-all select-none ${isFullscreen ? "" : "hover:cursor-grab active:cursor-grabbing"}`}
                 >
                     <div className="flex items-center gap-2">
                         <button
@@ -110,7 +110,7 @@ export function MacWindow({
                 </div>
 
                 <div
-                    className={`h-[calc(100%-40px)] ${appDef.window.withPadding ? "p-3" : ""}`}
+                    className={`h-[calc(100%-40px)] bg-(--sidebar) ${appDef.window.withPadding ? "p-3" : ""}`}
                 >
                     {children}
                 </div>

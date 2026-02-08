@@ -214,14 +214,14 @@ export function FinderApp() {
             <aside className="z-10 flex w-48 flex-col gap-4 rounded-r-2xl border-r border-(--border-control) bg-(--window) p-5 shadow-xl">
                 <ul className="flex flex-col text-sm font-semibold text-(--text-strong)">
                     <li
-                        className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
+                        className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--border-soft)"
                         data-testid="recents"
                         onClick={() => navigateTo("recents")}
                     >
                         <Clock9 className="size-5" /> <span>Recents</span>
                     </li>
                     <li
-                        className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
+                        className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--border-soft)"
                         data-testid="recents"
                         onClick={() => navigateTo("shared")}
                     >
@@ -234,7 +234,7 @@ export function FinderApp() {
                     </span>
                     <div className="flex flex-col">
                         <li
-                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
+                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--border-soft)"
                             data-testid="applications"
                             onClick={() => navigateTo("applications")}
                         >
@@ -242,21 +242,21 @@ export function FinderApp() {
                             <span>Applications</span>
                         </li>
                         <li
-                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
+                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--border-soft)"
                             data-testid="recents"
                             onClick={() => navigateTo("desktop")}
                         >
                             <Dock className="size-5" /> <span>Desktop</span>
                         </li>
                         <li
-                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
+                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--border-soft)"
                             data-testid="recents"
                             onClick={() => navigateTo("documents")}
                         >
                             <File className="size-5" /> <span>Documents</span>
                         </li>
                         <li
-                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
+                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--border-soft)"
                             data-testid="recents"
                             onClick={() => navigateTo("downloads")}
                         >
@@ -284,7 +284,7 @@ export function FinderApp() {
                                 } `}
                             >
                                 <div
-                                    className={`flex size-7 items-center justify-center rounded-full ${historyIndex === 0 ? "opacity-40" : "hover:bg-(--bg-hover)"}`}
+                                    className={`flex size-7 items-center justify-center rounded-full ${historyIndex === 0 ? "opacity-40" : "hover:bg-(--border-soft)"}`}
                                 >
                                     <ChevronLeftIcon className="size-5" />
                                 </div>
@@ -302,7 +302,7 @@ export function FinderApp() {
                                 } `}
                             >
                                 <div
-                                    className={`flex size-7 items-center justify-center rounded-full ${historyIndex >= history.length - 1 ? "opacity-40" : "hover:bg-(--bg-hover)"}`}
+                                    className={`flex size-7 items-center justify-center rounded-full ${historyIndex >= history.length - 1 ? "opacity-40" : "hover:bg-(--border-soft)"}`}
                                 >
                                     <ChevronRightIcon className="size-5" />
                                 </div>
@@ -320,7 +320,7 @@ export function FinderApp() {
                                 className={`ml-2 flex h-8 w-8 items-center justify-center rounded-full transition ${
                                     viewMode === "grid"
                                         ? "bg-[rgb(var(--accent))] text-neutral-900"
-                                        : "text-neutral-500 hover:bg-(--bg-hover)"
+                                        : "text-neutral-500 hover:bg-(--border-soft)"
                                 } `}
                                 aria-label="Grid view"
                             >
@@ -336,7 +336,7 @@ export function FinderApp() {
                                 className={`mr-2 flex h-8 w-8 items-center justify-center rounded-full transition ${
                                     viewMode === "list"
                                         ? "bg-[rgb(var(--accent))] text-neutral-900"
-                                        : "text-neutral-500 hover:bg-(--bg-hover)"
+                                        : "text-neutral-500 hover:bg-(--border-soft)"
                                 } `}
                                 aria-label="List view"
                             >

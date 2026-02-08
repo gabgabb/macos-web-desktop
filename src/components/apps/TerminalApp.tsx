@@ -176,7 +176,7 @@ export function TerminalApp() {
 
     return (
         <div
-            className="flex h-full flex-col rounded-2xl bg-black/55 p-3 font-mono text-[13px] text-white"
+            className="flex h-full flex-col rounded-2xl bg-black/75 p-3 font-mono text-[13px] text-white"
             onClick={() => inputRef.current?.focus()}
         >
             <div

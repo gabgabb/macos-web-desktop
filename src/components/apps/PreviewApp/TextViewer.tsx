@@ -51,20 +51,20 @@ export function TextFileViewer({
                     onClick={() =>
                         setMode((m) => (m === "render" ? "source" : "render"))
                     }
-                    className="rounded-md bg-black/20 px-3 py-1 text-sm"
+                    className="bg-background rounded-md px-3 py-1 text-sm font-semibold text-(--text-primary) transition-all hover:bg-(--border-soft)"
                 >
                     {mode === "render" ? "View source" : "Render HTML"}
                 </button>
                 {mode === "source" ? (
                     <div
-                        className="prose h-full w-full resize-none overflow-auto rounded-xl border-white/10 bg-black/20 p-4 font-mono text-sm"
+                        className="prose bg-background h-full w-full resize-none overflow-auto rounded-xl border-(--border-control) p-4 font-mono text-sm text-(--text-primary)"
                         dangerouslySetInnerHTML={{ __html: clean }}
                     />
                 ) : (
                     <textarea
                         value={content}
                         readOnly
-                        className="prose h-full w-full resize-none overflow-auto rounded-xl border-white/10 bg-black/20 p-4 font-mono text-sm outline-none"
+                        className="prose bg-background h-full w-full resize-none overflow-auto rounded-xl border-(--border-control) p-4 font-mono text-sm text-(--text-primary) outline-none"
                     />
                 )}
             </div>
@@ -77,7 +77,7 @@ export function TextFileViewer({
                 <textarea
                     value={content}
                     readOnly
-                    className="h-full w-full resize-none rounded-xl border border-white/10 bg-black/20 p-3 font-mono outline-none"
+                    className="bg-background h-full w-full resize-none rounded-xl border border-(--border-control) p-3 font-mono text-(--text-primary) outline-none"
                 />
             </div>
         );

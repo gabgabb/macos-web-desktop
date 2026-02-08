@@ -13,7 +13,7 @@ export function ChatHeader({
     const user = otherUserId ? USERS[otherUserId] : null;
 
     return (
-        <div className="flex h-16 items-center justify-between border-b border-gray-400/30 bg-gray-100 px-4 text-sm">
+        <div className="flex h-16 items-center justify-between border-b border-(--border-control)/60 bg-(--sidebar) px-4 text-sm">
             <div className="flex items-center gap-3">
                 {isDM ? (
                     <>
@@ -26,7 +26,7 @@ export function ChatHeader({
                             unoptimized
                         />
                         <div className="flex flex-col leading-tight">
-                            <span className="font-semibold text-neutral-900">
+                            <span className="font-semibold text-(--text-strong)">
                                 {user!.name}
                             </span>
                             <span className="text-xs text-green-600">
@@ -39,7 +39,7 @@ export function ChatHeader({
                         className="flex flex-col gap-1 leading-tight"
                         data-testid="channel-name"
                     >
-                        <span className="font-semibold text-neutral-900">
+                        <span className="font-semibold text-(--text-strong)">
                             # {activeConversation.name}
                         </span>
                         <div
@@ -48,13 +48,13 @@ export function ChatHeader({
                         >
                             {activeConversation.participants &&
                                 activeConversation.type === "channel" && (
-                                    <span className="flex items-center gap-0.5 text-xs text-gray-500">
+                                    <span className="flex items-center gap-0.5 text-xs text-(--text-secondary)">
                                         <User className="mt-0.5 size-3" />
                                         {activeConversation.participants.length}
                                     </span>
                                 )}
                             {activeConversation.description && (
-                                <span className="text-xs text-gray-500">
+                                <span className="text-xs text-(--text-secondary)">
                                     {activeConversation.description}
                                 </span>
                             )}
@@ -63,7 +63,7 @@ export function ChatHeader({
                 )}
             </div>
 
-            <div className="flex items-center gap-3 text-gray-600">
+            <div className="flex items-center gap-3 text-(--text-secondary) transition-all">
                 <HeaderButton>
                     <SearchIcon className={"size-4"} />
                 </HeaderButton>
@@ -80,6 +80,8 @@ export function ChatHeader({
 
 function HeaderButton({ children }: { children: ReactNode }) {
     return (
-        <button className="rounded p-1 hover:bg-gray-200/50">{children}</button>
+        <button className="rounded p-1 hover:bg-(--border-soft)">
+            {children}
+        </button>
     );
 }

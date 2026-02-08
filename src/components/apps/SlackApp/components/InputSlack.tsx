@@ -7,11 +7,11 @@ export function InputSlack({
     activeConversation: Conversation;
 }) {
     return (
-        <div className="w-full p-5 text-neutral-900">
-            <div className="flex w-2/3 flex-col rounded-xl border border-gray-600/20 bg-white/80 backdrop-blur-md">
+        <div className="w-full bg-(--sidebar) p-5 text-(--text-strong)">
+            <div className="bg-background/80 flex w-2/3 flex-col rounded-xl border border-(--border-control)/30 backdrop-blur-md">
                 <textarea
                     rows={1}
-                    className="w-full resize-none rounded-t-xl border-b border-gray-600/20 bg-transparent p-4 px-3 outline-none"
+                    className="w-full resize-none rounded-t-xl border-b border-(--border-control)/30 bg-transparent p-4 px-3 text-(--text-secondary) outline-none"
                     placeholder={
                         activeConversation.type === "dm"
                             ? `Message ${activeConversation.name}`
@@ -19,7 +19,7 @@ export function InputSlack({
                     }
                 />
 
-                <div className="flex items-center justify-between px-3 py-1 text-gray-600">
+                <div className="flex items-center justify-between px-3 py-1 text-(--text-secondary)">
                     <div className="flex gap-2">
                         <ToolbarButton label="Bold">B</ToolbarButton>
                         <ToolbarButton label="Italic">I</ToolbarButton>

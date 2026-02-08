@@ -42,7 +42,7 @@ export function GridView({
                         className={`group flex flex-col items-center rounded-xl p-2 text-center transition ${
                             selected === name
                                 ? "bg-blue-500/20 ring-1 ring-blue-400"
-                                : "hover:bg-(--bg-hover)"
+                                : "hover:bg-(--border-soft)"
                         }`}
                     >
                         <div className="flex h-10 w-10 justify-center">
