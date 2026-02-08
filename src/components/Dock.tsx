@@ -37,7 +37,7 @@ export function Dock() {
     return (
         <motion.div
             ref={dockRef}
-            className="dock absolute bottom-5 left-1/2 z-9998 -translate-x-1/2 rounded-3xl border border-white/10 bg-white/10 px-4 py-2 shadow-lg backdrop-blur-md"
+            className="dock absolute bottom-5 left-1/2 z-9998 -translate-x-1/2 rounded-3xl border border-(--dock-border) bg-(--dock-bg) px-4 py-2 shadow-(--dock-shadow) backdrop-blur-md"
             onMouseMove={(e) => {
                 mouseX.set(e.clientX);
             }}

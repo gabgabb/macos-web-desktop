@@ -42,11 +42,11 @@ export function MenuBar() {
                 e.preventDefault();
                 e.stopPropagation();
             }}
-            className="menu-top absolute top-0 right-0 left-0 z-100 flex h-10 items-center justify-between border-b border-white/10 bg-white/10 px-4 pl-6 text-white backdrop-blur-md"
+            className="menu-top absolute top-0 right-0 left-0 z-100 flex h-10 items-center justify-between border-b border-(--dock-border) bg-(--dock-bg) px-4 pl-6 text-(--text-primary) backdrop-blur-md"
         >
             <div className="left-10 flex items-center gap-5">
                 <svg
-                    className="h-4 w-4 text-white/90"
+                    className="h-4 w-4"
                     viewBox="0 0 824.66636 1000.0001"
                     aria-hidden="true"
                 >
@@ -60,28 +60,31 @@ export function MenuBar() {
                     {activeTitle ?? "Desktop"}
                 </span>
             </div>
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-5 text-(--text-primary)/90">
                 <WifiIcon
-                    className="text-white/90 hover:cursor-pointer"
+                    className="hover:cursor-pointer"
                     aria-hidden="true"
                     onClick={toggleWifiPanel}
                 />
                 <Volume2Icon
-                    className="text-white/90 hover:cursor-pointer"
+                    className="hover:cursor-pointer"
                     aria-hidden="true"
                     onClick={toggleAudioPanel}
                 />
                 <LockIcon
                     data-testid="lock-icon"
-                    className="text-white/90 hover:cursor-pointer"
+                    className="hover:cursor-pointer"
                     aria-hidden="true"
                     onClick={handleLock}
                 />
                 <SlidersHorizontal
-                    className="text-white/90 hover:cursor-pointer"
+                    className="hover:cursor-pointer"
                     aria-hidden="true"
                 />
-                <div className="text-sm opacity-90" suppressHydrationWarning>
+                <div
+                    className="text-sm font-semibold opacity-90"
+                    suppressHydrationWarning
+                >
                     {menuBarTime}
                 </div>
             </div>
