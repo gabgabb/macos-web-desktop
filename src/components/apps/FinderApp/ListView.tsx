@@ -16,7 +16,7 @@ export function ListView({
     exitSearchAndNavigate: () => void;
 }) {
     return (
-        <div className="mt-2 flex flex-col overflow-y-auto border-t border-gray-200">
+        <div className="mt-2 flex flex-col overflow-y-auto border-t border-(--border-control)/70">
             {entries.length === 0 && (
                 <div className="mt-4 flex items-center justify-center">
                     No items to display.
@@ -38,7 +38,7 @@ export function ListView({
                             exitSearchAndNavigate,
                         );
                     }}
-                    className={`${selected === name ? "bg-blue-400/15!" : ""} flex items-center justify-start gap-2 py-2 pl-2 text-center transition hover:bg-gray-200 ${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}
+                    className={`${selected === name ? "bg-blue-400/15!" : ""} flex items-center justify-start gap-2 py-2 pl-2 text-center transition-all hover:bg-(--bg-hover) ${index % 2 === 0 ? "bg-(--row-even)" : "bg-(--window)"}`}
                 >
                     <div className="w-8">{iconFor(node, name)}</div>
                     <div className="text-md truncate">{name}</div>

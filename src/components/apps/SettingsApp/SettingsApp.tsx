@@ -38,8 +38,8 @@ export function SettingsApp() {
     const { theme, setTheme } = useTheme();
 
     return (
-        <div className="flex h-full gap-4 rounded-b-2xl bg-(--bg-window) p-4 text-(--text-primary)">
-            <div className="flex w-48 shrink-0 flex-col gap-2 rounded-2xl border border-white/10 bg-(--bg-window) p-3 shadow-(--shadow-sidebar) backdrop-blur-md">
+        <div className="flex h-full gap-4 rounded-b-2xl bg-(--window) p-4 text-(--text-primary)">
+            <div className="flex w-48 shrink-0 flex-col gap-2 rounded-2xl border border-(--border-control) bg-(--sidebar) p-3 shadow-(--shadow-sidebar) backdrop-blur-md">
                 <div className="flex gap-3">
                     <Image
                         src="/Cameleon.webp"
@@ -51,12 +51,9 @@ export function SettingsApp() {
                     <div className="mt-2 text-lg font-semibold">Aurora</div>
                 </div>
 
-                <div className="mt-3 space-y-1 text-sm">
-                    <div className="text-lg font-semibold opacity-90">
-                        Settings
-                    </div>
+                <div className="mt-3 space-y-1 text-sm font-semibold text-(--text-strong)">
                     <div
-                        className="rounded-lg px-2 py-1 transition-all hover:cursor-pointer hover:bg-white/20 hover:font-semibold"
+                        className="rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--bg-hover) hover:font-bold"
                         onClick={() =>
                             appearanceRef.current?.scrollIntoView({
                                 behavior: "smooth",
@@ -71,14 +68,14 @@ export function SettingsApp() {
                                 behavior: "smooth",
                             })
                         }
-                        className="rounded-lg px-2 py-1 transition-all hover:cursor-pointer hover:bg-white/20 hover:font-semibold"
+                        className="rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--bg-hover) hover:font-bold"
                     >
-                        Color
+                        Accent color
                     </div>
                     <div className="flex flex-col items-start">
                         Wallpapers
                         <div
-                            className="mt-1 w-full rounded-lg px-2 py-1 transition-all hover:cursor-pointer hover:bg-white/20 hover:font-semibold"
+                            className="mt-1 w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--bg-hover) hover:font-bold"
                             onClick={() =>
                                 dynamicRef.current?.scrollIntoView({
                                     behavior: "smooth",
@@ -88,7 +85,7 @@ export function SettingsApp() {
                             Dynamic wallpapers
                         </div>
                         <div
-                            className="w-full rounded-lg px-2 py-1 transition-all hover:cursor-pointer hover:bg-white/20 hover:font-semibold"
+                            className="w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--bg-hover) hover:font-bold"
                             onClick={() =>
                                 staticRef.current?.scrollIntoView({
                                     behavior: "smooth",
@@ -98,7 +95,7 @@ export function SettingsApp() {
                             Static wallpapers
                         </div>
                         <div
-                            className="w-full rounded-lg px-2 py-1 transition-all hover:cursor-pointer hover:bg-white/20 hover:font-semibold"
+                            className="w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--bg-hover) hover:font-bold"
                             onClick={() =>
                                 videoRef.current?.scrollIntoView({
                                     behavior: "smooth",
@@ -111,11 +108,11 @@ export function SettingsApp() {
                 </div>
             </div>
 
-            <div className="flex-1 space-y-6 overflow-auto rounded-2xl border border-white/10 bg-(--bg-window-strong) p-4 shadow-(--shadow-window) backdrop-blur-sm">
+            <div className="flex-1 space-y-6 overflow-auto rounded-2xl border border-(--border-control) bg-(--sidebar) p-4 shadow-(--shadow-window) backdrop-blur-md">
                 <section ref={appearanceRef}>
                     <div className="text-base font-semibold">Appearance</div>
 
-                    <div className="mt-3 inline-flex gap-1 rounded-xl bg-black/20 p-1 transition-transform duration-300">
+                    <div className="bg-background mt-3 inline-flex gap-1 rounded-xl border border-(--border-control) p-1 transition-all duration-300">
                         {(["light", "dark", "system"] as const).map((t) => {
                             const active = theme === t;
 
@@ -128,7 +125,7 @@ export function SettingsApp() {
                                     className={`relative rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
                                         active
                                             ? "bg-[rgb(var(--accent))]/65"
-                                            : "text-(--text-secondary)"
+                                            : "bg-background text-(--text-secondary)"
                                     } `}
                                 >
                                     {t === "light"
@@ -173,7 +170,7 @@ export function SettingsApp() {
                 {loading && (
                     <div className="flex h-48 w-full items-center justify-center">
                         <div className="/70 flex items-center gap-3 text-sm">
-                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30" />
                             Loading wallpapers…
                         </div>
                     </div>

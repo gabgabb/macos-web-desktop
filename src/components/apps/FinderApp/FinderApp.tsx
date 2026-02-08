@@ -210,31 +210,31 @@ export function FinderApp() {
     }, [cwd]);
 
     return (
-        <div className="flex h-full w-full bg-gray-100">
-            <aside className="z-10 flex w-48 flex-col gap-4 rounded-r-2xl border-r border-white/10 bg-white p-5 shadow-xl">
-                <ul className="flex flex-col text-sm font-semibold text-neutral-800">
+        <div className="flex h-full w-full bg-(--sidebar)">
+            <aside className="z-10 flex w-48 flex-col gap-4 rounded-r-2xl border-r border-(--border-control) bg-(--window) p-5 shadow-xl">
+                <ul className="flex flex-col text-sm font-semibold text-(--text-strong)">
                     <li
-                        className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-gray-100"
+                        className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
                         data-testid="recents"
                         onClick={() => navigateTo("recents")}
                     >
                         <Clock9 className="size-5" /> <span>Recents</span>
                     </li>
                     <li
-                        className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-gray-100"
+                        className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
                         data-testid="recents"
                         onClick={() => navigateTo("shared")}
                     >
                         <FolderClosed className="size-5" /> <span>Shared</span>
                     </li>
                 </ul>
-                <ul className="text-sm font-semibold text-neutral-800">
+                <ul className="text-sm font-semibold text-(--text-strong)">
                     <span className="text-sm font-semibold text-gray-400">
                         Favorites
                     </span>
                     <div className="flex flex-col">
                         <li
-                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-gray-100"
+                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
                             data-testid="applications"
                             onClick={() => navigateTo("applications")}
                         >
@@ -242,21 +242,21 @@ export function FinderApp() {
                             <span>Applications</span>
                         </li>
                         <li
-                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-gray-100"
+                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
                             data-testid="recents"
                             onClick={() => navigateTo("desktop")}
                         >
                             <Dock className="size-5" /> <span>Desktop</span>
                         </li>
                         <li
-                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-gray-100"
+                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
                             data-testid="recents"
                             onClick={() => navigateTo("documents")}
                         >
                             <File className="size-5" /> <span>Documents</span>
                         </li>
                         <li
-                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-gray-100"
+                            className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--bg-hover)"
                             data-testid="recents"
                             onClick={() => navigateTo("downloads")}
                         >
@@ -268,38 +268,44 @@ export function FinderApp() {
             </aside>
 
             <main
-                className="flex h-full w-full flex-col bg-gray-100 text-neutral-800"
+                className="flex h-full w-full flex-col bg-(--sidebar) text-(--text-strong)"
                 onClick={() => setSelected(null)}
             >
                 <div className="mt-2 ml-2 flex items-center justify-between gap-4 p-2">
                     <div className="flex items-center gap-2" data-testid="path">
-                        <div className="flex items-center rounded-full bg-white shadow-md">
+                        <div className="bg-background flex items-center rounded-full shadow-md">
                             <button
                                 onClick={goBack}
                                 disabled={historyIndex === 0}
                                 aria-label="Go back"
                                 className={`flex size-10 items-center justify-center rounded-l-full transition ${
-                                    historyIndex === 0
-                                        ? "cursor-default opacity-40"
-                                        : "hover:bg-gray-100 active:bg-gray-200"
+                                    historyIndex === 0 &&
+                                    "cursor-default opacity-40"
                                 } `}
                             >
-                                <ChevronLeftIcon className="size-5" />
+                                <div
+                                    className={`flex size-7 items-center justify-center rounded-full ${historyIndex === 0 ? "opacity-40" : "hover:bg-(--bg-hover)"}`}
+                                >
+                                    <ChevronLeftIcon className="size-5" />
+                                </div>
                             </button>
 
-                            <div className="h-6 w-px bg-neutral-200" />
+                            <div className="h-6 w-px bg-(--border-control)" />
 
                             <button
                                 onClick={goForward}
                                 disabled={historyIndex >= history.length - 1}
                                 aria-label="Go forward"
                                 className={`flex size-10 items-center justify-center rounded-r-full transition ${
-                                    historyIndex >= history.length - 1
-                                        ? "cursor-default opacity-40"
-                                        : "hover:bg-gray-100 active:bg-gray-200"
+                                    historyIndex >= history.length - 1 &&
+                                    "cursor-default opacity-40"
                                 } `}
                             >
-                                <ChevronRightIcon className="size-5" />
+                                <div
+                                    className={`flex size-7 items-center justify-center rounded-full ${historyIndex >= history.length - 1 ? "opacity-40" : "hover:bg-(--bg-hover)"}`}
+                                >
+                                    <ChevronRightIcon className="size-5" />
+                                </div>
                             </button>
                         </div>
 
@@ -308,13 +314,13 @@ export function FinderApp() {
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-1 rounded-3xl bg-white shadow-md">
+                        <div className="bg-background flex items-center gap-1 rounded-3xl shadow-md">
                             <button
                                 onClick={() => setViewMode("grid")}
                                 className={`ml-2 flex h-8 w-8 items-center justify-center rounded-full transition ${
                                     viewMode === "grid"
-                                        ? "bg-gray-200 text-neutral-900"
-                                        : "text-neutral-500 hover:bg-gray-100"
+                                        ? "bg-[rgb(var(--accent))] text-neutral-900"
+                                        : "text-neutral-500 hover:bg-(--bg-hover)"
                                 } `}
                                 aria-label="Grid view"
                             >
@@ -322,15 +328,15 @@ export function FinderApp() {
                             </button>
                             <hr
                                 className={
-                                    "h-10 w-0.5 border-t-0 bg-neutral-100"
+                                    "h-10 w-0.5 border-t-0 bg-(--border-control)"
                                 }
                             />
                             <button
                                 onClick={() => setViewMode("list")}
                                 className={`mr-2 flex h-8 w-8 items-center justify-center rounded-full transition ${
                                     viewMode === "list"
-                                        ? "bg-gray-200 text-neutral-900"
-                                        : "text-neutral-500 hover:bg-gray-100"
+                                        ? "bg-[rgb(var(--accent))] text-neutral-900"
+                                        : "text-neutral-500 hover:bg-(--bg-hover)"
                                 } `}
                                 aria-label="List view"
                             >
@@ -338,7 +344,7 @@ export function FinderApp() {
                             </button>
                         </div>
                         <div
-                            className="flex items-center rounded-3xl bg-white px-2 shadow-md"
+                            className="bg-background flex items-center rounded-3xl px-2 shadow-md"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <AnimatePresence initial={false}>
@@ -366,7 +372,7 @@ export function FinderApp() {
                                         initial={{ width: 0, opacity: 0 }}
                                         animate={{ width: 160, opacity: 1 }}
                                         exit={{ width: 0, opacity: 0 }}
-                                        className="h-10 rounded-full bg-white pl-1 text-sm outline-none"
+                                        className="bg-background h-10 rounded-full pl-1 text-sm outline-none"
                                     />
                                 )}
                             </AnimatePresence>

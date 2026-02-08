@@ -16,7 +16,7 @@ export function GridView({
     exitSearchAndNavigate: () => void;
 }) {
     return (
-        <div className="mt-2 overflow-y-auto border-t border-gray-200 px-4 pb-1">
+        <div className="mt-2 overflow-y-auto border-t border-(--border-control)/70 px-4 pb-1">
             {entries.length === 0 && (
                 <div className="mt-4 flex items-center justify-center">
                     No items to display.
@@ -42,7 +42,7 @@ export function GridView({
                         className={`group flex flex-col items-center rounded-xl p-2 text-center transition ${
                             selected === name
                                 ? "bg-blue-500/20 ring-1 ring-blue-400"
-                                : "hover:bg-gray-200"
+                                : "hover:bg-(--bg-hover)"
                         }`}
                     >
                         <div className="flex h-10 w-10 justify-center">
