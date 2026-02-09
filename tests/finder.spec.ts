@@ -89,7 +89,19 @@ test("open text preview file", async ({ page }) => {
     await openFinder(page);
 
     await doubleClickItem(page, "Documents");
-    await doubleClickItem(page, "finder-item-cover-letter.txt");
+    await doubleClickItem(page, "cover-letter.txt");
 
     await expect(page.getByTestId("text-preview")).toBeVisible();
+});
+
+test("open html preview file", async ({ page }) => {
+    await bootDesktop(page);
+    await openFinder(page);
+
+    await doubleClickItem(page, "Documents");
+    await doubleClickItem(page, "Projects");
+    await doubleClickItem(page, "Web");
+    await doubleClickItem(page, "index.html");
+
+    await expect(page.getByTestId("html-preview")).toBeVisible();
 });

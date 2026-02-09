@@ -47,7 +47,7 @@ export function TextFileViewer({
 
         return (
             <div
-                data-testid="text-preview"
+                data-testid="html-preview"
                 className="flex h-full w-full flex-col gap-4 overflow-auto p-3"
             >
                 <button
@@ -76,7 +76,10 @@ export function TextFileViewer({
 
     if (isText) {
         return (
-            <div className="h-full w-full overflow-auto p-4">
+            <div
+                data-testid="text-preview"
+                className="h-full w-full overflow-auto p-4"
+            >
                 <textarea
                     value={content}
                     readOnly

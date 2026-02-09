@@ -17,9 +17,6 @@ jobs:
         with:
           node-version: 22
 
-      - name: Env file
-        run: cp .env.dist .env
-
       - name: Enable Corepack
         run: corepack enable
 
@@ -29,15 +26,13 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Start app (prod container)
-        env:
-          LOCK_PASSWORD: aurora
-        run: make prod
+      - name: Start app (test container)
+        run: make test-app
 
       - name: Wait for app
         run: |
-          echo "Waiting for http://localhost:8000 ..."
-          until curl -s http://localhost:8000 > /dev/null; do
+          echo "Waiting for http://localhost:3000 ..."
+          until curl -s http://localhost:3000 > /dev/null; do
             sleep 2
           done
 
@@ -46,7 +41,7 @@ jobs:
 
       - name: Run E2E tests
         env:
-          PLAYWRIGHT_BASE_URL: http://localhost:8000
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
         run: make test
 
       - name: Publish Test Report

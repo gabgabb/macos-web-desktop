@@ -63,6 +63,16 @@ prod-shell: ## Open a shell inside prod container
 	docker compose -f $(PROD_COMPOSE) exec web sh
 
 # -------------------------
+# TEST
+# -------------------------
+
+test-app:
+	docker compose -f compose.test.yml up --build -d
+
+test-app-stop:
+	docker compose -f compose.test.yml down
+
+# -------------------------
 # Tools
 # -------------------------
 

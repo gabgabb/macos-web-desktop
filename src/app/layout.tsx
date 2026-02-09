@@ -63,6 +63,12 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    if (process.env.NODE_ENV === "test") {
+        // @ts-ignore
+        window.__coverage__ = {};
+        document.documentElement.setAttribute("data-e2e", "true");
+    }
+
     return (
         <html lang="en">
             <body className={`antialiased`}>{children}</body>
