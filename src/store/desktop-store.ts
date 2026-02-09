@@ -311,13 +311,15 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         persistDesktop(get);
     },
 
-    setAccentColor: (accentColor: AccentColor) =>
+    setAccentColor: (accentColor: AccentColor) => {
         set((state) => ({
             settings: {
                 ...state.settings,
                 accentColor,
             },
-        })),
+        }));
+        persistDesktop(get);
+    },
 
     lock: () => {
         set({ isLocked: true });
