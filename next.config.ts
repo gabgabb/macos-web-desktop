@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NEXT_ENV === "dev";
+const isTest = process.env.NEXT_ENV === "test";
+
 const nextConfig: NextConfig = {
-    reactStrictMode: process.env.NEXT_ENV === "dev",
+    reactStrictMode: isDev,
     env: {
         NEXT_ENV: process.env.NEXT_ENV,
         LOCK_PASSWORD: process.env.LOCK_PASSWORD,
@@ -19,6 +22,13 @@ const nextConfig: NextConfig = {
                 pathname: "/9.x/**",
             },
         ],
+    },
+    compiler: {
+        removeConsole: isTest
+            ? false
+            : {
+                  exclude: ["error"],
+              },
     },
 };
 
