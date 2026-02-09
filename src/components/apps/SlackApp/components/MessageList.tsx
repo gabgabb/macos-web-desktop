@@ -10,7 +10,10 @@ export function MessageList({ conversation }: { conversation: Conversation }) {
     const typing = useDesktopStore((s) => s.slack?.typing);
 
     return (
-        <div className="flex grow flex-col overflow-y-auto bg-(--sidebar) px-6 py-2 text-sm text-(--text-strong)">
+        <div
+            data-testid="slack-message-list"
+            className="flex grow flex-col overflow-y-auto bg-(--sidebar) px-6 py-2 text-sm text-(--text-strong)"
+        >
             {conversation.messages.map((msg, index) => {
                 const prev = conversation.messages[index - 1];
                 const showDaySeparator = !prev || prev.date !== msg.date;
@@ -25,7 +28,7 @@ export function MessageList({ conversation }: { conversation: Conversation }) {
                           : "mt-3";
 
                 return (
-                    <div key={msg.id}>
+                    <div data-testid={`slack-message-${msg.id}`} key={msg.id}>
                         {showDaySeparator && <DaySeparator date={msg.date} />}
                         <div className={marginTop}>
                             <MessageRow

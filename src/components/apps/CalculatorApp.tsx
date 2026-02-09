@@ -19,13 +19,17 @@ export function CalculatorApp() {
 
     return (
         <div className="z-1 h-full bg-(--sidebar) text-white">
-            <div className="z-2 mb-2 border-b border-(--border-control)/50 p-2 text-right text-3xl text-(--text-primary)">
+            <div
+                data-testid="calculator-display"
+                className="z-2 mb-2 border-b border-(--border-control)/50 p-2 text-right text-3xl text-(--text-primary)"
+            >
                 {value}
             </div>
 
             <div className="grid grid-cols-4 gap-2 px-2">
                 {"789/456*123-0.=+".split("").map((c) => (
                     <button
+                        data-testid={`calc-btn-${c}`}
                         key={c}
                         className="rounded border border-(--border-control)/50 bg-(--window) p-2 text-(--text-primary) hover:bg-(--bg-row-even)"
                         onClick={() => (c === "=" ? compute() : input(c))}
@@ -34,6 +38,7 @@ export function CalculatorApp() {
                     </button>
                 ))}
                 <button
+                    data-testid="calc-btn-clear"
                     className="rounded border border-(--border-control)/50 bg-(--window) p-2 text-(--text-primary) hover:bg-(--bg-row-even)"
                     onClick={() => setValue("0")}
                 >

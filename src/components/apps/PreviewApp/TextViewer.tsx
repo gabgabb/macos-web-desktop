@@ -46,7 +46,10 @@ export function TextFileViewer({
         const clean = DOMPurify.sanitize(content);
 
         return (
-            <div className="flex h-full w-full flex-col gap-4 overflow-auto p-3">
+            <div
+                data-testid="text-preview"
+                className="flex h-full w-full flex-col gap-4 overflow-auto p-3"
+            >
                 <button
                     onClick={() =>
                         setMode((m) => (m === "render" ? "source" : "render"))

@@ -41,6 +41,7 @@ export function DesktopIconSortable({
             ref={setNodeRef}
             style={style}
             type="button"
+            data-testid={`desktop-icon-${id}`}
             className={clsx(
                 "flex w-20 flex-col items-center gap-1 rounded-xl p-2 transition select-none",
                 "hover:bg-white/10 active:bg-white/20",

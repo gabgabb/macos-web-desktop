@@ -25,8 +25,12 @@ export function DoomRuntime({
     }, []);
 
     return (
-        <div className="relative h-full w-full bg-black">
+        <div
+            data-testid="doom-runtime"
+            className="relative h-full w-full bg-black"
+        >
             <iframe
+                data-testid="doom-iframe"
                 src={`/doom/index.html?wad=${wad}`}
                 className="h-full w-full border-0"
                 allow="autoplay; fullscreen; gamepad;"
@@ -34,6 +38,7 @@ export function DoomRuntime({
             />
 
             <button
+                data-testid="doom-quit"
                 onClick={onExit}
                 className="absolute top-4 right-4 z-10 rounded bg-black/70 px-3 py-1 text-sm text-white hover:bg-red-600"
             >

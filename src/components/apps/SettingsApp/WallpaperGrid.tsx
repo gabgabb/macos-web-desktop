@@ -20,7 +20,10 @@ export function WallpaperGrid({
     if (wallpapers.length === 0) return null;
 
     return (
-        <section ref={ref}>
+        <section
+            ref={ref}
+            data-testid={`wallpaper-section-${title.toLowerCase().replaceAll(" ", "-")}`}
+        >
             <div className="mb-2 text-base font-semibold">{title}</div>
 
             <div className="flex flex-wrap gap-3">
@@ -34,6 +37,7 @@ export function WallpaperGrid({
                     return (
                         <button
                             key={w.id}
+                            data-testid={`wallpaper-${w.id}`}
                             onClick={() =>
                                 withViewTransition(() => onSelect(w))
                             }

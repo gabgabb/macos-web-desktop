@@ -181,6 +181,7 @@ export function TerminalApp() {
         >
             <div
                 ref={scrollRef}
+                data-testid="terminal-lines"
                 className="flex-1 overflow-auto pr-2 whitespace-pre-wrap"
             >
                 {lines.map((l) => (
@@ -203,6 +204,7 @@ export function TerminalApp() {
                     <input
                         ref={inputRef}
                         id={"terminal-input"}
+                        data-testid="terminal-input"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => {

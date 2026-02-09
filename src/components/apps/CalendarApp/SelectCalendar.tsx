@@ -42,7 +42,10 @@ export function SelectCalendar({
     return (
         <div ref={ref} className="relative text-(--text-primary)">
             {isMonth ? (
-                <div className="bg-background flex items-center justify-center gap-1 rounded-lg border border-(--border-control)/30 px-3 py-2 text-sm shadow hover:bg-(--border-soft)/10">
+                <div
+                    data-testid={"month-select"}
+                    className="bg-background flex items-center justify-center gap-1 rounded-lg border border-(--border-control)/30 px-3 py-2 text-sm shadow hover:bg-(--border-soft)/10"
+                >
                     <button onClick={onPrevMonth} aria-label="Previous month">
                         <MoveLeft className="size-4" />
                     </button>
@@ -58,6 +61,7 @@ export function SelectCalendar({
                 </div>
             ) : (
                 <button
+                    data-testid={"month-select"}
                     onClick={() => setOpen((v) => !v)}
                     className="bg-background flex items-center gap-2 rounded-lg border border-(--border-control)/30 px-3 py-2 text-sm shadow backdrop-blur hover:bg-(--border-soft)/10"
                 >
@@ -69,6 +73,7 @@ export function SelectCalendar({
                 <div className="bg-background absolute z-10 mt-1 max-h-48 w-40 overflow-y-auto rounded-xl border border-(--border-control) shadow-lg">
                     {options.map((o) => (
                         <button
+                            data-testid={`select-option-${o.value}`}
                             key={o.value}
                             onClick={() => {
                                 onChange(o.value);

@@ -66,16 +66,19 @@ export function MenuBar() {
             </div>
             <div className="flex items-center gap-5">
                 <WifiIcon
+                    data-testid="wifi-icon"
                     className="hover:cursor-pointer"
                     aria-hidden="true"
                     onClick={toggleWifiPanel}
                 />
                 <Volume2Icon
+                    data-testid="audio-icon"
                     className="hover:cursor-pointer"
                     aria-hidden="true"
                     onClick={toggleAudioPanel}
                 />
                 <SlidersHorizontal
+                    data-testid="appearance-icon"
                     className="hover:cursor-pointer"
                     aria-hidden="true"
                     onClick={toggleAppearancePanel}
