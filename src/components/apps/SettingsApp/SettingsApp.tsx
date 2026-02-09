@@ -1,19 +1,17 @@
 "use client";
 
+import { AccentColor } from "@/src/components/apps/SettingsApp/AccentColor";
+import { LinkToSection } from "@/src/components/apps/SettingsApp/LinkToSection";
+import { Theme } from "@/src/components/apps/SettingsApp/Theme";
 import { WallpaperGrid } from "@/src/components/apps/SettingsApp/WallpaperGrid";
 import { Wallpaper } from "@/src/core/apps/types";
-import { ACCENTS } from "@/src/core/ui/ui-constants";
-import { withViewTransition } from "@/src/helpers/withViewTransition.helpers";
 import { useDesktopStore } from "@/src/store/desktop-store";
-import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 export function SettingsApp() {
     const wallpaper = useDesktopStore((s) => s.settings.wallpaper);
     const setWallpaper = useDesktopStore((s) => s.setWallpaper);
-    const accentColor = useDesktopStore((s) => s.settings.accentColor);
-    const setAccent = useDesktopStore((s) => s.setAccentColor);
 
     const [loading, setLoading] = useState<boolean>(true);
     const [wallpapers, setWallpapers] = useState<Wallpaper[]>([]);
@@ -31,11 +29,25 @@ export function SettingsApp() {
             .finally(() => setLoading(false));
     }, []);
 
+    useEffect(() => {
+        wallpapers.forEach((w) => {
+            const src =
+                w.thumb ??
+                (w.media.type === "image" ? w.media.src : w.media.poster);
+
+            if (!src) return;
+
+            const img = new window.Image();
+            img.decoding = "async";
+            img.loading = "eager";
+            img.src = src;
+            img.src = src;
+        });
+    }, [wallpapers]);
+
     const dynamic = wallpapers.filter((w) => w.category === "dynamic");
     const statics = wallpapers.filter((w) => w.category === "static");
     const videos = wallpapers.filter((w) => w.category === "video");
-
-    const { theme, setTheme } = useTheme();
 
     return (
         <div className="flex h-full gap-4 rounded-b-2xl bg-(--window) p-4 text-(--text-primary)">
@@ -51,121 +63,52 @@ export function SettingsApp() {
                     <div className="mt-2 text-lg font-semibold">Aurora</div>
                 </div>
 
-                <div className="mt-3 space-y-1 text-sm font-semibold text-(--text-strong)">
-                    <div
-                        className="rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--border-soft) hover:font-bold"
-                        onClick={() =>
-                            appearanceRef.current?.scrollIntoView({
-                                behavior: "smooth",
-                            })
-                        }
-                    >
-                        Appearance
-                    </div>
-                    <div
-                        onClick={() =>
-                            accentColorRef.current?.scrollIntoView({
-                                behavior: "smooth",
-                            })
-                        }
-                        className="rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--border-soft) hover:font-bold"
-                    >
-                        Accent color
-                    </div>
-                    <div className="flex flex-col items-start">
+                <div className="mt-3 flex flex-col text-sm font-semibold text-(--text-strong)">
+                    <LinkToSection ref={appearanceRef} content={"Theme"} />
+                    <LinkToSection
+                        ref={accentColorRef}
+                        content="Accent color"
+                    />
+                    <div className="mt-3 flex flex-col items-start">
                         Wallpapers
-                        <div
-                            className="mt-1 w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--border-soft) hover:font-bold"
-                            onClick={() =>
-                                dynamicRef.current?.scrollIntoView({
-                                    behavior: "smooth",
-                                })
-                            }
-                        >
-                            Dynamic wallpapers
-                        </div>
-                        <div
-                            className="w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--border-soft) hover:font-bold"
-                            onClick={() =>
-                                staticRef.current?.scrollIntoView({
-                                    behavior: "smooth",
-                                })
-                            }
-                        >
-                            Static wallpapers
-                        </div>
-                        <div
-                            className="w-full rounded-lg p-2 transition-all hover:cursor-pointer hover:bg-(--border-soft) hover:font-bold"
-                            onClick={() =>
-                                videoRef.current?.scrollIntoView({
-                                    behavior: "smooth",
-                                })
-                            }
-                        >
-                            Video wallpapers
-                        </div>
+                        <LinkToSection
+                            ref={dynamicRef}
+                            content={"Dynamic wallpapers"}
+                        />
+                        <LinkToSection
+                            ref={staticRef}
+                            content={"Static wallpapers"}
+                        />
+                        <LinkToSection
+                            ref={videoRef}
+                            content={"Video wallpapers"}
+                        />
                     </div>
                 </div>
             </div>
 
-            <div className="flex-1 space-y-6 overflow-auto rounded-2xl border border-(--border-control) bg-(--sidebar) p-4 shadow-(--shadow-window) backdrop-blur-md">
-                <section ref={appearanceRef}>
-                    <div className="text-base font-semibold">Appearance</div>
-
-                    <div className="bg-background mt-3 inline-flex gap-1 rounded-xl border border-(--border-control) p-1 transition-all duration-300">
-                        {(["light", "dark", "system"] as const).map((t) => {
-                            const active = theme === t;
-
-                            return (
-                                <button
-                                    key={t}
-                                    onClick={() =>
-                                        withViewTransition(() => setTheme(t))
-                                    }
-                                    className={`relative rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                                        active
-                                            ? "bg-[rgb(var(--accent))]/65"
-                                            : "bg-background text-(--text-secondary)"
-                                    } `}
-                                >
-                                    {t === "light"
-                                        ? "☀️ Light"
-                                        : t === "dark"
-                                          ? "🌙 Dark"
-                                          : "💻 System"}
-                                </button>
-                            );
-                        })}
-                    </div>
+            <div className="flex-1 space-y-4 overflow-auto rounded-2xl border border-(--border-control) bg-(--sidebar) p-4 shadow-(--shadow-window) backdrop-blur-md">
+                <section
+                    ref={appearanceRef}
+                    className="flex flex-col items-start gap-2"
+                    key="theme"
+                    id="theme"
+                >
+                    <div className="text-base font-semibold">Theme</div>
+                    <Theme />
                 </section>
-                <section>
+                <section
+                    className="flex flex-col items-start gap-2"
+                    key="accent"
+                    id="accent"
+                >
                     <div
                         ref={accentColorRef}
                         className="text-base font-semibold"
                     >
                         Accent color
                     </div>
-                    <div className="mt-3 flex gap-2">
-                        {Object.entries(ACCENTS).map(([key, value]) => {
-                            const active = accentColor === key;
-
-                            return (
-                                <button
-                                    key={key}
-                                    onClick={() => setAccent(key as any)}
-                                    className={`relative h-8 w-8 rounded-full ring-2 transition ${
-                                        active
-                                            ? "ring-accent scale-110"
-                                            : "ring-transparent hover:scale-105"
-                                    }`}
-                                    style={{
-                                        backgroundColor: `rgb(${value})`,
-                                    }}
-                                    aria-label={key}
-                                />
-                            );
-                        })}
-                    </div>
+                    <AccentColor />
                 </section>
                 {loading && (
                     <div className="flex h-48 w-full items-center justify-center">

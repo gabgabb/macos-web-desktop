@@ -1,4 +1,4 @@
-import { CalendarIcon } from "@/src/components/CalendarIcon";
+import { CalendarIcon } from "@/src/components/apps/CalendarApp/CalendarIcon";
 import { ReactNode } from "react";
 
 export const APP_ICONS: Record<string, ReactNode> = {

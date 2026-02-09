@@ -123,7 +123,7 @@ html[data-e2e] * {
     --text-tertiary: rgba(15, 23, 42, 0.4);
     --text-strong: #1f2937;
 
-    --dock-bg: rgba(255, 255, 255, 0.25);
+    --dock-bg: rgba(255, 255, 255, 0.35);
     --dock-border: rgba(0, 0, 0, 0.12);
     --dock-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     --dock-hover: rgba(0, 0, 0, 0.08);
@@ -151,6 +151,10 @@ html[data-e2e] * {
 
 html:not([data-theme]) {
     visibility: hidden;
+}
+
+html.theme-switching {
+  background-color: var(--background);
 }
 
 

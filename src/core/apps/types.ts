@@ -1,5 +1,5 @@
 import { Conversation } from "@/src/core/apps/chatData";
-import { AccentColor } from "@/src/core/ui/ui-constants";
+import { AccentKey } from "@/src/core/ui/ui-constants";
 
 export type AppId =
     | "finder"
@@ -46,6 +46,8 @@ export type WindowInstance = {
     zIndex: number;
 };
 
+export type Panel = "audio" | "wifi" | "appearance" | null;
+
 export type DesktopSnapshot = {
     windows: WindowInstance[];
     activeWindowId: string | null;
@@ -58,7 +60,7 @@ export type DesktopSnapshot = {
     };
     settings: {
         theme: "light" | "dark" | "system";
-        accentColor: AccentColor;
+        accentColor: AccentKey;
         wallpaper: Wallpaper;
     };
     audio: {
@@ -67,8 +69,7 @@ export type DesktopSnapshot = {
         appVolumes: Partial<Record<AppId, number>>;
     };
     ui: {
-        audioPanelOpen: boolean;
-        wifiPanelOpen: boolean;
+        activePanel: Panel;
     };
     progress?: {
         slackIntroPlayed?: boolean;

@@ -1,6 +1,7 @@
 import { VideoPreview } from "@/src/components/apps/SettingsApp/VideoPreview";
 import { Wallpaper } from "@/src/core/apps/types";
 import { withViewTransition } from "@/src/helpers/withViewTransition.helpers";
+import Image from "next/image";
 import React from "react";
 
 export function WallpaperGrid({
@@ -36,20 +37,23 @@ export function WallpaperGrid({
                             onClick={() =>
                                 withViewTransition(() => onSelect(w))
                             }
-                            className={`relative flex h-40 w-72 items-center justify-center overflow-hidden rounded-2xl text-sm ring-3 transition-all duration-200 ${
+                            className={`relative h-40 w-72 overflow-hidden rounded-2xl ring-3 transition-all duration-200 ${
                                 activeId === w.id
                                     ? "ring-[rgb(var(--accent))]"
                                     : "ring-transparent hover:ring-white/40"
                             }`}
-                            style={
-                                thumb
-                                    ? {
-                                          backgroundImage: `url(${thumb})`,
-                                          backgroundSize: "cover",
-                                      }
-                                    : undefined
-                            }
                         >
+                            {thumb && (
+                                <Image
+                                    src={thumb}
+                                    alt=""
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 288px"
+                                    className="object-cover"
+                                    priority={false}
+                                />
+                            )}
+
                             {w.media.type === "video" && (
                                 <VideoPreview
                                     src={w.media.src}

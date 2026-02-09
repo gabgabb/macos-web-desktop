@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 export function WallpaperLayer({
     media,
     className,
@@ -5,24 +7,42 @@ export function WallpaperLayer({
     media: { type: "image" | "video"; src: string; poster?: string };
     className?: string;
 }) {
+    const imgRef = useRef<HTMLImageElement | null>(null);
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+
+    useEffect(() => {
+        if (media.type === "image" && imgRef.current) {
+            if (imgRef.current.src !== media.src) {
+                imgRef.current.src = media.src;
+            }
+        }
+
+        if (media.type === "video" && videoRef.current) {
+            if (videoRef.current.src !== media.src) {
+                videoRef.current.src = media.src;
+                videoRef.current.load();
+                videoRef.current.play().catch(() => {});
+            }
+        }
+    }, [media]);
+
     if (media.type === "video") {
         return (
             <video
+                ref={videoRef}
                 autoPlay
                 loop
                 muted
                 playsInline
                 className={`absolute inset-0 h-full w-full object-cover ${className}`}
                 poster={media.poster}
-            >
-                <source src={media.src} type="video/mp4" />
-            </video>
+            />
         );
     }
 
     return (
         <img
-            src={media.src}
+            ref={imgRef}
             alt=""
             draggable={false}
             className={`absolute inset-0 h-full w-full object-cover ${className}`}

@@ -1,6 +1,6 @@
 "use client";
 
-import { MacWindow } from "@/src/components/MacWindow";
+import { MacWindow } from "@/src/components/Desktop/MacWindow";
 import { APP_COMPONENTS } from "@/src/core/apps/app-components";
 import { APP_REGISTRY } from "@/src/core/apps/registry";
 import { useDesktopStore } from "@/src/store/desktop-store";

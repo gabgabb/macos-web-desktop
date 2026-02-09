@@ -8,10 +8,7 @@ export function AccentSync() {
     const accent = useDesktopStore((s) => s.settings.accentColor);
 
     useEffect(() => {
-        const value = ACCENTS[accent];
-
-        if (!value) return;
-
+        const value = ACCENTS[accent] ?? ACCENTS.blue;
         document.documentElement.style.setProperty("--accent", value);
     }, [accent]);
 

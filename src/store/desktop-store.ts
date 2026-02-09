@@ -3,6 +3,7 @@ import { APP_REGISTRY } from "@/src/core/apps/registry";
 import {
     AppId,
     DesktopSnapshot,
+    Panel,
     TerminalLine,
     Wallpaper,
     WindowInstance,
@@ -51,8 +52,7 @@ const DEFAULT_STATE: DesktopSnapshot = {
         appVolumes: {},
     },
     ui: {
-        audioPanelOpen: false,
-        wifiPanelOpen: false,
+        activePanel: null,
     },
     progress: {
         slackIntroPlayed: false,
@@ -109,8 +109,7 @@ export type DesktopState = DesktopSnapshot & {
     toggleMute: () => void;
     setAppVolume: (appId: AppId, v: number) => void;
 
-    toggleAudioPanel: () => void;
-    toggleWifiPanel(): void;
+    togglePanel: (panel: "audio" | "wifi" | "appearance" | null) => void;
 
     markSlackIntroPlayed: () => void;
     setSlackConversations: (
@@ -368,19 +367,10 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         persistDesktop(get);
     },
 
-    toggleAudioPanel: () =>
+    togglePanel: (panel: Panel) =>
         set((state) => ({
             ui: {
-                audioPanelOpen: !state.ui.audioPanelOpen,
-                wifiPanelOpen: false,
-            },
-        })),
-
-    toggleWifiPanel: () =>
-        set((state) => ({
-            ui: {
-                wifiPanelOpen: !state.ui.wifiPanelOpen,
-                audioPanelOpen: false,
+                activePanel: state.ui.activePanel === panel ? null : panel,
             },
         })),
 

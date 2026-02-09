@@ -8,7 +8,7 @@ export function InputSlack({
 }) {
     return (
         <div className="w-full bg-(--sidebar) p-5 text-(--text-strong)">
-            <div className="bg-background/80 flex w-2/3 flex-col rounded-xl border border-(--border-control)/30 backdrop-blur-md">
+            <div className="bg-background/80 flex w-2/3 flex-col rounded-xl border border-(--border-control)/30 shadow-sm backdrop-blur-md">
                 <textarea
                     rows={1}
                     className="w-full resize-none rounded-t-xl border-b border-(--border-control)/30 bg-transparent p-4 px-3 text-(--text-secondary) outline-none"

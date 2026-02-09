@@ -15,7 +15,10 @@ export function MenuBar() {
     const windows = useDesktopStore((s) => s.windows);
     const activeWindowId = useDesktopStore((s) => s.activeWindowId);
     const router = useRouter();
+
     const lock = useDesktopStore((s) => s.lock);
+    const activePanel = useDesktopStore((s) => s.ui.activePanel);
+    const togglePanel = useDesktopStore((s) => s.togglePanel);
 
     const { menuBarTime } = useLiveClock();
 
@@ -33,8 +36,9 @@ export function MenuBar() {
         fetch("/api/lock", { method: "POST" }).catch(() => {});
     }
 
-    const toggleAudioPanel = useDesktopStore((s) => s.toggleAudioPanel);
-    const toggleWifiPanel = useDesktopStore((s) => s.toggleWifiPanel);
+    const toggleWifiPanel = () => togglePanel("wifi");
+    const toggleAudioPanel = () => togglePanel("audio");
+    const toggleAppearancePanel = () => togglePanel("appearance");
 
     return (
         <div
@@ -42,7 +46,7 @@ export function MenuBar() {
                 e.preventDefault();
                 e.stopPropagation();
             }}
-            className="menu-top absolute top-0 right-0 left-0 z-100 flex h-10 items-center justify-between border-b border-(--dock-border) bg-(--dock-bg) px-4 pl-6 text-(--text-primary) backdrop-blur-md"
+            className="menu-top absolute top-0 right-0 left-0 z-100 flex h-10 items-center justify-between border-b border-(--dock-border) bg-(--dock-bg) px-4 pl-6 text-(--text-strong) backdrop-blur-md"
         >
             <div className="left-10 flex items-center gap-5">
                 <svg
@@ -60,7 +64,7 @@ export function MenuBar() {
                     {activeTitle ?? "Desktop"}
                 </span>
             </div>
-            <div className="flex items-center gap-5 text-white">
+            <div className="flex items-center gap-5">
                 <WifiIcon
                     className="hover:cursor-pointer"
                     aria-hidden="true"
@@ -71,15 +75,16 @@ export function MenuBar() {
                     aria-hidden="true"
                     onClick={toggleAudioPanel}
                 />
+                <SlidersHorizontal
+                    className="hover:cursor-pointer"
+                    aria-hidden="true"
+                    onClick={toggleAppearancePanel}
+                />
                 <LockIcon
                     data-testid="lock-icon"
                     className="hover:cursor-pointer"
                     aria-hidden="true"
                     onClick={handleLock}
-                />
-                <SlidersHorizontal
-                    className="hover:cursor-pointer"
-                    aria-hidden="true"
                 />
                 <div
                     className="text-sm font-semibold opacity-90"

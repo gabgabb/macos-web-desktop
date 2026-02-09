@@ -2,13 +2,15 @@
 
 import { DesktopContextMenu } from "@/src/components/Desktop/DesktopContextMenu";
 import { DesktopIcons } from "@/src/components/Desktop/DesktopIcons";
-import { Dock } from "@/src/components/Dock";
-import { MenuBar } from "@/src/components/MenuBar";
-import { AudioPanel } from "@/src/components/settings/AudioPanel";
-import { WifiPanel } from "@/src/components/settings/WifiPanel";
-import { WindowManager } from "@/src/components/WindowManager";
+import { WindowManager } from "@/src/components/Desktop/WindowManager";
+import { AppearancePanel } from "@/src/components/Settings/AppearancePanel";
+import { AudioPanel } from "@/src/components/Settings/AudioPanel";
+import { WifiPanel } from "@/src/components/Settings/WifiPanel";
+import { Dock } from "@/src/components/UI/Dock/Dock";
+import { MenuBar } from "@/src/components/UI/MenuBar";
 import { DOCK_RESERVED, MENU_BAR_HEIGHT } from "@/src/core/ui/ui-constants";
 import { useDesktopStore } from "@/src/store/desktop-store";
+import { AnimatePresence } from "framer-motion";
 import React, { useCallback, useState } from "react";
 
 export function Desktop() {
@@ -19,16 +21,16 @@ export function Desktop() {
     });
     const reset = useDesktopStore((s) => s.reset);
     const openApp = useDesktopStore((s) => s.openApp);
+    const activePanel = useDesktopStore((s) => s.ui.activePanel);
+    const togglePanel = useDesktopStore((s) => s.togglePanel);
 
     const closeCtx = useCallback(() => {
         setCtx((s) => ({ ...s, open: false }));
     }, []);
 
-    const audioPanelOpen = useDesktopStore((s) => s.ui.audioPanelOpen);
-    const wifiPanelOpen = useDesktopStore((s) => s.ui.wifiPanelOpen);
-
-    const toggleAudioPanel = useDesktopStore((s) => s.toggleAudioPanel);
-    const toggleWifiPanel = useDesktopStore((s) => s.toggleWifiPanel);
+    const audioPanelOpen = activePanel === "audio";
+    const wifiPanelOpen = activePanel === "wifi";
+    const appearancePanelOpen = activePanel === "appearance";
 
     return (
         <main
@@ -57,9 +59,19 @@ export function Desktop() {
             }}
         >
             <MenuBar />
-            {wifiPanelOpen && <WifiPanel onClose={toggleWifiPanel} />}
-
-            {audioPanelOpen && <AudioPanel onClose={toggleAudioPanel} />}
+            <AnimatePresence>
+                {wifiPanelOpen && (
+                    <WifiPanel onCloseAction={() => togglePanel("wifi")} />
+                )}
+                {audioPanelOpen && (
+                    <AudioPanel onCloseAction={() => togglePanel("audio")} />
+                )}
+                {appearancePanelOpen && (
+                    <AppearancePanel
+                        onCloseAction={() => togglePanel("appearance")}
+                    />
+                )}
+            </AnimatePresence>
 
             <DesktopIcons />
 
