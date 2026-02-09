@@ -29,7 +29,7 @@ export function AudioPanel({ onCloseAction }: { onCloseAction: () => void }) {
                     step={0.01}
                     value={audio.masterVolume}
                     onChange={(e) => setMasterVolume(Number(e.target.value))}
-                    className="bg-neutral-quaternary h-2 w-full cursor-pointer rounded-full accent-[rgb(var(--accent))]/65"
+                    className="bg-neutral-quaternary h-2 w-full cursor-pointer rounded-full accent-[rgb(var(--accent))]"
                 />
             </motion.div>
         </>
