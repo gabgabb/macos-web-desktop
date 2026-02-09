@@ -1,5 +1,5 @@
 import { AppId } from "@/src/core/apps/types";
-import { expect } from "@playwright/test";
+import { expect } from "@/tests/setup";
 import type { Page } from "playwright-core";
 
 type DragOptions = {

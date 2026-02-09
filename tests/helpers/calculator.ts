@@ -1,4 +1,5 @@
-import { expect, Page } from "@playwright/test";
+import { expect } from "@/tests/setup";
+import { Page } from "@playwright/test";
 
 export async function openCalculator(page: Page) {
     const dock = page.getByTestId("dock-calculator");

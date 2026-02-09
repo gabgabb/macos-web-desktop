@@ -1,5 +1,6 @@
 import { AppId } from "@/src/core/apps/types";
-import { expect, Locator } from "@playwright/test";
+import { expect } from "@/tests/setup";
+import { Locator } from "@playwright/test";
 import type { Page } from "playwright-core";
 
 export async function toggleApp(page: Page, app: AppId) {

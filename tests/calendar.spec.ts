@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "@/tests/setup";
 import { bootDesktop } from "./helpers/boot";
 import {
     openCalendar,
@@ -6,12 +6,6 @@ import {
     selectMonth,
     selectYear,
 } from "./helpers/calendar";
-
-test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => {
-        document.documentElement.setAttribute("data-e2e", "true");
-    });
-});
 
 test("calendar opens and shows days", async ({ page }) => {
     await bootDesktop(page);

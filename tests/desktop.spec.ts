@@ -1,13 +1,7 @@
 import { bootDesktop } from "@/tests/helpers/boot";
 import { dragAppWindow } from "@/tests/helpers/drag";
 import { toggleApp, toggleAppByDesktopIcon } from "@/tests/helpers/toggleApp";
-import { expect, test } from "@playwright/test";
-
-test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => {
-        document.documentElement.setAttribute("data-e2e", "true");
-    });
-});
+import { expect, test } from "@/tests/setup";
 
 test("open and minimize notes window via dock", async ({ page }) => {
     await bootDesktop(page);

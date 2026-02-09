@@ -1,14 +1,14 @@
 import fs from "fs";
 import path from "path";
 
-const COVERAGE_DIR = path.resolve(process.cwd(), ".nyc_output");
+const DIR = path.resolve(process.cwd(), ".nyc_output");
 
 export async function POST(req: Request) {
     const json = await req.json();
 
-    fs.mkdirSync(COVERAGE_DIR, { recursive: true });
+    fs.mkdirSync(DIR, { recursive: true });
 
-    const file = path.join(COVERAGE_DIR, `coverage-${Date.now()}.json`);
+    const file = path.join(DIR, `coverage-${Date.now()}-${Math.random()}.json`);
 
     fs.writeFileSync(file, JSON.stringify(json));
 

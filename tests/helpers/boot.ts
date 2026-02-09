@@ -1,4 +1,5 @@
-import { Page, expect } from "@playwright/test";
+import { expect } from "@/tests/setup";
+import { Page } from "@playwright/test";
 
 export async function bootDesktop(page: Page) {
     await page.goto("/");

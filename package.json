@@ -10,7 +10,8 @@
         "lint": "eslint \"src/**/*.+(ts|tsx)\"",
         "lint:fix": "eslint \"src/**/*.+(ts|tsx)\" --fix",
         "test-line": "npx playwright test --reporter=line",
-        "test-head": "npx playwright test --ui"
+        "test-head": "npx playwright test --ui",
+        "test:coverage": "npx playwright test --reporter=line && nyc report --reporter=text-summary --reporter=html"
     },
     "dependencies": {
         "@dnd-kit/core": "^6.3.1",

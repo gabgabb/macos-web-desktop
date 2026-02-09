@@ -1,12 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "@/tests/setup";
 import { bootDesktop } from "./helpers/boot";
 import { openCalculator, press } from "./helpers/calculator";
-
-test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => {
-        document.documentElement.setAttribute("data-e2e", "true");
-    });
-});
 
 test("calculator shows initial value", async ({ page }) => {
     await bootDesktop(page);
