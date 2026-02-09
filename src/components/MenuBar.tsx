@@ -60,7 +60,7 @@ export function MenuBar() {
                     {activeTitle ?? "Desktop"}
                 </span>
             </div>
-            <div className="flex items-center gap-5 text-(--text-primary)/90">
+            <div className="flex items-center gap-5 text-white">
                 <WifiIcon
                     className="hover:cursor-pointer"
                     aria-hidden="true"
