@@ -45,7 +45,14 @@ jobs:
         run: make test
 
       - name : Run unit tests
-        run: make test:unit
+        run: make test-coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: unit-test-coverage
+          path: coverage/
 
       - name: Publish Test Report
         uses: ctrf-io/github-test-reporter@v1
