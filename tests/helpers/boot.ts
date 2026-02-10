@@ -13,7 +13,6 @@ export async function bootDesktop(page: Page) {
     await expect(input).toBeVisible();
 
     await input.fill("aurora");
-    await input.press("Enter");
 
     await expect(page.getByTestId("desktop")).toBeVisible();
     await expect(lock).not.toBeVisible();

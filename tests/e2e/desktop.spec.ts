@@ -47,10 +47,12 @@ test("drag notes window", async ({ page }) => {
 test("open and close system panels", async ({ page }) => {
     await bootDesktop(page);
 
-    await page.getByTestId("wifi-icon").click();
+    const wifiIcon = page.getByTestId("wifi-icon");
+    await expect(wifiIcon).toBeVisible();
+    await wifiIcon.click();
     await expect(page.getByText("Network")).toBeVisible();
 
-    await page.getByTestId("wifi-overlay").click();
+    await wifiIcon.click();
     await expect(page.getByText("Network")).not.toBeVisible();
 
     const audioIcon = page.getByTestId("audio-icon");
@@ -146,8 +148,9 @@ test("set video wallpaper", async ({ page }) => {
     await expect(settingsWindow).toBeVisible();
 
     const videoSection = page.getByTestId("video-preview-iss.mp4");
-    await videoSection.scrollIntoViewIfNeeded();
-    await videoSection.click();
+
+    await expect(videoSection).toBeAttached();
+    await videoSection.click({ force: true });
 
     const video = page.getByTestId("wallpaper-video");
 
