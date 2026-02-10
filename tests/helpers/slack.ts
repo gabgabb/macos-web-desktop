@@ -1,4 +1,4 @@
-import { expect } from "@/tests/setup";
+import { expect } from "@/tests/e2e/setup";
 import { Page } from "@playwright/test";
 
 export async function openSlack(page: Page) {

@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 const isCI = !!process.env.CI;
 
 export default defineConfig({
-    testDir: "./tests",
+    testDir: "./tests/e2e",
 
     fullyParallel: true,
     forbidOnly: isCI,
@@ -15,13 +15,7 @@ export default defineConfig({
         timeout: 5_000,
     },
 
-    reporter: [
-        ["list"],
-        [
-            "playwright-ctrf-json-reporter",
-            { outputFile: "ctrf/ctrf-report.json" },
-        ],
-    ],
+    reporter: [["list"], ["playwright-ctrf-json-reporter"]],
 
     use: {
         baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000",

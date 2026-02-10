@@ -42,6 +42,12 @@ test-head: ## Run tests in headless mode
 test: ## Run tests in UI mode
 	yarn run test-line
 
+test-coverage: ## Run tests with coverage
+	yarn run test:unit:coverage
+
+test-unit: ## Run unit tests
+	yarn run test:unit
+
 # -------------------------
 # PROD
 # -------------------------

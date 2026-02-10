@@ -1,5 +1,5 @@
-import { expect, test } from "@/tests/setup";
-import { bootDesktop } from "./helpers/boot";
+import { expect, test } from "@/tests/e2e/setup";
+import { bootDesktop } from "../helpers/boot";
 
 test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {

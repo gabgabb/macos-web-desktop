@@ -1,6 +1,6 @@
-import { expect, test } from "@/tests/setup";
-import { bootDesktop } from "./helpers/boot";
-import { openCalculator, press } from "./helpers/calculator";
+import { expect, test } from "@/tests/e2e/setup";
+import { bootDesktop } from "../helpers/boot";
+import { openCalculator, press } from "../helpers/calculator";
 
 test("calculator shows initial value", async ({ page }) => {
     await bootDesktop(page);

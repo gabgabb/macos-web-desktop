@@ -1,11 +1,11 @@
-import { expect, test } from "@/tests/setup";
-import { bootDesktop } from "./helpers/boot";
+import { expect, test } from "@/tests/e2e/setup";
+import { bootDesktop } from "../helpers/boot";
 import {
     openCalendar,
     openDay,
     selectMonth,
     selectYear,
-} from "./helpers/calendar";
+} from "../helpers/calendar";
 
 test("calendar opens and shows days", async ({ page }) => {
     await bootDesktop(page);

@@ -1,7 +1,7 @@
+import { expect, test } from "@/tests/e2e/setup";
 import { bootDesktop } from "@/tests/helpers/boot";
 import { dragAppWindow } from "@/tests/helpers/drag";
 import { toggleApp, toggleAppByDesktopIcon } from "@/tests/helpers/toggleApp";
-import { expect, test } from "@/tests/setup";
 
 test("open and minimize notes window via dock", async ({ page }) => {
     await bootDesktop(page);

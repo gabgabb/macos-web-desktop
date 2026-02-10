@@ -10,4 +10,5 @@ services:
     volumes:
       - .:/app
       - /app/.next
+      - ./ctrf:/app/ctrf
     restart: "no"

@@ -1,6 +1,10 @@
-import { expect, test } from "@/tests/setup";
-import { bootDesktop } from "./helpers/boot";
-import { doubleClickItem, navigateSidebar, openFinder } from "./helpers/finder";
+import { expect, test } from "@/tests/e2e/setup";
+import { bootDesktop } from "../helpers/boot";
+import {
+    doubleClickItem,
+    navigateSidebar,
+    openFinder,
+} from "../helpers/finder";
 
 test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {

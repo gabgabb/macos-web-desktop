@@ -1,6 +1,6 @@
-import { expect, test } from "@/tests/setup";
-import { bootDesktop } from "./helpers/boot";
-import { openDoom } from "./helpers/doom";
+import { expect, test } from "@/tests/e2e/setup";
+import { bootDesktop } from "../helpers/boot";
+import { openDoom } from "../helpers/doom";
 
 test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
