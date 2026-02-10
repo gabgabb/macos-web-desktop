@@ -1,0 +1,14 @@
+services:
+  macos:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.test
+    volumes:
+      - .:/app
+      - /app/.next
+      - ./ctrf:/app/ctrf
+    restart: "no"

@@ -18,6 +18,7 @@ export function ChatHeader({
                 {isDM ? (
                     <>
                         <Image
+                            data-testid="dm-avatar"
                             src={user!.avatar}
                             alt={user!.name}
                             width={32}

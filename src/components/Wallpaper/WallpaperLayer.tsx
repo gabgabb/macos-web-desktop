@@ -29,6 +29,7 @@ export function WallpaperLayer({
     if (media.type === "video") {
         return (
             <video
+                data-testid="wallpaper-video"
                 ref={videoRef}
                 autoPlay
                 loop
@@ -42,6 +43,7 @@ export function WallpaperLayer({
 
     return (
         <img
+            data-testid="wallpaper"
             ref={imgRef}
             alt=""
             draggable={false}

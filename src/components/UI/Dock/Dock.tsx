@@ -34,17 +34,15 @@ export function Dock() {
     }
 
     function onClickDockIcon(app: AppDefinition) {
-        const minimized = windows.find(
-            (w) => w.appId === app.id && w.isMinimized,
-        );
+        const win = windows.find((w) => w.appId === app.id);
 
-        if (minimized) {
+        if (win?.isMinimized) {
             openApp(app.id);
             return;
         }
 
-        if (openAppIds.has(app.id)) {
-            closeWindow(app.id);
+        if (win) {
+            closeWindow(win.windowId);
             return;
         }
 

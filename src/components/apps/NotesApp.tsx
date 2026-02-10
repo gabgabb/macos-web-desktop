@@ -9,6 +9,7 @@ export function NotesApp() {
     return (
         <div className="h-full w-full">
             <textarea
+                data-testid="notes-textarea"
                 id={"notes"}
                 className="bg-background h-full w-full resize-none rounded-xl border border-(--border-control)/20 p-3 text-(--text-primary) shadow-(--shadow-window) outline-none"
                 placeholder="Write something..."

@@ -145,8 +145,7 @@ export function FinderApp() {
             : FS.search(query);
 
     function navigate(next: string[]) {
-        setHistory((h) => [...h.slice(0, historyIndex + 1), next]);
-        setHistoryIndex((i) => i + 1);
+        isHistoryNavigation.current = false;
 
         FS.cd("/" + next.join("/"));
         refreshFs();
@@ -243,21 +242,21 @@ export function FinderApp() {
                         </li>
                         <li
                             className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--border-soft)"
-                            data-testid="recents"
+                            data-testid="desktop"
                             onClick={() => navigateTo("desktop")}
                         >
                             <Dock className="size-5" /> <span>Desktop</span>
                         </li>
                         <li
                             className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--border-soft)"
-                            data-testid="recents"
+                            data-testid="documents"
                             onClick={() => navigateTo("documents")}
                         >
                             <File className="size-5" /> <span>Documents</span>
                         </li>
                         <li
                             className="flex cursor-pointer items-center gap-2 rounded-xl p-2 transition-all hover:bg-(--border-soft)"
-                            data-testid="recents"
+                            data-testid="downloads"
                             onClick={() => navigateTo("downloads")}
                         >
                             <Download className="size-5" />{" "}
@@ -268,6 +267,7 @@ export function FinderApp() {
             </aside>
 
             <main
+                data-testid="finder-main"
                 className="flex h-full w-full flex-col bg-(--sidebar) text-(--text-strong)"
                 onClick={() => setSelected(null)}
             >
@@ -309,13 +309,17 @@ export function FinderApp() {
                             </button>
                         </div>
 
-                        <div className="text-sm font-bold">
+                        <div
+                            data-testid="finder-path"
+                            className="text-sm font-bold"
+                        >
                             {query ? `Searching...` : titleFromPath(cwd)}
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
                         <div className="bg-background flex items-center gap-1 rounded-3xl shadow-md">
                             <button
+                                data-testid="finder-view-grid"
                                 onClick={() => setViewMode("grid")}
                                 className={`ml-2 flex h-8 w-8 items-center justify-center rounded-full transition ${
                                     viewMode === "grid"
@@ -332,6 +336,7 @@ export function FinderApp() {
                                 }
                             />
                             <button
+                                data-testid="finder-view-list"
                                 onClick={() => setViewMode("list")}
                                 className={`mr-2 flex h-8 w-8 items-center justify-center rounded-full transition ${
                                     viewMode === "list"
@@ -344,6 +349,7 @@ export function FinderApp() {
                             </button>
                         </div>
                         <div
+                            data-testid="finder-search"
                             className="bg-background flex items-center rounded-3xl px-2 shadow-md"
                             onClick={(e) => e.stopPropagation()}
                         >
@@ -351,6 +357,7 @@ export function FinderApp() {
                                 {searchOpen && (
                                     <motion.input
                                         key="search"
+                                        data-testid="finder-search-input"
                                         autoFocus
                                         id="search-input"
                                         maxLength={20}

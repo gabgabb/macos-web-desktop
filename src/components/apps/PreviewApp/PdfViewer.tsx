@@ -28,7 +28,10 @@ export const PdfViewer = React.memo(function PdfViewer({
     }, [fileName]);
 
     return (
-        <div className="h-full w-full overflow-auto bg-(--bg-sidebar) p-4">
+        <div
+            data-testid="pdf-preview"
+            className="h-full w-full overflow-auto bg-(--bg-sidebar) p-4"
+        >
             <Document
                 file={fileUrl}
                 onLoadSuccess={({ numPages }) => setNumPages(numPages)}

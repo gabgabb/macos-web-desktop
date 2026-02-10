@@ -28,6 +28,7 @@ export function VideoPreview({ src, poster }: { src: string; poster: string }) {
 
     return (
         <video
+            data-testid={`video-preview-${src.split("/").pop() ?? "unknown"}`}
             ref={ref}
             muted
             loop

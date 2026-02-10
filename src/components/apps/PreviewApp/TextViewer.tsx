@@ -46,7 +46,10 @@ export function TextFileViewer({
         const clean = DOMPurify.sanitize(content);
 
         return (
-            <div className="flex h-full w-full flex-col gap-4 overflow-auto p-3">
+            <div
+                data-testid="html-preview"
+                className="flex h-full w-full flex-col gap-4 overflow-auto p-3"
+            >
                 <button
                     onClick={() =>
                         setMode((m) => (m === "render" ? "source" : "render"))
@@ -73,7 +76,10 @@ export function TextFileViewer({
 
     if (isText) {
         return (
-            <div className="h-full w-full overflow-auto p-4">
+            <div
+                data-testid="text-preview"
+                className="h-full w-full overflow-auto p-4"
+            >
                 <textarea
                     value={content}
                     readOnly

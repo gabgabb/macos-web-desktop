@@ -86,6 +86,7 @@ export function MacWindow({
                             }}
                             className="h-3 w-3 rounded-full bg-red-500/90"
                             title="Close"
+                            data-testid={`window-${win.appId}-close-button`}
                         />
                         <button
                             onClick={(e) => {

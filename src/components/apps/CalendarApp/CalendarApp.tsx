@@ -98,7 +98,10 @@ export function CalendarApp() {
     }
 
     return (
-        <div className="h-full bg-(--sidebar) p-3 text-(--text-primary)">
+        <div
+            data-testid="calendar-app"
+            className="h-full bg-(--sidebar) p-3 text-(--text-primary)"
+        >
             <div className="mb-8 flex items-center justify-center gap-2">
                 <SelectCalendar
                     value={month}
@@ -144,6 +147,7 @@ export function CalendarApp() {
 
                     return (
                         <button
+                            data-testid={`calendar-day-${dateKey(day)}`}
                             key={day}
                             onClick={() => handleOpenEvent(day)}
                             className={`relative h-9 rounded text-sm transition ${
@@ -168,9 +172,12 @@ export function CalendarApp() {
             </motion.div>
 
             {selectedDate && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                <div
+                    data-testid="calendar-event-modal"
+                    className="fixed inset-0 z-50 flex items-center justify-center"
+                >
                     <div
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        className="absolute inset-0 bg-(--bg-sidebar) backdrop-blur-sm"
                         onClick={() => setSelectedDate(null)}
                     />
 
@@ -179,7 +186,7 @@ export function CalendarApp() {
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="relative z-10 w-80 rounded-xl bg-neutral-900 p-4 shadow-xl"
+                        className="bg-background relative z-10 w-80 rounded-xl border border-(--border-control) p-4 shadow-md"
                     >
                         <h3 className="mb-2 text-center text-sm font-semibold">
                             {selectedDate.split("-")[2]}{" "}
@@ -195,7 +202,7 @@ export function CalendarApp() {
                             {EVENTS[selectedDate].map((event) => (
                                 <li
                                     key={event.id}
-                                    className="rounded-lg bg-white/5 px-3 py-2 text-sm"
+                                    className="rounded-lg bg-(--bg-row-even) px-3 py-2 text-sm"
                                 >
                                     {event.title}
                                 </li>
@@ -203,8 +210,9 @@ export function CalendarApp() {
                         </ul>
 
                         <button
+                            data-testid="close-event-modal"
                             onClick={() => setSelectedDate(null)}
-                            className="mt-4 w-full rounded-lg bg-white/10 py-2 text-sm hover:bg-white/20"
+                            className="mt-4 w-full rounded-lg bg-(--button-secondary-bg) py-2 text-sm font-medium text-(--button-secondary-text) transition-colors hover:bg-(--button-secondary-hover) active:bg-(--button-secondary-active)"
                         >
                             Close
                         </button>

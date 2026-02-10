@@ -61,7 +61,7 @@ export function TypingRow({
     const user = USERS[authorId] ?? USERS["unknown"];
 
     return (
-        <div className="flex gap-3">
+        <div data-testid="typing-row" className="flex gap-3">
             <div className="w-10 shrink-0">
                 {showAvatar && (
                     <Image

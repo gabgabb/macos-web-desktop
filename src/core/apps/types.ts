@@ -98,15 +98,8 @@ export type AppProps = {
 };
 
 export type WallpaperMedia =
-    | {
-          type: "image";
-          src: string;
-      }
-    | {
-          type: "video";
-          src: string;
-          poster: string;
-      };
+    | { type: "image"; src: string }
+    | { type: "video"; src: string; poster?: string };
 
 export type Wallpaper = {
     id: string;

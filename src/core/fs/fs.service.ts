@@ -181,25 +181,25 @@ export const FS = {
         return node.content;
     },
 
-    writeFile(path: string, content: string) {
-        const { node } = resolvePath(root, cwd, path);
-        if (!node || node.type !== "file") {
-            throw new Error("Not a file");
-        }
-        node.content = content;
-    },
+    // writeFile(path: string, content: string) {
+    //     const { node } = resolvePath(root, cwd, path);
+    //     if (!node || node.type !== "file") {
+    //         throw new Error("Not a file");
+    //     }
+    //     node.content = content;
+    // },
 
-    touch(name: string) {
-        const { node } = resolvePath(root, cwd, ".");
-        if (!node || node.type !== "dir") return;
-        node.children[name] = { type: "file", content: "" };
-    },
-
-    mkdir(name: string) {
-        const { node } = resolvePath(root, cwd, ".");
-        if (!node || node.type !== "dir") return;
-        node.children[name] = { type: "dir", children: {} };
-    },
+    // touch(name: string) {
+    //     const { node } = resolvePath(root, cwd, ".");
+    //     if (!node || node.type !== "dir") return;
+    //     node.children[name] = { type: "file", content: "" };
+    // },
+    //
+    // mkdir(name: string) {
+    //     const { node } = resolvePath(root, cwd, ".");
+    //     if (!node || node.type !== "dir") return;
+    //     node.children[name] = { type: "dir", children: {} };
+    // },
 
     getNode(path: string[] = cwd) {
         let node: FsNode = root;

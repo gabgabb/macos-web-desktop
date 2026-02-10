@@ -16,7 +16,10 @@ export function GridView({
     exitSearchAndNavigate: () => void;
 }) {
     return (
-        <div className="mt-2 overflow-y-auto border-t border-(--border-control)/70 px-4 pb-1">
+        <div
+            data-testid="finder-grid"
+            className="mt-2 overflow-y-auto border-t border-(--border-control)/70 px-4 pb-1"
+        >
             {entries.length === 0 && (
                 <div className="mt-4 flex items-center justify-center">
                     No items to display.
@@ -25,6 +28,7 @@ export function GridView({
             <div className="mt-2 flex w-fit flex-wrap gap-4">
                 {entries.map(({ name, node, path }) => (
                     <button
+                        data-testid={`finder-item-${name}`}
                         key={name}
                         onClick={(e) => {
                             e.stopPropagation();

@@ -13,6 +13,7 @@ export function AccentColor() {
                 return (
                     <button
                         key={key}
+                        data-testid={`accent-${key}`}
                         onClick={() => setAccent(key as any)}
                         className={`relative h-8 w-8 rounded-full ring-2 transition ${
                             active

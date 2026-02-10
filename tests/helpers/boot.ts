@@ -1,4 +1,5 @@
-import { Page, expect } from "@playwright/test";
+import { expect } from "@/tests/e2e/setup";
+import { Page } from "@playwright/test";
 
 export async function bootDesktop(page: Page) {
     await page.goto("/");
@@ -13,5 +14,6 @@ export async function bootDesktop(page: Page) {
 
     await input.fill("aurora");
 
-    await expect(page.getByText("Unlocking...")).not.toBeVisible();
+    await expect(page.getByTestId("desktop")).toBeVisible();
+    await expect(lock).not.toBeVisible();
 }

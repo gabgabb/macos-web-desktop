@@ -43,14 +43,19 @@ export function DoomLauncher({
 
     return (
         <div className="flex h-full w-full flex-col items-center justify-center bg-black text-white">
-            <h1 className="mb-6 text-xl font-bold tracking-widest">
+            <h1
+                data-testid="doom-launcher-title"
+                className="mb-6 text-xl font-bold tracking-widest"
+            >
                 SELECT YOUR DOOM
             </h1>
 
             <div className="flex gap-6">
                 {DOOMS.map((d, i) => (
                     <button
+                        data-testid={`doom-option-${d.id}`}
                         key={d.id}
+                        data-active={i === index}
                         onClick={() => onLaunch(d.wad)}
                         className={`w-48 overflow-hidden rounded-xl border transition ${
                             i === index

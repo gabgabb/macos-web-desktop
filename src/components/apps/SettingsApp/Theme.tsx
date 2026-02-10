@@ -49,6 +49,7 @@ export function Theme() {
 
             {themes.map((t, index) => (
                 <button
+                    data-testid={`theme-${t}`}
                     key={t}
                     onClick={() => {
                         setPreviewIndex(index);

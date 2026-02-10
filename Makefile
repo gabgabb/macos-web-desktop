@@ -42,6 +42,12 @@ test-head: ## Run tests in headless mode
 test: ## Run tests in UI mode
 	yarn run test-line
 
+test-coverage: ## Run tests with coverage
+	yarn run test:unit:coverage
+
+test-unit: ## Run unit tests
+	yarn run test:unit
+
 # -------------------------
 # PROD
 # -------------------------
@@ -61,6 +67,16 @@ prod-logs: ## Show prod logs
 
 prod-shell: ## Open a shell inside prod container
 	docker compose -f $(PROD_COMPOSE) exec web sh
+
+# -------------------------
+# TEST
+# -------------------------
+
+test-app:
+	docker compose -f compose.test.yml up --build -d
+
+test-app-stop:
+	docker compose -f compose.test.yml down
 
 # -------------------------
 # Tools

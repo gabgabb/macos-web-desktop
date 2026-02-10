@@ -17,9 +17,6 @@ jobs:
         with:
           node-version: 22
 
-      - name: Env file
-        run: cp .env.dist .env
-
       - name: Enable Corepack
         run: corepack enable
 
@@ -29,25 +26,36 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Start app (prod container)
-        env:
-          LOCK_PASSWORD: aurora
-        run: make prod
+      - name: Start app (test container)
+        run: make test-app
 
       - name: Wait for app
         run: |
-          echo "Waiting for http://localhost:8000 ..."
-          until curl -s http://localhost:8000 > /dev/null; do
+          echo "Waiting for http://localhost:3000 ..."
+          until curl -s http://localhost:3000 > /dev/null; do
             sleep 2
           done
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
+      - name: Prepare CTRF directory
+        run: mkdir -p ctrf
+
       - name: Run E2E tests
         env:
-          PLAYWRIGHT_BASE_URL: http://localhost:8000
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
         run: make test
+
+      - name : Run unit tests
+        run: make test-coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: unit-test-coverage
+          path: coverage/
 
       - name: Publish Test Report
         uses: ctrf-io/github-test-reporter@v1
@@ -73,4 +81,4 @@ jobs:
 
       - name: Stop containers
         if: always()
-        run: make prod-stop
+        run: make test-app-stop

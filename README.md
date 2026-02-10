@@ -9,6 +9,12 @@ Live demo: https://escapegame.gabriaile.dev
 
 ## Features
 
+- **Desktop experience**
+  - Dock with application launch & minimize behavior
+  - Desktop icons with drag, selection & persistence
+  - Window management (focus, move, stack order)
+  - Lockscreen with theme & wallpaper synchronization
+
 - **Finder-like file explorer**
   - Grid & list views
   - Sidebar navigation (Applications, Documents, Downloads, etc.)
@@ -16,16 +22,23 @@ Live demo: https://escapegame.gabriaile.dev
   - Double-click to open folders or launch apps
   - Global search across the entire virtual file system
 
-- **Virtual File System (in-memory)**
+- **Virtual file system (in-memory)**
   - Directories, files, and applications as first-class nodes
   - Recursive search
-  - Type-safe architecture (TypeScript)
 
-- **Window & App management**
+- **Window & app management**
   - Applications launched from Finder
   - Centralized app registry
   - Multiple app windows
   - Focus & state handling
+  
+- **Appearance & system settings**
+  - Light / Dark themes
+  - Accent color selection
+  - Static image & video wallpapers
+  - Dynamic wallpapers that react to theme changes
+  - Reduced-motion fallback for accessibility
+
     
 - **Experimental apps**
   - **DOOM** running inside a window, as a proof-of-concept for embedding non-trivial applications
@@ -39,6 +52,8 @@ Live demo: https://escapegame.gabriaile.dev
 - **Tailwind CSS**
 - **Framer Motion**
 - **Zustand** (state management)
+- **Playwright** (E2E testing)
+- **Vitest** (unit testing)
 
 ---
 
@@ -60,8 +75,7 @@ Live demo: https://escapegame.gabriaile.dev
 
 The architecture is designed to be:
 - scalable
-- type-safe
-- close to real OS concepts (Finder, Applications, Dock, Spotlight)
+- close to real OS concepts (Finder, Applications, Dock)
 
 ---
 ## Developer tooling
@@ -82,6 +96,8 @@ make dev-shell  # Open a shell inside the dev container
 # Testing
 make test       # Run tests in UI mode
 make test-head  # Run tests in headless mode
+make test-unit    # Run unit tests
+make test-coverage # Run unit tests and show coverage report
 
 # Production
 make prod           # Start production containers
@@ -89,6 +105,10 @@ make prod-stop      # Stop production containers
 make prod-restart   # Restart production containers
 make prod-logs      # Show production logs
 make prod-shell     # Open a shell inside the prod container
+
+# Test env
+make test-app      # Start test environment (for E2E tests)
+make test-app-stop  # Stop test environment
 
 # Utilities
 make status     # Show Docker containers status

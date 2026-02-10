@@ -9,7 +9,11 @@ export function WifiPanel({ onCloseAction }: { onCloseAction: () => void }) {
 
     return (
         <>
-            <div className="fixed inset-0 z-40" onMouseDown={onCloseAction} />
+            <div
+                data-testid="wifi-overlay"
+                className="fixed inset-0 z-40"
+                onMouseDown={onCloseAction}
+            />
 
             <motion.div
                 initial={{ opacity: 0, scale: 0.96, y: -10 }}

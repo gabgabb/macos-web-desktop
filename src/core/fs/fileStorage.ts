@@ -5,15 +5,15 @@ export const FileStorage = {
         return FS.readFile(path);
     },
 
-    async writeText(path: string[], content: string) {
-        FS.writeFile(path.join("/"), content);
-    },
+    // async writeText(path: string[], content: string) {
+    //     FS.writeFile(path.join("/"), content);
+    // },
 
-    async listDir(path: string[]) {
-        const node = FS.getNode(path);
-        if (!node || node.type !== "dir") return [];
-        return Object.keys(node.children);
-    },
+    // async listDir(path: string[]) {
+    //     const node = FS.getNode(path);
+    //     if (!node || node.type !== "dir") return [];
+    //     return Object.keys(node.children);
+    // },
 
     async stat(path: string[]) {
         const node = FS.getNode(path);
