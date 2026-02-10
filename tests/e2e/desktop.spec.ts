@@ -115,3 +115,45 @@ test("change theme and accent color", async ({ page }) => {
 
     expect(accentAfter).not.toBe(accentBefore);
 });
+
+test("dynamic wallpaper follows theme on lockscreen", async ({ page }) => {
+    await bootDesktop(page);
+
+    await page.getByTestId("dock-settings").click();
+    const settingsWindow = page.getByTestId("window-settings");
+    await expect(settingsWindow).toBeVisible();
+
+    const wallpaperSection = page.getByTestId("wallpaper-mojave");
+    await wallpaperSection.scrollIntoViewIfNeeded();
+
+    await wallpaperSection.click();
+
+    await page.getByTestId("theme-dark").click();
+
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+
+    await page.getByTestId("lock-icon").click();
+
+    const lockscreen = page.getByTestId("lock-screen");
+
+    await expect(lockscreen).toHaveAttribute("data-theme", "dark");
+});
+
+test("set video wallpaper", async ({ page }) => {
+    await bootDesktop(page);
+
+    await page.getByTestId("dock-settings").click();
+    const settingsWindow = page.getByTestId("window-settings");
+    await expect(settingsWindow).toBeVisible();
+
+    const videoSection = page.getByTestId("video-preview-iss.mp4");
+    await videoSection.scrollIntoViewIfNeeded();
+    await videoSection.click();
+
+    const video = page.getByTestId("wallpaper-video");
+
+    await expect(video).toBeVisible();
+    await expect(video).toHaveJSProperty("paused", false);
+
+    await expect(video).toHaveAttribute("src", /iss.*\.mp4/);
+});

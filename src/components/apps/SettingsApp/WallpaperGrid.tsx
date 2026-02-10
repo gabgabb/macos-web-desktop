@@ -58,7 +58,7 @@ export function WallpaperGrid({
                                 />
                             )}
 
-                            {w.media.type === "video" && (
+                            {w.media.type === "video" && w.media.poster && (
                                 <VideoPreview
                                     src={w.media.src}
                                     poster={w.media.poster}
