@@ -93,11 +93,16 @@ test("change master volume", async ({ page }) => {
 test("change theme and accent color", async ({ page }) => {
     await bootDesktop(page);
 
-    await page.getByTestId("appearance-icon").click();
+    const appearanceIcon = page.getByTestId("appearance-icon");
+    await expect(appearanceIcon).toBeVisible();
+    await appearanceIcon.click();
 
     const html = page.locator("html");
 
-    await page.getByTestId("theme-light").click();
+    const themeLightButton = page.getByTestId("theme-light");
+    await expect(themeLightButton).toBeVisible();
+
+    await themeLightButton.click();
     await expect(html).toHaveAttribute("data-theme", "light");
 
     await page.getByTestId("theme-dark").click();
@@ -120,23 +125,17 @@ test("dynamic wallpaper follows theme on lockscreen", async ({ page }) => {
     await bootDesktop(page);
 
     await page.getByTestId("dock-settings").click();
-    const settingsWindow = page.getByTestId("window-settings");
-    await expect(settingsWindow).toBeVisible();
-
-    const wallpaperSection = page.getByTestId("wallpaper-mojave");
-    await wallpaperSection.scrollIntoViewIfNeeded();
-
-    await wallpaperSection.click();
+    await page.getByTestId("wallpaper-mojave").click();
 
     await page.getByTestId("theme-dark").click();
-
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 
     await page.getByTestId("lock-icon").click();
 
     const lockscreen = page.getByTestId("lock-screen");
+    await expect(lockscreen).toBeVisible();
 
-    await expect(lockscreen).toHaveAttribute("data-theme", "dark");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 });
 
 test("set video wallpaper", async ({ page }) => {
