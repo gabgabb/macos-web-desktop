@@ -68,7 +68,7 @@ export type DesktopState = DesktopSnapshot & {
     isLocked: boolean;
     cwd: string[];
 
-    hydrate: () => Promise<void>;
+    hydrate: () => void;
     reset: () => void;
 
     openApp: (appId: AppId) => void;
