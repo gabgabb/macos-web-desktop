@@ -22,7 +22,7 @@ export function renderHook<T>(hook: () => T) {
 
     return {
         get current() {
-            if (!value) {
+            if (value === undefined) {
                 throw new Error("Hook not rendered yet");
             }
             return value;
