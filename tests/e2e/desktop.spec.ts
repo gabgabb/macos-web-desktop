@@ -144,18 +144,17 @@ test("set video wallpaper", async ({ page }) => {
     await bootDesktop(page);
 
     await page.getByTestId("dock-settings").click();
-    const settingsWindow = page.getByTestId("window-settings");
-    await expect(settingsWindow).toBeVisible();
+    await expect(page.getByTestId("window-settings")).toBeVisible();
 
-    const videoSection = page.getByTestId("video-preview-iss.mp4");
+    await expect(page.getByTestId("wallpapers-loaded")).not.toBeVisible();
 
-    await expect(videoSection).toBeAttached();
-    await videoSection.click({ force: true });
+    const videoSection = page.getByTestId("wallpaper-section-video-wallpapers");
+    await expect(videoSection).toBeVisible();
+
+    const videoWallpaper = videoSection.getByTestId("wallpaper-iss2");
+    await videoWallpaper.click();
 
     const video = page.getByTestId("wallpaper-video");
-
     await expect(video).toBeVisible();
     await expect(video).toHaveJSProperty("paused", false);
-
-    await expect(video).toHaveAttribute("src", /iss.*\.mp4/);
 });

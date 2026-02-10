@@ -87,7 +87,10 @@ export function SettingsApp() {
                 </div>
             </div>
 
-            <div className="flex-1 space-y-4 overflow-auto rounded-2xl border border-(--border-control) bg-(--sidebar) p-4 shadow-(--shadow-window) backdrop-blur-md">
+            <div
+                data-testid="wallpaper-root"
+                className="flex-1 space-y-4 overflow-auto rounded-2xl border border-(--border-control) bg-(--sidebar) p-4 shadow-(--shadow-window) backdrop-blur-md"
+            >
                 <section
                     ref={appearanceRef}
                     className="flex flex-col items-start gap-2"
@@ -111,7 +114,10 @@ export function SettingsApp() {
                     <AccentColor />
                 </section>
                 {loading && (
-                    <div className="flex h-48 w-full items-center justify-center">
+                    <div
+                        data-testid="wallpapers-loaded"
+                        className="flex h-48 w-full items-center justify-center"
+                    >
                         <div className="/70 flex items-center gap-3 text-sm">
                             <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30" />
                             Loading wallpapers…
