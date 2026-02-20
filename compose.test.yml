@@ -9,6 +9,6 @@ services:
       - .env.test
     volumes:
       - .:/app
-      - /app/.next
       - ./ctrf:/app/ctrf
+      - ./test-results:/app/test-results
     restart: "no"

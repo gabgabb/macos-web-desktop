@@ -4,7 +4,7 @@ import { DoomApp } from "@/src/components/apps/DoomApp/DoomApp";
 import { FinderApp } from "@/src/components/apps/FinderApp/FinderApp";
 import { NotesApp } from "@/src/components/apps/NotesApp";
 import { PreviewApp } from "@/src/components/apps/PreviewApp/PreviewApp";
-import { SafariApp } from "@/src/components/apps/SafariApp";
+import { SafariApp } from "@/src/components/apps/SafariApp/SafariApp";
 import { SettingsApp } from "@/src/components/apps/SettingsApp/SettingsApp";
 import { SlackApp } from "@/src/components/apps/SlackApp/SlackApp";
 import { TerminalApp } from "@/src/components/apps/TerminalApp";

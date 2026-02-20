@@ -2,33 +2,39 @@ import type { Metadata, Viewport } from "next";
 import React from "react";
 import "./globals.css";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
+    metadataBase: new URL(siteUrl),
     title: {
-        default: "macOS Web",
+        default: "macOS Web – A macOS-like desktop in your browser",
         template: "%s · macOS Web",
     },
     description:
-        "A macOS-like desktop environment built with Next.js, React and Web APIs. Run apps, windows, and even DOOM in your browser.",
+        "A macOS-like desktop environment built with Next.js and React. Run apps, manage windows, and even play DOOM directly in your browser.",
 
     applicationName: "macOS Web",
     generator: "Next.js",
     keywords: [
-        "macOS",
-        "desktop",
-        "web OS",
-        "Next.js",
+        "macOS Web",
+        "web desktop",
+        "browser OS",
+        "Next.js app",
         "React",
         "window manager",
         "DOOM",
-        "WebAssembly",
     ],
-    authors: [{ name: "Gabriel Filiot" }],
+    authors: [{ name: "Gabriel Filiot", url: "https://gabriaile.dev" }],
     creator: "Gabriel Filiot",
+    alternates: {
+        canonical: "/",
+    },
     openGraph: {
         type: "website",
-        title: "macOS Web",
+        url: siteUrl,
+        title: "macOS Web – A macOS-like Desktop in Your Browser",
         description:
-            "A macOS-like desktop environment built with Next.js. Apps, windows, DOOM, and more.",
+            "Experience a macOS-inspired desktop environment built with modern web technologies. Apps, windows, animations, and even DOOM.",
         siteName: "macOS Web",
         images: [
             {
@@ -38,14 +44,34 @@ export const metadata: Metadata = {
                 alt: "macOS Web Desktop Preview",
             },
         ],
+        locale: "en_US",
     },
+
     twitter: {
         card: "summary_large_image",
-        title: "macOS Web",
+        title: "macOS Web – Run a Desktop in Your Browser",
         description:
-            "A macOS-like desktop environment built with Next.js and React.",
+            "A macOS-like desktop built with Next.js and React. Windows, apps, and DOOM directly in your browser.",
+        creator: "@gaaab_gab1",
         images: ["/desktop.webp"],
     },
+
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+        },
+    },
+
+    icons: {
+        icon: "/favicon.ico",
+    },
+
     formatDetection: {
         telephone: false,
     },

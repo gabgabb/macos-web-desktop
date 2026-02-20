@@ -39,9 +39,6 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Prepare CTRF directory
-        run: mkdir -p ctrf
-
       - name: Run E2E tests
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:3000

@@ -56,6 +56,7 @@ const DEFAULT_STATE: DesktopSnapshot = {
     },
     progress: {
         slackIntroPlayed: false,
+        clearanceLevel: 0,
     },
     slack: {
         conversations: CONVERSATIONS,
@@ -115,6 +116,9 @@ export type DesktopState = DesktopSnapshot & {
     setSlackConversations: (
         updater: (prev: Conversation[]) => Conversation[],
     ) => void;
+
+    setClearanceLevel: (level: number) => void;
+    incrementClearance: () => void;
 
     startTyping: (conversationId: string, authorId: string) => void;
     stopTyping: () => void;
@@ -393,6 +397,26 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
             slack: {
                 ...state.slack,
                 conversations: updater(state.slack!.conversations),
+            },
+        }));
+        persistDesktop(get);
+    },
+
+    setClearanceLevel: (level) => {
+        set((s) => ({
+            progress: {
+                ...s.progress,
+                clearanceLevel: level,
+            },
+        }));
+        persistDesktop(get);
+    },
+
+    incrementClearance: () => {
+        set((s) => ({
+            progress: {
+                ...s.progress,
+                clearanceLevel: s.progress.clearanceLevel + 1,
             },
         }));
         persistDesktop(get);

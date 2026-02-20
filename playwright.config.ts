@@ -15,15 +15,7 @@ export default defineConfig({
         timeout: 5_000,
     },
 
-    reporter: [
-        ["list"],
-        [
-            "playwright-ctrf-json-reporter",
-            {
-                outputFile: "ctrf/ctrf-report.json",
-            },
-        ],
-    ],
+    reporter: [["list"], ["playwright-ctrf-json-reporter", {}]],
 
     use: {
         baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000",

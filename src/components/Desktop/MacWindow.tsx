@@ -111,7 +111,7 @@ export function MacWindow({
                 </div>
 
                 <div
-                    className={`h-[calc(100%-40px)] bg-(--sidebar) ${appDef.window.withPadding ? "p-3" : ""}`}
+                    className={`h-[calc(100%-40px)] ${appDef.window.withPadding ? "bg-(--sidebar) p-3" : ""}`}
                 >
                     {children}
                 </div>
