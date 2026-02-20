@@ -1,9 +1,9 @@
-# MacOS-like Web Desktop 🖥️
+# MacOS-like Web Desktop
 
 A macOS-inspired desktop interface built for the web, featuring a custom Finder, Dock, window manager, and a virtual file system.  
 This project explores how desktop operating system UX patterns can be translated into a modern React / Next.js architecture.
 
-Live demo: https://escapegame.gabriaile.dev
+Live demo: https://macos.gabriaile.dev
 
 ---
 

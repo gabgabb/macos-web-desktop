@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 
 export type ContextAction =
     | { id: "new-folder"; label: string }
-    | { id: "refresh"; label: string }
     | { id: "wallpaper"; label: string };
 
 export function DesktopContextMenu({
@@ -40,21 +39,20 @@ export function DesktopContextMenu({
 
     const items: ContextAction[] = [
         { id: "new-folder", label: "New Folder" },
-        { id: "refresh", label: "Refresh (dev mode only)" },
         { id: "wallpaper", label: "Change Wallpaper" },
     ];
 
     return (
         <div
             ref={ref}
-            className="desktop-context-menu fixed z-20000 min-w-52.5 rounded-xl border border-white/10 bg-black/55 py-2 text-white/90 shadow-2xl backdrop-blur-xl"
+            className="desktop-context-menu bg-background/55 fixed z-20000 min-w-52.5 rounded-xl border border-(--border-control) py-2 text-(--text-primary) shadow-2xl backdrop-blur-xl"
             style={{ left: x, top: y }}
             onMouseDown={(e) => e.stopPropagation()}
         >
             {items.map((it) => (
                 <button
                     key={it.id}
-                    className="w-full px-3 py-2 text-left text-sm transition hover:bg-white/10"
+                    className="w-full px-3 py-2 text-left text-sm transition-colors hover:bg-[rgb(var(--accent))]/65"
                     onClick={() => {
                         onAction(it.id);
                         onClose();

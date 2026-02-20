@@ -12,6 +12,8 @@ export default function Home() {
 
     if (!hydrated) return null;
 
+    console.log("hydrated");
+
     return (
         <ThemeProvider
             attribute="data-theme"
