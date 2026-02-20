@@ -19,6 +19,7 @@ export function SafariToolbar({ safari }: { safari: SafariController }) {
             <button
                 disabled={!safari.canGoBack}
                 onClick={safari.back}
+                data-testid="back-button"
                 className={`rounded-lg px-2 py-1 transition-colors ${!safari.canGoBack ? "opacity-30" : "hover:bg-(--button-secondary-hover) active:scale-95"}`}
             >
                 <MoveLeft className="h-4 w-4" />
@@ -26,6 +27,7 @@ export function SafariToolbar({ safari }: { safari: SafariController }) {
             <button
                 disabled={!safari.canGoForward}
                 onClick={safari.forward}
+                data-testid="forward-button"
                 className={`rounded-lg px-2 py-1 transition-colors ${!safari.canGoForward ? "opacity-30" : "hover:bg-(--button-secondary-hover) active:scale-95"}`}
             >
                 <MoveRight className="h-4 w-4" />

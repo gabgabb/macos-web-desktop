@@ -12,6 +12,7 @@ export function SafariHome({ safari }: { safari: SafariController }) {
     return (
         <div
             onClick={() => setShowSuggestions(false)}
+            data-testid="safari-home"
             className="relative flex h-full w-full items-center justify-center overflow-hidden text-(--text-primary)"
         >
             <Image

@@ -54,7 +54,10 @@ export function GoogleSearch({
 
                 <div className="min-h-0 flex-1 overflow-y-auto">
                     <div className="mx-auto w-full max-w-3xl space-y-4 px-8 py-6">
-                        <p className="text-xs text-(--text-primary)/50">
+                        <p
+                            className="text-xs text-(--text-primary)/50"
+                            data-testid="google-search-meta"
+                        >
                             About {searchMeta.total} results ({searchMeta.time}{" "}
                             seconds)
                         </p>
