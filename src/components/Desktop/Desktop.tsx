@@ -19,7 +19,6 @@ export function Desktop() {
         x: 0,
         y: 0,
     });
-    const reset = useDesktopStore((s) => s.reset);
     const openApp = useDesktopStore((s) => s.openApp);
     const activePanel = useDesktopStore((s) => s.ui.activePanel);
     const togglePanel = useDesktopStore((s) => s.togglePanel);
@@ -86,7 +85,6 @@ export function Desktop() {
                 y={ctx.y}
                 onClose={closeCtx}
                 onAction={(id) => {
-                    if (id === "refresh") reset();
                     if (id === "wallpaper") openApp("settings");
                 }}
             />

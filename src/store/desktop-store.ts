@@ -233,14 +233,18 @@ export const useDesktopStore = create<DesktopState>((set, get) => ({
         persistDesktop(get);
     },
 
-    reset: () => {
+    reset: async () => {
+        saveSnapshot(DEFAULT_STATE);
+
         set({
             ...DEFAULT_STATE,
-            hydrated: false,
+            hydrated: true,
+            isLocked: true,
             cwd: FS.getCwd(),
         });
-        window.location.reload();
-        saveSnapshot(DEFAULT_STATE);
+
+        localStorage.clear();
+        sessionStorage.clear();
     },
 
     minimizeWindow(windowId) {
