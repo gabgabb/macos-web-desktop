@@ -1,10 +1,10 @@
 import Image from "next/image";
 
-export function ErrorPage() {
+export function AccessDenied() {
     return (
         <div className="bg-background flex h-full items-center justify-center">
             <Image
-                src={"/icones/error.webp"}
+                src={"/icones/restricted.webp"}
                 alt={"error"}
                 width={980}
                 height={980}
@@ -12,10 +12,10 @@ export function ErrorPage() {
             />
             <div className="z-10 mx-auto max-w-md text-center text-(--text-primary)">
                 <h1 className="mb-2 text-2xl font-semibold">
-                    This site can’t be reached
+                    Access Restricted
                 </h1>
                 <p className="bac text-sm text-(--text-primary)/60">
-                    Check the address and try again.
+                    Clearance level insufficient.
                 </p>
             </div>
         </div>

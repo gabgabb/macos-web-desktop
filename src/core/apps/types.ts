@@ -1,5 +1,7 @@
+import { SafariLocation } from "@/src/components/apps/SafariApp/safari.state";
 import { Conversation } from "@/src/core/apps/chatData";
 import { AccentKey } from "@/src/core/ui/ui-constants";
+import React from "react";
 
 export type AppId =
     | "finder"
@@ -71,8 +73,9 @@ export type DesktopSnapshot = {
     ui: {
         activePanel: Panel;
     };
-    progress?: {
-        slackIntroPlayed?: boolean;
+    progress: {
+        slackIntroPlayed: boolean;
+        clearanceLevel: number;
     };
     slack: {
         conversations: Conversation[];
@@ -113,3 +116,22 @@ export type Wallpaper = {
     };
     thumb?: string;
 };
+
+export interface SafariController {
+    location: SafariLocation;
+    hasAccess: (required?: number) => boolean;
+    clearanceLevel: number;
+    setClearanceLevel: React.Dispatch<React.SetStateAction<number>>;
+    navigateInput: (input: string) => void;
+    currentInput: string;
+    inputValue: string;
+    setInputValue: React.Dispatch<React.SetStateAction<string>>;
+    push: (loc: SafariLocation) => void;
+    back: () => void;
+    forward: () => void;
+    home: () => void;
+    reload: () => void;
+    canGoBack: boolean;
+    canGoForward: boolean;
+    isLoading: boolean;
+}
