@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
     env: {
         NEXT_ENV: process.env.NEXT_ENV,
         LOCK_PASSWORD: process.env.LOCK_PASSWORD,
-        NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     },
     typescript: {
         ignoreBuildErrors: true,

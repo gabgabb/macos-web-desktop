@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import React from "react";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteUrl = "https://macos.gabriaile.dev";
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
@@ -12,7 +12,6 @@ export const metadata: Metadata = {
     },
     description:
         "A macOS-like desktop environment built with Next.js and React. Run apps, manage windows, and even play DOOM directly in your browser.",
-
     applicationName: "macOS Web",
     generator: "Next.js",
     keywords: [
@@ -27,7 +26,7 @@ export const metadata: Metadata = {
     authors: [{ name: "Gabriel Filiot", url: "https://gabriaile.dev" }],
     creator: "Gabriel Filiot",
     alternates: {
-        canonical: "/",
+        canonical: siteUrl,
     },
     openGraph: {
         type: "website",
@@ -38,7 +37,7 @@ export const metadata: Metadata = {
         siteName: "macOS Web",
         images: [
             {
-                url: "/desktop.webp",
+                url: `${siteUrl}/desktop.webp`,
                 width: 1200,
                 height: 630,
                 alt: "macOS Web Desktop Preview",
@@ -89,7 +88,7 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    if (process.env.NODE_ENV === "test") {
+    if (process.env.NODE_ENV === "test" && typeof window !== "undefined") {
         // @ts-ignore
         window.__coverage__ = {};
         document.documentElement.setAttribute("data-e2e", "true");
